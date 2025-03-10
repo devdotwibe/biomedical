@@ -1,0 +1,85 @@
+@font-face {
+    font-family: 'Averta CY';
+    src: url('./fonts/AvertaCY-Regular.woff2') format('woff2'),
+         url('./fonts/AvertaCY-Regular.woff') format('woff'),
+         url('./fonts/AvertaCY-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/*=======================
+ user parent div 
+ ========================*/
+
+.content.dashboard-wrap {
+    background-color: #eaeaea !important;
+}
+
+.dashboard-wrap .info-box-content  {
+    padding: 15px 20px !important; 
+    display: block !important;
+    margin: 0 !important;
+}
+
+.dashboard-wrap .info-box-content a {
+    text-align: left;
+    display: block !important;
+}
+
+.dashboard-wrap .info-box-content .viewcounts {
+    text-align: left;
+    display: grid;
+    padding-top: 5px;
+}
+
+.wrapper .content-wrapper .content.dashboard-wrap .row .col-md-3.col-sm-6.col-xs-12 .info-box .info-box-content .info-box-text {
+    font-family: 'Averta CY', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 19px !important;
+}  
+
+.dashboard-wrap .info-box-content .viewcounts span {
+    font-family: 'Averta CY', sans-serif;
+    color: #666666;
+}
+
+.dashboard-wrap .info-box-content a {
+    font-family: 'Averta CY', sans-serif;
+    color: #666666 !important;
+}
+
+/*=======================
+ Inner Box
+ ========================*/
+
+.wrapper .content-wrapper .content.dashboard-wrap .row .col-md-3.col-sm-6.col-xs-12 .info-box {
+    display: block !important;
+    border-radius: 10px;
+    height: 100%;
+}
+
+.info-box-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    width: 100%; 
+}
+
+.info-icon {
+    margin-left: 10px; 
+    width: 30px; 
+    order: 1;
+}
+
+.info-box-text span {
+    flex-grow: 1; 
+    text-align: left;
+}
+
+.wrapper .content-wrapper .content.dashboard-wrap .row .col-md-3.col-sm-6.col-xs-12 {
+    padding: 0px 10px !important;
+    margin-bottom: 20px !important;
+}

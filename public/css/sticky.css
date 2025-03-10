@@ -1,0 +1,77 @@
+﻿.float-panel { width:100%; transition:all 0.7s;}
+.fixed { border:none; animation:slide-down 0.7s;}
+.fixed .fa-gg { transform:rotate(360deg);}
+.fixed { width:100% !important; float:left; background-color:#ffffff; box-shadow:0px 6px 12px -4px rgba(0,0,0,0.24); margin:0 0 0 !important; padding:18px 0 18px; left:0; right:0; z-index:999999;}
+.scroll { width:100%; float:left; margin:0 0 0;}
+.fixed .linker-col1 { width:109px; animation:slide-down 0.7s;}
+.fixed .linker-ret1 { margin:12px 0 0; animation:slide-down 0.7s;}
+.fixed .linker-col2, .fixed .linker-col3 { animation:slide-down 0.7s; display:none;}
+.menu-col1 .fixed { width:117px !important; background-color:transparent; box-shadow:none; padding:35px 0 18px; left:0; right:inherit; z-index:9999999999;}
+.menu-col1 .scroll { width:117px;}
+
+@keyframes slide-down {  
+0% { transform:translateY(-100%);}
+100% { transform:translateY(0);}
+}
+/* ---------------- For Animation on Scroll ---------------- */
+.slideanim { visibility: hidden; visibility: visible\9;/*For old IE browsers IE6-8 */ }
+.slideanim.slide { visibility: visible; animation: slide 1s; }
+.slideanim::after { /* useful when its child elements are float:left; */
+content: ""; display: table; clear: both; }
+@keyframes slide {
+0% { transform:translateY(50%);}
+100% { transform:translateY(0);}
+}
+
+/*Smartphone css*/
+@media screen and (max-width: 480px) {
+.float-panel { transform:none; transition:none;}
+.fixed { width:100% !important; background:none; border-bottom:none; position:relative !important; box-shadow:none !important; animation:none !important; padding:0 !important;}
+.scroll { width:100%;}
+.menu-col1 .fixed { width:107px !important; left:0;}
+.menu-col1 .scroll { width:107px;}
+}
+
+@media screen and (min-width:481px) and (max-width:600px) {
+.float-panel { transform:none; transition:none;}
+.fixed { width:100% !important; background:none; border-bottom:none; position:relative !important; box-shadow:none !important; animation:none !important; padding:0 !important;}
+.scroll { width:100%;}
+.menu-col1 .fixed { width:107px !important; left:0;}
+.menu-col1 .scroll { width:107px;}
+}
+
+@media screen and (min-width:601px) and (max-width:767px) {
+.float-panel { transform:none; transition:none;}
+.fixed { width:100% !important; background:none; border-bottom:none; position:relative !important; box-shadow:none !important; animation:none !important; padding:0 !important;}
+.scroll { width:100%;}
+.menu-col1 .fixed { width:107px !important; left:0;}
+.menu-col1 .scroll { width:107px;}
+}
+
+@media screen and (min-width:768px) and (max-width:900px) {
+.fixed { padding:12px 0 12px;}
+.fixed .linker-col1 { width:89px; margin:0 0 0 44px;}
+.menu-col1 .fixed { width:58px !important; padding:22px 0 10px; left:0;}
+.menu-col1 .scroll { width:58px;}
+}
+
+@media screen and (min-width:901px) and (max-width:1024px) {
+.fixed { padding:15px 0 15px;}
+.fixed .linker-col1 { width:95px; margin:0 0 0 44px;}
+.menu-col1 .fixed { width:58px !important; padding:27px 0 10px; left:0;}
+.menu-col1 .scroll { width:58px;}
+}
+
+@media screen and (min-width:1025px) and (max-width:1240px) {
+.fixed .linker-col1 { width:101px; margin:0 0 0 44px;}
+.menu-col1 .fixed { width:58px !important; padding:32px 0 10px; left:0;}
+.menu-col1 .scroll { width:58px;}
+}
+
+@media screen and (min-width:1241px) and (max-width:1340px) {
+.fixed .linker-col1 { margin:0 0 0 44px;}
+}
+
+@media screen and (min-width:1341px) and (max-width:1540px) {
+.fixed .linker-col1 { margin:0 0 0 44px;}
+}

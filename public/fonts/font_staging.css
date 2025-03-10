@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'GeomanistRegular';
+    src: url('GeomanistRegular.eot');
+    src: url('GeomanistRegular.eot') format('embedded-opentype'),
+         url('GeomanistRegular.woff2') format('woff2'),
+         url('GeomanistRegular.woff') format('woff'),
+         url('GeomanistRegular.ttf') format('truetype'),
+         url('GeomanistRegular.svg#GeomanistRegular') format('svg');
+}
+@font-face {
+    font-family: 'GeomanistBold';
+    src: url('GeomanistBold.eot');
+    src: url('GeomanistBold.eot') format('embedded-opentype'),
+         url('GeomanistBold.woff2') format('woff2'),
+         url('GeomanistBold.woff') format('woff'),
+         url('GeomanistBold.ttf') format('truetype'),
+         url('GeomanistBold.svg#GeomanistBold') format('svg');
+}
+

@@ -1,0 +1,151 @@
+/*.odd td.firstCol{
+      width:20px;
+      float:left;
+    }
+
+    .even td.firstCol{
+       width:20px;
+       float:left;
+    }
+
+    .headrole th.firstCol {
+       width:20px;
+       float:left;
+    }*/
+
+ /*   .slNo {
+        width: 50px !important;
+        padding-right: 50px !important;
+        position: relative;
+        top: 10px;
+    }*/
+    .profilPic img {
+        border-radius: 10px 10px 0 0;
+        width: 100%;
+        height: 199px;
+        object-fit: cover;
+        background: center no-repeat;
+    }
+.deleteAll {
+    float: left;
+    position: absolute;
+    bottom: 22px;
+}
+
+.col-sm-5 {
+    float: left;
+    margin-left: 135px;
+    width: 29%;
+}
+
+    td.details-control {
+        background: url(../images/details_open.png) no-repeat center right;
+        cursor: pointer;
+    }
+    tr.shown td.details-control {
+        background: url(../images/details_close.png) no-repeat center right;
+    }
+
+    a.openTable {
+        background: url(../images/details_open.png) no-repeat center center;
+        width: 50%;
+        float: right;
+        height: 20px;
+    }
+
+    tr.shown a.openTable {
+        background: url(../images/details_close.png) no-repeat center center;
+    }
+    
+    .detailHead{
+        font-weight:bold;
+        margin-right:10px;
+    }
+
+    .detailsTable tr td {
+        padding-bottom: 10px;
+    }
+    .detailsTable tr td:first-child {
+        width: 170px;
+        vertical-align: top;
+    }
+
+/*    #dataForm table tr td:last-child, #dataForm table tr th:last-child{
+        text-align: center;
+    }*/
+
+/*    #dataForm table tr td:nth-child(n-1) {
+        text-align: center;
+    }*/
+
+    #dataForm table tr td.alignCenter, #dataForm table tr th.alignCenter {
+        text-align: center;
+    }
+
+    #dataForm table tr td.alignLeft, #dataForm table tr th.alignLeft {
+        text-align: left;
+    }
+
+    #dataForm table tr td.alignRight, #dataForm table tr th.alignRight {
+        text-align: right;
+    }
+
+    span.error {
+        color: #f00;
+        /*float: left;*/
+        width:100%;
+    }
+
+    body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+ol.example li.placeholder {
+  position: relative;
+  /** More li styles **/
+}
+ol.example li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+}
+
+.form-group .radio {
+  display: inline-block;
+  margin-right: 20px;
+}
+.form-group label {
+  display: block;
+}
+
+
+
+.samerowSel {
+    width: 350px;
+    display: inline-block;
+}
+.samerow {
+    width: 150px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.samerow1 {
+display: inline-block;
+}
+
+.alt_sec {
+    border: 1px dotted #bbb;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+#pm label{
+    float: left; 
+    width: 15%;
+    display: inline-block;
+}

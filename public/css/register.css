@@ -1,0 +1,289 @@
+
+ul.registermenu.navbar-nav li.nav-item:last-child a {
+    background: #fff!important;
+    color: #999 !important;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+ul.registermenu.navbar-nav li.nav-item:last-child a:hover{
+    background: #41bfef!important;
+    color: #fff !important;
+    border: 1px solid #41bfef!important;
+}
+ul.registermenu.navbar-nav li.nav-item::after{
+	content:none !important;
+}
+.register-wrapper {
+    padding: 70px 0;
+    float: left;
+    width: 100%;
+    background: #f3f3f3;
+    margin-top: 83px;
+}
+.register-left {
+    background: url(../images/register-bg.jpg) no-repeat center center;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+.register-imgtxt {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    min-height: 427px;
+}
+
+.register-imgtxt .register-caption {
+    border: 3px solid #4591d3;
+    display: inline-block;
+    width: 80%;
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 30px;
+}
+.step-outer {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.step-outer ul {
+    float: right;
+    text-align: center;
+}
+.step-outer ul li {
+    display: inline-block;
+    margin: 0 0 0 4px;
+    padding: 0;
+}
+.step-outer ul a {
+    width: 30px;
+    height: 30px;
+    background: #0057a7;
+    display: inline-block;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    padding: 0;
+    line-height: 30px;
+    font-size: 15px;
+}
+
+.step-outer ul a.active, .step-outer ul a:hover{
+    background: #f18712;
+    display: inline-block;
+    border-radius: 50%;
+    color: #fff;
+}
+.register-caption h2 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    float: left;
+    width: 100%;
+    margin: 0 0 20px 0;
+}
+.register-caption ul {
+    float: left;
+    width: 100%;
+}
+
+.register-caption ul li {
+    color: #fff;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0 0 18px 0;
+    position: relative;
+    padding-left: 15px;
+}
+
+.register-caption ul li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	width: 5px;
+	height: 5px;
+	background: #fff;top: 8px;
+}
+.register-right {
+    background: #fff;
+    float: left;
+    width: 100%;
+    padding: 45px;
+    height: 100%;
+}
+.register-wrapper .col-md-7 {
+    padding-right: 0;
+}
+
+.register-wrapper .col-md-5 {
+    padding-left: 0;
+}
+.registerform h4 {
+    color: #999999;
+    font-size: 18px;
+    margin: 0 0 20px 0;
+}
+
+.registerform {
+    float: left;
+    width: 100%;
+    position: relative;
+}
+
+.registerform .form-group {
+    float: left;
+    width: 100%;
+    margin: 0 0 15px 0;
+}
+
+.registerform label {
+    color: #666666;
+    font-size: 17px;
+    float: left;
+    width: 100%;
+    margin: 0 0 5px 0;
+}
+.registerform h2 {
+    color: #0057a7;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    line-height: 24px;
+}
+.registerform input.form-control {
+    height: 44px;
+    line-height: 44px;
+    padding: 0 15px;
+    border: 1px solid #ddd;
+    color: #666;
+}
+.registerform input.btn.order-btn {
+    background: #f18712;
+    border-radius: 4px;
+    height: 44px;
+    display: inline-block;
+    width: 100%;
+    color: #fff;
+    line-height: 44px;
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+.registerform input.btn.order-btn:hover{
+    background: #666;
+    color: #fff;
+}
+.registerform form h4 {
+    color: #999;
+    font-size: 17px;
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 20px 0;
+    position: relative;
+    background: #fff;
+    padding: 10px;
+    text-align: center;
+}
+.registerform form h4::before {
+    height: 1px;
+    width: 40%;
+    background: #9999;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    content: "";
+    z-index: 1;
+}
+.registerform form h4::after {
+    height: 1px;
+    width: 40%;
+    background: #9999;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    content: "";
+    z-index: 1;
+}
+.register-btns {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+}
+.continue-btn {
+    display: inline-block;
+    width: auto;
+    color: #fff;
+    background: #f18712;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 25px;
+    margin: 0 3px;
+    border-radius: 4px;
+}
+.register-btn2{
+    padding: 0 50px;
+        display: inline-block;
+    width: auto;
+    color: #fff;
+    background: #f18712;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+    margin: 0 3px;
+    border-radius: 4px;
+}
+.continue-btn:hover, .alrdy-acc-btn:hover, .register-btn2:hover{
+    color: #fff;
+    background:#41bfef;
+}
+.alrdy-acc-btn{
+        display: inline-block;
+    width: auto;
+    color: #fff;
+    background: #0057a7;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 25px;
+    margin: 0 3px;
+    border-radius: 4px;
+}
+.captcha{
+    float:left;
+    width:100%;
+    margin:10px 0 20px 0;
+}
+.threerow {
+    float: left;
+    width: 100%;
+}
+
+.registerform 
+ .threerow .form-group {
+    width: 31.2%;
+    margin-right: 3%;
+}
+
+.registerform .threerow .form-group:last-child {
+    margin-right: 0 !important;
+}
+
+.hireContent h1 {
+    color: white;
+}
