@@ -51,7 +51,7 @@ echo $currentPath= Route::getFacadeRoot()->current()->uri();
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto py-4 py-md-0">
                      <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 {{ request()->is('home') ? 'active' : ''}}">
-                        <a class="nav-link" href="{{url('/')}}">Homessss</a>
+                        <a class="nav-link" href="{{url('/')}}">Homesgsss</a>
                       </li>
                       <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 {{ request()->is('about') ? 'active' : ''}}">
                         <a class="nav-link" href="{{url('/about')}}">About</a>
