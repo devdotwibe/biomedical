@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Product_image;
+use App\Models\Product_view_count;
 use Illuminate\Http\Request;
 use App\Cms;
 use App\Banner;
-use App\Category;
-use App\Brand;
-use App\Product;
-use App\Product_image;
-use App\Product_view_count;
 
 //use Route;
 

@@ -11,13 +11,12 @@
  */
 
 //test git
-
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\DealerAuthenticate;
 use App\Http\Middleware\StaffAuthenticate;
 use App\Http\Middleware\MarketspaceAuthenticate;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactusController;
 
 use App\AppVersionControll;
@@ -43,6 +42,18 @@ Route::get('/products', [ProductsController::class, 'productindex']);
 Route::get('/allproducts', [ProductsController::class, 'productindex']);
 Route::get('/products/{category}', [ProductsController::class, 'categories']);
 Route::get('/quote_details/{pd_slug}', [ContactusController::class, 'quote_details_cat'])->name('quote_details');
+Route::get('/404', [PageController::class, 'notfound']);
+Route::get('/hero', [PageController::class, 'hero']);
+Route::post('/hero/{pd_slug}', [PageController::class, 'heroSubmit'])->name('hero.submit');
+Route::get('/thankyou', [PageController::class, 'thankyou'])->name('form.thankyou');
+Route::get('/marketspace/search', [PageController::class, 'marketspacesearch']);
+Route::get('/marketspace/profile/{id}', [PageController::class, 'profile'])->name('profile');
+Route::get('/marketspace/verify/{id}', [PageController::class, 'verify'])->name('verify');
+Route::get('/fetch_data', [PageController::class, 'fetch_data'])->name('fetch_data');
+Route::post('search_skills', [PageController::class, 'search_skills'])->name('search_skills');
+
+
+Route::get('{any}', [PageController::class, 'index']);
 
 
 Route::get(
@@ -63,20 +74,11 @@ Route::get(
 // });
 //Route::get('/marketspace', 'PageController@marketspace');
 Route::get('/marketspace', 'marketspace\MarketspaceController@marketspaceregister');
-Route::get('/404', 'PageController@notfound');
-Route::get('/hero', 'PageController@hero');
-Route::post('/hero', 'PageController@heroSubmit')->name("hero.submit");
-Route::get('/thankyou', 'PageController@thankyou')->name('form.thankyou');
-Route::get('/marketspace/search', 'PageController@marketspacesearch');
-Route::get('/marketspace/profile/{id}', 'PageController@profile')->name('profile');
-Route::get('/marketspace/verify/{id}', 'PageController@verify')->name('verify');
-Route::get('fetch_data', 'PageController@fetch_data')->name('fetch_data');
 
 Route::get('marketspace/user', 'marketspace\MarketspaceController@getMessage')->name('marketspace/user');
 Route::post('marketspace/message', 'marketspace\MarketspaceController@sendMessage');
 Route::get('marketspace/chat', 'marketspace\MarketspaceController@chat')->name('marketspace/chat');
 
-Route::post('search_skills', 'PageController@search_skills')->name('search_skills');
 
 Route::get('/sitemap.xml', 'SitemapXmlController@index')->name('sitemap.xml');
 /***********************************Marketspace Login Start****************************************************/
@@ -1744,5 +1746,5 @@ Route::get('quotepdf/{id}', 'Auth\QuoteController@quotepdf')->name('quotepdf');
 //  return view('404');
 //});
 
-Route::get('{any}', 'PageController@index');
+// Route::get('{any}', 'PageController@index');
 
