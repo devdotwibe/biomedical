@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Auth\AuthenticatesUsers;
+use App\Models\Admin;
 use App\Models\Staff;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
@@ -125,22 +126,17 @@ class LoginController extends Controller
             return redirect()->intended('/staff/dashboard');
         }
 
-        if (Auth::guard('admin')->attempt($credentials))
+        $admin = Admin::where('email', $credentials['email'])->first();
+        
+        if($admin && md5($credentials['password']) === $admin->password)
         {
+            Auth::guard('admin')->login($admin);
+
             RateLimiter::clear($this->throttleKey($request));
             $request->session()->regenerate();
-            session()->put('sidebarCollapsed','true');
 
-            $remember = $request->has('remember'); 
-
-            if (Auth::guard('admin')->attempt([
-                'email' => $request->email,
-                'password' => $request->password
-            ], $remember)) {
-               
-                return redirect()->intended('/dashboard');
-            }
-
+            $request->session()->put('ADMIN_ID', $admin->id);
+         
             return redirect()->intended('/admin/dashboard');
         }
 
