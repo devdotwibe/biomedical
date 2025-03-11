@@ -33,6 +33,9 @@ Route::get('testtaskv', 'staff\TaskController@test_v_task');
 
 Route::get('login', [LoginController::class, 'index'])->name('login');
 
+Route::post('login_submit', [LoginController::class, 'loginSubmit'])->name('login_submit');
+
+
 Route::get('/', [PageController::class, 'home']);
 Route::get('/about', [ContactusController::class, 'about'])->name('contactus');
 Route::post('/contact-us', [ContactusController::class, 'store'])->name('contactus.store');

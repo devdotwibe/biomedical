@@ -60,7 +60,8 @@
     {{ $errors->first('username') }}
     {{ $errors->first('password') }}
     </p>
-    <form id="login" name="login" id="login" name="login" method="post"  action="stafflogin">
+    <form id="login" name="login" id="login" name="login" method="post"  action="{{ route('login_submit') }}">
+
         @csrf
       <div class="form-group has-feedback">
         <input type="text" name="username" id="username" value="<?php echo old('username'); ?>" class="form-control" placeholder="Username">

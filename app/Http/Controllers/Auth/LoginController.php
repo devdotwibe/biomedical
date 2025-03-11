@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -101,25 +102,24 @@ class LoginController extends Controller
             "password"=>["required",'string'],
         ]);
         $this->ensureIsNotRateLimited($request);
-        if (Auth::attempt($credentials))
+        
+        // if (Auth::attempt($credentials))
+        // {
+        //     RateLimiter::clear($this->throttleKey($request));
+        //     $request->session()->regenerate();
+
+        //     return redirect()->intended('/staff/dashboard');
+        // }
+
+        if (Auth::guard('staff')->attempt($credentials))
         {
             RateLimiter::clear($this->throttleKey($request));
+
             $request->session()->regenerate();
-
-            session()->put('sidebarCollapsed','true');
-
-            $remember = $request->has('remember'); 
-
-            if (Auth::attempt([
-                'email' => $request->email,
-                'password' => $request->password
-            ], $remember)) {
-               
-                return redirect()->intended('/dashboard');
-            }
-
-            return redirect()->intended('/dashboard');
+    
+            return redirect()->intended('/staff/dashboard');
         }
+
         if (Auth::guard('admin')->attempt($credentials))
         {
             RateLimiter::clear($this->throttleKey($request));
@@ -138,6 +138,7 @@ class LoginController extends Controller
 
             return redirect()->intended('/admin/dashboard');
         }
+
         RateLimiter::hit($this->throttleKey($request));
         throw ValidationException::withMessages([
             'login' => 'The provided credentials do not match our records.',
