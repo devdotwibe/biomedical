@@ -38,26 +38,26 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
 
       @php
             $staff_id = session('STAFF_ID');
-            $permission = \App\User_permission::where('staff_id', $staff_id)->first();
-            $cor_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','customer')->first();
+            $permission = \App\Models\User_permission::where('staff_id', $staff_id)->first();
+            $cor_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','customer')->first();
 
-            $ib_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','ib')->first();
+            $ib_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','ib')->first();
 
-            $bio_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','bio')->first();
+            $bio_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','bio')->first();
 
-            $bec_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','bec')->first();
+            $bec_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','bec')->first();
 
-            $techsure_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','techsure')->first();
+            $techsure_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','techsure')->first();
             
-            $msa_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','msa')->first();
+            $msa_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','msa')->first();
 
-            $contract_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','contract')->first();
+            $contract_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','contract')->first();
 
-            $pm_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','pm')->first();
+            $pm_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','pm')->first();
 
-            $sales_bio_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','sales_bio')->first();
+            $sales_bio_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','sales_bio')->first();
 
-            $sales_bec_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','sales_bec')->first();
+            $sales_bec_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','sales_bec')->first();
       @endphp
 
       @if($staff_id =="32")

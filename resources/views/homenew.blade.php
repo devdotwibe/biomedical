@@ -306,7 +306,6 @@
           <ul class="timeline first-ul">
               <li>
                   <div class="timeline-panel ">
-                      
                       <div class="card  ">
                         <div class="card-body subject">
                           <h5 class="card-title">Proximity</h5><hr>
@@ -317,7 +316,6 @@
               </li>
               <li class="timeline-inverted">
                   <div class="timeline-panel">
-                     
                       <div class="card  ">
                         <div class="card-body subject">
                           <h5 class="card-title">Social and Medical Credibility</h5><hr>
@@ -328,7 +326,6 @@
               </li>
               <li>
                   <div class="timeline-panel">
-                  
                       <div class="card  ">
                         <div class="card-body subject">
                           <h5 class="card-title">Personalized Service</h5><hr>
@@ -337,7 +334,7 @@
                       </div>
                   </div>
               </li>
-            </ul>
+          </ul>
             
              </div>
             </section> 
@@ -360,7 +357,7 @@
               <div class="col-md-12 timeline-col">
             <ul class="timeline second-ul">
              
-              <li class="timeline-inverted">
+                <li class="timeline-inverted">
                   <div class="timeline-panel">
                         <div class="card-body subject">
                           <h5 class="card-title">Warranty</h5><hr>
