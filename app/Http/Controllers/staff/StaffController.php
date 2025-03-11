@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Models\StaffTarget;
-use App\Settings;
-use App\Staff;
+use App\Models\Oppertunity;
+use App\Models\Settings;
+use App\Models\Staff;
 use Input;
 use Validator;
 use Redirect;
 use Auth;
-use App\Oppertunity;
-use App\Oppertunity_product;
-use App\Product;
+use App\Models\Oppertunity_product;
+use App\Models\Product;
 use Carbon\Carbon;
 class StaffController extends Controller
 {

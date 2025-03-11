@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\staff\AdminStaffTargetController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('staff/target/list', 'staff\AdminStaffTargetController@index')->name("staff.target.index");
+
+Route::name('staff.')->prefix('staff')->group(function () {
+
+Route::get('staff/target/list', [AdminStaffTargetController::class, 'index'])->name("staff.target.index");
+
 Route::get('staff/target/commission/list', 'staff\AdminStaffTargetController@targetCommission')->name("staff.target.commission.index");
 Route::get('staff/target/commission/completestatus', 'staff\AdminStaffTargetController@completestatus')->name("staff.target.commission.completestatus");
 Route::post('staff/{id}/target/commission/add', 'staff\AdminStaffTargetController@addTargetCommission')->name("staff.target.commission.add");
@@ -91,4 +96,6 @@ Route::prefix('work')->group(function () {
     Route::get('/work-report', 'staff\WorkReportController@show')->name('work-report.show');
     Route::post('/work-report/travel/{id}/update', 'staff\WorkReportController@update')->name('work-report.update');
     Route::post('/work-report/travel/{id}/store', 'staff\WorkReportController@store')->name('work-report.store');
+});
+
 });

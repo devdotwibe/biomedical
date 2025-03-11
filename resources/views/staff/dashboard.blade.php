@@ -29,11 +29,11 @@
 
         $staff_id = session('STAFF_ID');
 
-        $permission = \App\User_permission::where('staff_id', $staff_id)->first();
+        $permission = \App\Models\User_permission::where('staff_id', $staff_id)->first();
 
-        $cor_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','customer')->first();
+        $cor_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','customer')->first();
 
-        $permission_staffs = \App\User_permission::where('work_update_coordinator',$staff_id)->pluck('staff_id')->unique()->toArray();
+        $permission_staffs = \App\Models\User_permission::where('work_update_coordinator',$staff_id)->pluck('staff_id')->unique()->toArray();
 
       @endphp
 
@@ -266,13 +266,13 @@
             <?php
                   $staff_id = session('STAFF_ID');
                   if($staff_id == 127 || $staff_id == 34 ){
-                    $cr = App\Service::where('service_type',1)->get();
-                    $pm = App\Service::where('service_type',2)->get();
-                    $in = App\Service::where('service_type',3)->get();  
+                    $cr = \App\Models\Service::where('service_type',1)->get();
+                    $pm = \App\Models\Service::where('service_type',2)->get();
+                    $in = \App\Models\Service::where('service_type',3)->get();  
                   }else{
-                  $cr = App\Service::where('service_type',1)->where('engineer_id',$staff_id)->get();
-                  $pm = App\Service::where('service_type',2)->where('engineer_id',$staff_id)->get();
-                  $in = App\Service::where('service_type',3)->where('engineer_id',$staff_id)->get();
+                  $cr = \App\Models\Service::where('service_type',1)->where('engineer_id',$staff_id)->get();
+                  $pm = \App\Models\Service::where('service_type',2)->where('engineer_id',$staff_id)->get();
+                  $in = \App\Models\Service::where('service_type',3)->where('engineer_id',$staff_id)->get();
                   }
             ?>
             <span><a href="{{ route('staff.service-create',1) }}">Cr-Repair  [<?php echo count($cr);?>]</a></span>
@@ -375,7 +375,7 @@ $adminB=["39","30","32"];
       <img src="{{ asset('images/sales-target.svg') }}" class="info-icon"> 
       </span>
       <div class="viewcounts">
-      <span class="info-box-number"><?php //echo App\Product::all()->count();?></span>
+      <span class="info-box-number"><?php //echo \App\Product::all()->count();?></span>
       </div>
       </a>
     </div>
@@ -391,7 +391,7 @@ $adminB=["39","30","32"];
       <span class="info-box-text">Staff Sales Commission
       <img src="{{ asset('images/sales.svg') }}" class="info-icon"> 
       </span>
-      <span class="info-box-number"><?php //echo App\Product::all()->count();?></span>
+      <span class="info-box-number"><?php //echo \App\Product::all()->count();?></span>
       <span><a href="{{ route('staff.staff.target.report') }}">Report</a></span>
       </a>
     </div>
@@ -410,7 +410,7 @@ $adminB=["39","30","32"];
       <span class="info-box-text">REPORT
       <img src="{{ asset('images/oppertunity.svg') }}" class="info-icon"> 
       </span>
-      <span class="info-box-number"><?php //echo App\Product::all()->count();?></span>
+      <span class="info-box-number"><?php //echo \App\Product::all()->count();?></span>
       </a>
     </div>
   </div>
@@ -430,7 +430,7 @@ $adminB=["39","30","32"];
       <img src="{{ asset('images/sales-target.svg') }}" class="info-icon"> 
       </span>
       <div class="viewcounts">
-      <span class="info-box-number"><?php //echo App\Product::all()->count();?></span>
+      <span class="info-box-number"><?php //echo \App\Product::all()->count();?></span>
       </div>
       </a>
     </div>
@@ -444,7 +444,7 @@ $adminB=["39","30","32"];
   <div class="info-box">
   <div class="info-box-content">
       @php
-      $applatest=\App\AppVersionControll::where("vid","android")->orderBy("id","DESC")->first();
+      $applatest=\App\Models\AppVersionControll::where("vid","android")->orderBy("id","DESC")->first();
       $vcode = $applatest->code."";
       @endphp
       <a href="{{ route('staff.android.download') }}" target="_blank" download="Beczone-v{{$vcode!=""?$vcode[0]:1}}.apk">
