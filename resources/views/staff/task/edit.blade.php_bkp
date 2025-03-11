@@ -1,0 +1,550 @@
+
+
+@extends('staff/layouts.app')
+
+@section('title', 'Edit Task')
+
+@section('content')
+
+
+<section class="content-header">
+      <h1>
+        Edit Task
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{{route('staff.task.index')}}">Manage Task</a></li>
+        <li class="active">Edit Task</li>
+      </ol>
+
+
+      
+    </section>
+
+<section class="content">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-10">
+          <!-- general form elements -->
+          <div class="box box-primary">
+
+            <!-- /.box-header -->
+            <!-- form start -->
+
+            @if(session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session()->get('message') }}
+                </div>
+            @endif
+
+
+            @if(session()->has('error_message'))
+                <div class="alert alert-danger alert-dismissible">
+                    {{ session()->get('error_message') }}
+                </div>
+            @endif
+
+            <p class="error-content alert-danger">
+            {{ $errors->first('name') }}
+            </p>
+
+            <form role="form" name="frm_subcategory" id="frm_subcategory" method="post" action="{{ route('staff.task.update', $task->id) }}" enctype="multipart/form-data" >
+               @csrf
+               {{method_field('PUT')}}
+                <div class="box-body">
+
+                 
+                 <div class="form-group">
+                  <label for="name">Task Name*</label>
+                  <input type="text" id="name" name="name" value="{{ $task->name}}" class="form-control" placeholder="Task Name">
+                  <span class="error_message" id="name_message" style="display: none">Field is required</span>
+                </div>
+
+
+
+                 <div class="form-group col-md-6">
+                  <label>Company*</label>
+                  <select name="company_id" id="company_id" class="form-control">
+                    <option value="">-- Select Company --</option>
+                    <?php
+                    foreach($company as $item) {
+                      $sel = ($task->company_id == $item->id) ? 'selected': '';
+                        echo '<option value="'.$item->id.'" '.$sel.'>'.$item->name.'</option>';
+
+                       
+                    } ?>
+                  </select>
+                  <span class="error_message" id="company_id_message" style="display: none">Field is required</span>
+                </div>
+
+                <!-- <div class="form-group col-md-6">
+                  <label>Assigned Team*</label>
+                  <select name="assigned_team" id="assigned_team" class="form-control" onchange="change_assigned_team()">
+                    <option value="">-- Select Assigned Team --</option>
+                    <?php
+                    foreach($designation as $item) {
+                      $sel = ($task->assigned_team == $item->id) ? 'selected': '';
+                        echo '<option value="'.$item->id.'" '.$sel.'>'.$item->name.'</option>';
+                    } ?>
+                  </select>
+                  <span class="error_message" id="assigned_team_message" style="display: none">Field is required</span>
+                </div> -->
+
+                 <div class="form-group col-md-6">
+                  <label>Assignees*</label>
+                  <select name="assigns[]" id="assigns" class="form-control"  multiple="multiple">
+                    <option value="">-- Select Assignees --</option>
+                    <?php
+                    foreach($staff as $item) {
+                      $sel = ($task->assigns == $item->id) ? 'selected': '';
+                        echo '<option value="'.$item->id.'" '.$sel.'>'.$item->name.'</option>';
+                    } ?>
+                   
+                  
+                  </select>
+                  <span class="error_message" id="assigns_message" style="display: none">Field is required</span>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>Followers*</label>
+                  <select name="followers" id="followers" class="form-control">
+                    <option value="">-- Select Followers --</option>
+                    <?php
+                    foreach($staff as $item) {
+                      $sel = ($task->followers == $item->id) ? 'selected': '';
+                        echo '<option value="'.$item->id.'" '.$sel.'>'.$item->name.'</option>';
+
+                       
+                    } ?>
+                  </select>
+                  <span class="error_message" id="followers_message" style="display: none">Field is required</span>
+                </div>
+
+
+                    <div class="form-group col-md-6">
+                  <label>Related To*</label>
+                  <select  onchange="viewchecklist_details()" name="related_to" id="related_to" class="form-control" onchange="change_related_to()">
+                    <option value="">-- Select Related To --</option>
+
+                     <?php
+                    foreach($relatedto_category as $item) {
+                      $sel = ($task->related_to == $item->id) ? 'selected': '';
+                        echo '<option value="'.$item->id.'" '.$sel.'>'.$item->name.'</option>';
+
+                    } ?>
+
+                  </select>
+                  <span class="error_message" id="related_to_message" style="display: none">Field is required</span>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>Related To Sub Category</label>
+                  <select name="related_to_sub" id="related_to_sub" class="form-control">
+                    <option value="">-- Select Related To Sub Category --</option>
+
+                    <?php
+                    foreach($relatedto_subcategory as $item) {
+                      $sel = ($task->related_to_sub == $item->id) ? 'selected': '';
+                        echo '<option value="'.$item->id.'" '.$sel.'>'.$item->name.'</option>';
+                    } ?>
+
+                  </select>
+                  <span class="error_message" id="related_to_sub_message" style="display: none">Field is required</span>
+                </div>
+
+                  <div class="form-group col-md-6">
+                  <label>Check list</label>
+                  <select name="check_list_id[]" id="check_list_id" class="form-control" multiple="multiple">
+                    <option value="">-- Select Check List --</option>
+
+                     <?php
+                    foreach($checklist as $item) {
+                      $sel = ($task->check_list_id == $item->id) ? 'selected': '';
+                        echo '<option value="'.$item->id.'" '.$sel.'>'.$item->name.'</option>';
+                    } ?>
+
+                  </select>
+                  <span class="error_message" id="check_list_id_message" style="display: none">Field is required</span>
+                </div>
+
+
+
+                  <div class="form-group col-md-12">
+                  <label>Client*</label>
+                  <select name="user_id" id="user_id" class="form-control">
+                    <option value="">-- Select Client --</option>
+                    <?php
+                    
+                    foreach($user as $item) {
+                      $sel = ($task->user_id == $item->id) ? 'selected': '';
+                        echo '<option value="'.$item->id.'" '.$sel.'>'.$item->business_name.'</option>';
+                     } ?>
+                  </select>
+                  <span class="error_message" id="user_id_message" style="display: none">Field is required</span>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="name">Start Date*</label>
+                  <input type="text" id="start_date" name="start_date" value="{{ $task->start_date}}" class="form-control" placeholder="Start Date">
+                  <span class="error_message" id="start_date_message" style="display: none">Field is required</span>
+                </div>
+
+                  <div class="form-group col-md-6">
+                  <label for="name">Due Date*</label>
+                  <input type="text" id="due_date" name="due_date" value="{{ $task->due_date}}" class="form-control" placeholder="Due Date">
+                  <span class="error_message" id="due_date_message" style="display: none">Field is required</span>
+                </div>
+
+                 <div class="form-group col-md-6">
+                  <label>Priority*</label>
+                  <select name="priority" id="priority" class="form-control">
+                    <option value="">-- Select Priority --</option>
+                    <option value="Low" <?php if($task->priority=="Low"){echo "selected";}?>>Low</option>
+                    <option value="Medium"  <?php if($task->priority=="Medium"){echo "selected";}?>>Medium</option>
+                    <option value="High"  <?php if($task->priority=="High"){echo "selected";}?>>High</option>
+                    <option value="Urgent"  <?php if($task->priority=="Urgent"){echo "selected";}?>>Urgent</option>
+                   
+                  </select>
+                  <span class="error_message" id="priority_message" style="display: none">Field is required</span>
+                </div>
+
+
+                <div class="form-group col-md-6">
+                  <label>Repeat Every</label>
+                  <select  name="repeat_every" id="repeat_every" class="form-control" onchange="change_repaeat(this.value)">
+                    <option value="">-- Select Repeat Every --</option>
+                    <option value="Week" <?php if($task->repeat_every=="Week"){echo "selected";}?>>Week</option>
+                    <option value="2weeks" <?php if($task->repeat_every=="2weeks"){echo "selected";}?>>2 Weeks</option>
+                    <option value="1Month" <?php if($task->repeat_every=="1Month"){echo "selected";}?>>1 Month</option>
+                    <option value="2Month" <?php if($task->repeat_every=="2Month"){echo "selected";}?>>2 Months</option>
+                    <option value="3Month" <?php if($task->repeat_every=="3Month"){echo "selected";}?>>3 Months</option>
+                    <option value="6Month" <?php if($task->repeat_every=="6Month"){echo "selected";}?>>6 Months</option>
+                    <option value="1year" <?php if($task->repeat_every=="1year"){echo "selected";}?>>1 Year</option>
+                    <option value="Custom" <?php if($task->repeat_every=="Custom"){echo "selected";}?>>Custom</option>
+                  </select>
+                  <span class="error_message" id="repeat_every_message" style="display: none">Field is required</span>
+                </div>
+
+                <div class="form-group col-md-6 customtype"  <?php if($task->repeat_every=="Custom"){?> style="display:block;" <?php }else{ ?>style="display:none;"<?php } ?>> 
+                  <label for="name">Custom Days</label>
+                  <input type="text" id="custom_days" name="custom_days" value="{{ $task->custom_days}}" class="form-control" >
+                  <span class="error_message" id="custom_days_message" style="display: none">Field is required</span>
+                </div>
+
+                <div class="form-group col-md-6 customtype" <?php if($task->repeat_every=="Custom"){?> style="display:block;" <?php }else{ ?>style="display:none;"<?php } ?>>
+                  <label for="name">Custom Days Type</label>
+                  <select name="custom_type" id="custom_type" class="form-control">
+                   
+                    <option value="Days" <?php if($task->repeat_every=="Days"){echo "selected";}?>>Days</option>
+                    <option value="Weeks" <?php if($task->repeat_every=="Weeks"){echo "selected";}?>>Weeks</option>
+                    <option value="Months" <?php if($task->repeat_every=="Months"){echo "selected";}?>>Months</option>
+                    <option value="Years" <?php if($task->repeat_every=="Years"){echo "selected";}?>>Years</option>
+                   
+                  </select>
+                  <span class="error_message" id="custom_type_message" style="display: none">Field is required</span>
+                </div>
+
+
+
+                <div class="form-group col-md-12 repeat-sec" >
+                  <label>Repeat Every*</label>      
+                <div class="input-group">
+                        <input type="number"  class="form-control" disabled="" name="cycles" id="cycles" value="{{$task->cycles}}">
+                        <div class="input-group-addon">
+                           <div class="checkbox">
+                    <input type="checkbox" <?php if($task->unlimited_cycles=="Y"){ ?> checked="true" <?php } ?> id="unlimited_cycles" name="unlimited_cycles">
+                              <label for="unlimited_cycles">Infinity</label>
+                           </div>
+                        </div>
+                     </div>
+                </div>  
+
+                   <div class="form-group col-md-12">
+                  <label for="name">Updated Frequency Hour</label>
+                  <input type="number" id="freq_hour" name="freq_hour" value="{{ $task->freq_hour}}" class="form-control" placeholder="Updated Frequency Hour">
+                  <span class="error_message" id="freq_hour_message" style="display: none">Field is required</span>
+                </div>
+
+
+
+
+                <div class="form-group col-md-12">
+                  <label for="name">Task Description</label>
+                  <textarea id="description" name="description"  class="form-control" placeholder="Task Description">{{ $task->description}}</textarea>
+                  <span class="error_message" id="description_message" style="display: none">Field is required</span>
+                </div>    
+
+                
+
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                 <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('staff.task.index')}}'">Cancel</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+</section>
+
+@endsection
+
+@section('scripts')
+ 
+
+ <script type="text/javascript">
+
+
+function change_assigned_team(){
+var assigned_team=$("#assigned_team").val();
+var url = APP_URL+'/staff/change_assigned_team';
+$.ajax({
+      type: "POST",
+      cache: false,
+      url: url,
+      data:{
+        assigned_team: assigned_team,
+      },
+      success: function (data)
+      {    
+        var proObj = JSON.parse(data);
+        states_val='';
+        states_val +='<option value="">-- Select Assignees --</option>';
+        for (var i = 0; i < proObj.length; i++) {
+         
+          states_val +='<option value="'+proObj[i]["id"]+'">'+proObj[i]["name"]+'</option>';
+       
+          }
+          $("#assigns").html(states_val);
+         
+          
+       
+      }
+    });
+
+}
+function change_related_to(){
+var related_to=$("#related_to").val();
+var url = APP_URL+'/staff/change_related_to';
+$.ajax({
+      type: "POST",
+      cache: false,
+      url: url,
+      data:{
+        related_to: related_to,
+      },
+      success: function (data)
+      {    
+        var proObj = JSON.parse(data);
+        states_val='';
+        states_val +='<option value="">-- Select Related To Sub Category --</option>';
+        for (var i = 0; i < proObj.length; i++) {
+         
+          states_val +='<option value="'+proObj[i]["id"]+'">'+proObj[i]["name"]+'</option>';
+       
+          }
+          $("#related_to_sub").html(states_val);
+         
+          
+       
+      }
+    });
+
+}
+
+
+     function viewchecklist_details(){
+  var related_to_sub=$("#related_to_sub").val();
+  var url = APP_URL+'/staff/viewchecklist_details';
+   $.ajax({
+          type: "POST",
+          cache: false,
+          url: url,
+          data:{
+            related_to_sub: related_to_sub,
+          },
+          success: function (data)
+          {    
+            var proObj = JSON.parse(data);
+            states_val='';
+            states_val +='<option value="">-- Select Checklist --</option>';
+            for (var i = 0; i < proObj.length; i++) {
+             
+              states_val +='<option value="'+proObj[i]["id"]+'">'+proObj[i]["name"]+'</option>';
+           
+              }
+              $("#check_list_id").html(states_val);
+             $('#check_list_id').multiselect('rebuild');
+              
+           
+          }
+        });
+
+  }
+
+
+  function change_repaeat(repeat_val)
+  {
+    if(repeat_val=="")
+    {
+      $(".repeat-sec").hide();
+    }else{
+      $(".repeat-sec").show();
+    }
+  
+    if(repeat_val=="Custom")
+    {
+      $(".customtype").show();
+    }
+    else{
+      $(".customtype").hide();
+    }
+  
+
+  }
+  function validate_from()
+  {
+    var name=$("#name").val();
+    var company_id=$("#company_id").val();
+  //  var assigned_team=$("#assigned_team").val();
+    var assigns=$("#assigns").val();
+    var followers=$("#followers").val();
+    var related_to=$("#related_to").val();
+    var user_id=$("#user_id").val();
+    var start_date=$("#start_date").val();
+    var due_date=$("#due_date").val();
+    
+
+    
+    if(name=="")
+    {
+      $("#name_message").show();
+    }
+    else{
+      $("#name_message").hide();
+    }
+
+     if(company_id=="")
+    {
+      $("#company_id_message").show();
+    }
+    else{
+      $("#company_id_message").hide();
+    }
+
+    //  if(assigned_team=="")
+    // {
+    //   $("#assigned_team_message").show();
+    // }
+    // else{
+    //   $("#assigned_team_message").hide();
+    // }
+
+    if(assigns=="")
+    {
+      $("#assigns_message").show();
+    }
+    else{
+      $("#assigns_message").hide();
+    }
+
+    if(followers=="")
+    {
+      $("#followers_message").show();
+    }
+    else{
+      $("#followers_message").hide();
+    }
+    
+    if(related_to=="")
+    {
+      $("#related_to_message").show();
+    }
+    else{
+      $("#related_to_message").hide();
+    }
+
+    if(user_id=="")
+    {
+      $("#user_id_message").show();
+    }
+    else{
+      $("#user_id_message").hide();
+    }
+
+     if(start_date=="")
+    {
+      $("#start_date_message").show();
+    }
+    else{
+      $("#start_date_message").hide();
+    }
+
+     if(due_date=="")
+    {
+      $("#due_date_message").show();
+    }
+    else{
+      $("#due_date_message").hide();
+    }
+    
+    if(name!='' &&  assigns!='' && followers!='' && related_to!='' && user_id!='' && start_date!='' && due_date!=''  && company_id!='')
+    {
+     $("#frm_task").submit(); 
+    }
+
+
+  }
+
+
+  $("#unlimited_cycles").change(function() {
+if(this.checked) {
+
+  $("#cycles").attr("disabled", "disabled"); 
+}
+else{
+  $("#cycles").removeAttr("disabled"); 
+}
+});
+
+
+</script>
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+$('#start_date').datepicker({
+      dateFormat:'yy-mm-dd',
+       // dateFormat:'dd/mm/yy',
+     
+     
+        minDate: 0  
+        
+    });
+    $('#due_date').datepicker({
+        //dateFormat:'yy-mm-dd',
+        dateFormat:'yy-mm-dd',
+       
+     
+        minDate: 0  
+        
+    });
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+
+<script>
+$(document).ready(function() {
+    $('#assigns').multiselect();
+    $('#check_list_id').multiselect();
+});
+</script>
+
+
+@endsection

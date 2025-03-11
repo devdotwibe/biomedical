@@ -1,0 +1,1 @@
+<a class="btn btn-primary" href="{{ route('staff.contract-create') }}">Add Contract</a>

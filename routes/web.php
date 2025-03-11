@@ -20,7 +20,8 @@ use App\Http\Middleware\MarketspaceAuthenticate;
 use App\Http\Controllers\ContactusController;
 
 use App\AppVersionControll;
-
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\staff\StaffController;
 
 Route::get('testtaskv', 'staff\TaskController@test_v_task');
 // use App\Staff;
@@ -29,6 +30,9 @@ Route::get('testtaskv', 'staff\TaskController@test_v_task');
 //   print_r(json_encode(Staff::where("email","rakhil@bechealthcare.com")->get()));
 // });
 // Auth::routes();
+
+Route::get('login', [LoginController::class, 'index'])->name('login');
+
 Route::get('/', [PageController::class, 'home']);
 Route::get('/about', [ContactusController::class, 'about'])->name('contactus');
 Route::post('/contact-us', [ContactusController::class, 'store'])->name('contactus.store');
@@ -53,7 +57,7 @@ Route::get('/fetch_data', [PageController::class, 'fetch_data'])->name('fetch_da
 Route::post('search_skills', [PageController::class, 'search_skills'])->name('search_skills');
 
 
-Route::get('{any}', [PageController::class, 'index']);
+// Route::get('{any}', [PageController::class, 'index']);
 
 
 Route::get(
@@ -245,9 +249,13 @@ Route::post('service_responce/deleteAll', 'staff\Service_responceController@dele
 Route::resource('service_visit', 'staff\Service_visitController');
 Route::post('service_visit/deleteAll', 'staff\Service_visitController@deleteAll');
 Route::resource('create_quote', 'admin\QuoteCreateController');
+
 /***********************************Staff Login Start****************************************************/
-Route::get('staff', 'staff\StaffController@index'); //->name('contact.create');
+// Route::get('staff', 'staff\StaffController@index'); //->name('contact.create');
+Route::get('staff', [StaffController::class, 'index']);
+
 Route::post('stafflogin', 'staff\StaffController@stafflogin');
+
 Route::get('staff/logout', 'staff\StaffController@logout');
 /***********************************Staff Login End****************************************************/
 Route::get('elfinder/ckeditor', '\Barryvdh\Elfinder\ElfinderController@showCKeditor4');

@@ -1,0 +1,324 @@
+<?php
+
+namespace App\Http\Controllers\admin;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\State;
+use App\District;
+use App\Product_type;
+use App\Http\Controllers\Controller;
+use Validator;
+use App\Asset;
+use App\User;
+use App\Assetdepartment;
+use App\Importasset\AssetsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
+class AssetController extends Controller
+{
+    /**
+     * Display asset index page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+       $assets = Asset::all();
+       return view('admin.asset.index', compact('assets'));
+    }
+    /**
+     * Show asset registration.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show()
+    {
+       $state        = State::all();
+       $district     = District::all();
+       $brand = DB::table('brand')
+        ->orderBy('name', 'asc')
+        ->select('name','id')
+        ->get();
+        $manageProducts = DB::table('products')->select('name','id')->get();
+        $competitionProduct = DB::table('competition_product')->select('name','id')->get();
+        $products = $manageProducts->merge($competitionProduct);
+        $product_type = Product_type::all();
+        $department = Assetdepartment::all();
+       return view('admin.asset.create', array('state' => $state, 'district' => $district, 'brand' => $brand, 'product_type' => $product_type, 'department' => $department,'products' => $products ));
+    }
+    /**
+     * Store asset registration data into table.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+		$validation = Validator::make($request->all(), [
+			'installed_at'		=> 'required',
+			'state'				=> 'required',
+			'district'			=> 'required',
+			'account_name'		=> 'required',
+			'asset_description'	=> 'required',
+			'manufacturer'		=> 'required',
+			'product_name'		=> 'required',
+			'department'        => 'required',
+			'equipment_status'	=> 'required',	
+			'installed_on'		=> 'required',
+	    ]);
+
+	    if ($validation->fails()) {
+		    return redirect()->back()->withErrors($validation->errors());
+		}
+		$asset 						= new Asset;
+		$asset->asset_no		  	= $request->asset_no;
+		$asset->serial_no			= $request->serial_no;
+		$asset->system_id			= $request->system_id;
+		$asset->company				= $request->company;
+		$asset->product_no			= $request->product_no;
+		$asset->product_descrption	= $request->product_descrption;
+		$asset->assign_segment 		= $request->assign_segment;
+		$asset->modality 			= $request->modality;
+		$asset->installed_at		= $request->installed_at;
+	    $asset->state               = $request->state;
+	    $asset->district            = $request->district;
+	    $asset->account_name        = $request->account_name;
+	    $asset->asset_description   = $request->asset_description;
+	    $asset->manufacturer        = $request->manufacturer;
+	    $asset->model         		= $request->product_name;
+	    $asset->department          = $request->department;
+	    $asset->equipment_status    = $request->equipment_status;
+	    $asset->installed_on        = date('Y:m:d',  strtotime($request->installed_on));
+		$asset->save();
+
+		$request->session()->flash('success', 'Oppertunity added Successfully');
+
+		return redirect('admin/asset');
+		
+    }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+    */
+
+    public function edit($id)
+    {
+    	$user 		  = User::all();
+        $state        = State::all();
+        $district     = District::all();
+    	$asset 		  = Asset::find($id);
+    	$brand = DB::table('brand')
+        ->orderBy('name', 'asc')
+        ->select('name','id')
+        ->get();
+        $department = Assetdepartment::all();
+        $product_type = Product_type::all();
+        $manageProducts = DB::table('products')->select('name','id')->get();
+        $competitionProduct = DB::table('competition_product')->select('name','id')->get();
+        $products = $manageProducts->merge($competitionProduct);
+
+        return view('admin.asset.edit',array('customer'=>$user,'asset'=>$asset,'id'=>$id,'state'=>$state,'district'=>$district, 'brand' => $brand, 'product_type' => $product_type, 'department' => $department, 'products' => $products));
+    }
+    /**
+     * Update the form specified resource.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+    */
+
+    public function update(Request $request,$id)
+    {
+    	$validation = Validator::make($request->all(), [
+			'installed_at'		=> 'required',
+			'account_name'		=> 'required',
+			'asset_description'	=> 'required',
+			'manufacturer'		=> 'required',
+			'product_name'		=> 'required',
+			'department'        => 'required',
+			'equipment_status'	=> 'required',	
+			'installed_on'		=> 'required',
+	    ]);
+
+	    if ($validation->fails()) {
+		    return redirect()->back()->withErrors($validation->errors());
+		}
+		$asset 						= Asset::find($id);
+		$asset->asset_no		  	= $request->asset_no;
+		$asset->serial_no			= $request->serial_no;
+		$asset->system_id			= $request->system_id;
+		$asset->company				= $request->company;
+		$asset->product_no			= $request->product_no;
+		$asset->product_descrption	= $request->product_descrption;
+		$asset->assign_segment 		= $request->assign_segment;
+		$asset->modality 			= $request->modality;
+		$asset->installed_at		= $request->installed_at;
+	    $asset->account_name        = $request->account_name;
+	    $asset->asset_description   = $request->asset_description;
+	    $asset->manufacturer        = $request->manufacturer;
+	    $asset->model         		= $request->product_name;
+	    $asset->department          = $request->department;
+	    $asset->equipment_status    = $request->equipment_status;
+	    $asset->installed_on        = date('Y:m:d',  strtotime($request->installed_on));
+		$asset->save();
+
+		$request->session()->flash('success', 'Asset added Successfully');
+
+		return redirect('admin/asset');
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $asset = Asset::find($id);
+        $asset->delete(); 
+        
+        return response()->json(['success'=>"Data has been deleted successfully.",'tr'=>'tr_'.$asset->id]);
+    }
+    /**
+     * Remove all rows selected resource from storage.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAll(Request $request)
+    {
+        $ids = $request->ids;        
+        DB::table("assets")->whereIn('id',$ids)->delete();
+        return redirect()->route('admin.asset')->with('success', 'Data has been deleted successfully');
+    }
+    /**
+     * Show asset department.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function assetDepartmentShow(){
+
+        $assetDepartment = Assetdepartment::all();
+        return view('admin.assetdepartment.index',compact('assetDepartment'));
+    }
+    /**
+     * Show asset department registration.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function assetDepartmentCreate(){
+
+        return view('admin.assetdepartment.create');
+    }
+    /**
+     * Store asset Department data into table.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function assetDepartmentStore(Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'name'      => 'required',
+        ]);
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation->errors());
+        }
+        $assetDepartment            = new Assetdepartment;
+        $assetDepartment->name  = $request->name;
+        $assetDepartment->save();
+
+        $request->session()->flash('success', 'Asset Department added Successfully');
+
+        return redirect('admin/assetDepartment');
+    }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+    */
+
+    public function assetDepartmentEdit($id)
+    {
+        $department = Assetdepartment::find($id);
+
+        return view('admin.assetdepartment.edit',array('department' => $department));
+    }
+    /**
+     * Update the form specified resource.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+    */
+
+    public function assetDepartmentUpdate(Request $request,$id)
+    {
+        $validation = Validator::make($request->all(), [
+            'name'      => 'required',
+        ]);
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation->errors());
+        }
+        $assetDepartment            = Assetdepartment::find($id);
+        $assetDepartment->name      = $request->name;
+        $assetDepartment->save();
+
+        $request->session()->flash('success', 'Asset Department added Successfully');
+
+        return redirect('admin/assetDepartment');
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Assetdepartment  $assetdepartment
+     * @return \Illuminate\Http\Response
+     */
+    public function assetDepartmentDestroy($id)
+    {
+        $assetdepartment = Assetdepartment::find($id);
+        $assetdepartment->delete(); 
+        
+        return response()->json(['success'=>"Data has been deleted successfully.",'tr'=>'tr_'.$assetdepartment->id]);
+    }
+    /**
+     * Remove all rows selected resource from storage.
+     *
+     * @param  \App\Assetdepartment  $assetdepartment
+     * @return \Illuminate\Http\Response
+     */
+    public function assetDepartmentDeleteAll(Request $request)
+    {
+        $ids = $request->ids;        
+        DB::table("asset_department")->whereIn('id',$ids)->delete();
+        return redirect()->route('admin.assetdepartment.index')->with('success', 'Data has been deleted successfully');
+    }
+      /**
+     * show asset import page.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function importAsset()
+    {
+        return view('admin.asset.importAssetView');
+    }
+
+    /**
+     * store imported data page.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function importAssetFile()
+    {
+        Excel::import(new AssetsImport,request()->file('file'));
+        return back();
+    }
+
+
+}

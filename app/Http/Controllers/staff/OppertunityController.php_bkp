@@ -1,0 +1,858 @@
+<?php
+
+namespace App\Http\Controllers\staff;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+use App\Oppertunity;
+use App\User;
+use App\Product;
+use App\Staff;
+use App\Oppertunity_product;
+use App\Contact_person;
+use App\Prospectus;
+use App\Chatter;
+use App\Quotehistory;
+use App\State;
+use App\District;
+use App\Country;
+use App\Customercategory;
+use App\Taluk;
+use App\Hosdeparment;
+use App\Hosdesignation;
+use App\Asset;
+
+use PDF;
+use Log;
+use Validator;
+use DB;
+
+class OppertunityController extends Controller
+{
+    
+
+    public function index()
+    {
+      $staff_id       = session('STAFF_ID');
+        
+        $user_permission =  DB::select("SELECT * FROM `user_permission` WHERE FIND_IN_SET('Opportunity',section) AND staff_id='".$staff_id."'" );
+        if(count($user_permission)>0)
+        {
+            $oppertunity 		= Oppertunity::orderBy('updated_at','desc')->get();
+      
+        }
+        else{
+            $oppertunity 		= Oppertunity::where('created_by_id',$staff_id)->orwhere('staff_id',$staff_id)->orderBy('id','desc')->get();
+       
+        }
+      return view('staff.oppertunity.index',array('oppertunity'=>$oppertunity,'user_permission'=>count($user_permission)));
+    }
+
+    public function create()
+    {
+    	$user 				= User::all();
+    	$product 			= Product::all();
+    	$staff 				= Staff::all();
+      $state        = State::all();
+      $district     = District::all();
+
+      return view('staff.oppertunity.create',array('customer'=>$user,'product'=>$product,'staff'=>$staff,'state'=>$state,'district'=>$district));
+
+    }
+
+    public function insert(Request $request)
+    {
+    	$validation = Validator::make($request->all(), [
+			'op_name' 		=> 'required',
+			'account_name' 	=> 'required',
+			//'engineer_name' => 'required',
+			'deal_stage' 	=> 'required',
+			'order_date'	=> 'required',
+			'sales_date'	=> 'required',
+			'order_forcast' => 'required',
+			//'amount'        => 'required|numeric',
+      //'support'       => 'required',
+      'type'          => 'required',
+      'op_ref'        => 'required',
+      'state'          => 'required',
+      'district'       => 'required',
+		]);
+
+		$validation->after(function($validation) use ($request)
+		{
+			if($request->order_date > $request->sales_date)
+			{
+				$validation->errors()->add('order_date', 'Es.order date should be less than es.sales date');
+			}
+		});
+		
+		if ($validation->fails()) {
+		   // return $validation->errors()->all();
+		    return redirect()->back()->withErrors($validation->errors());
+		}
+
+    $staff_id       = session('STAFF_ID');
+
+		$oppertunity 						= new Oppertunity;
+		$oppertunity->oppertunity_name		= $request->op_name;
+		$oppertunity->user_id				= $request->account_name;
+		$oppertunity->staff_id				= $staff_id;
+		$oppertunity->amount				= $request->amount;
+		$oppertunity->deal_stage			= $request->deal_stage;
+		$oppertunity->es_order_date			= date('Y:m:d',  strtotime($request->order_date));;
+		$oppertunity->es_sales_date			= date('Y:m:d',  strtotime($request->sales_date));
+		$oppertunity->dt 					= date('Y-m-d');
+		$oppertunity->description 			= $request->description;
+		$oppertunity->order_forcast_category= $request->order_forcast;
+    $oppertunity->support               = $request->support;
+    $oppertunity->type                  = $request->type;
+    $oppertunity->op_reference_no       = $request->op_ref;
+    $oppertunity->state                 = $request->state;
+    $oppertunity->district              = $request->district;
+    $oppertunity->created_by_id         = $staff_id;
+    $oppertunity->created_by_name       = Staff::where('id',$staff_id)->first()->name;
+		$oppertunity->save();
+
+		$request->session()->flash('success', 'Oppertunity added Successfully');
+
+		return redirect('staff/list_oppertunity');
+
+
+    }
+
+    public function edit($id)
+    {
+    	$user 				= User::all();
+    	$product 			= Product::all();
+    	$staff 				= Staff::all();
+    	$oppertunity 	= Oppertunity::find($id);
+      $state        = State::all();
+      $district     = District::all();
+    	$pdt 			    = Oppertunity_product::where('oppertunity_id',$id)->get();
+
+        return view('staff.oppertunity.edit',array('customer'=>$user,'product'=>$product,'staff'=>$staff,'opp'=>$oppertunity,'op_pdt'=>$pdt,'id'=>$id,'state'=>$state,'district'=>$district));
+    }
+
+    public function update(Request $request,$id)
+    {
+
+		$validation = Validator::make($request->all(), [
+			'op_name' 		=> 'required',
+			'account_name' 	=> 'required',
+			//'engineer_name' => 'required',
+			'deal_stage' 	=> 'required',
+			'order_date'	=> 'required',
+			'sales_date'	=> 'required',
+			'order_forcast' => 'required',
+      //'support'       => 'required',
+			//'amount'        => 'required|numeric',
+      'type'          => 'required',
+      'op_ref'        => 'required',
+     // 'state'          => 'required',
+      //'district'       => 'required',
+		]);
+
+		$validation->after(function($validation) use ($request)
+		{
+			if($request->order_date > $request->sales_date)
+			{
+				$validation->errors()->add('order_date', 'Es.order date should be less than es.sales date');
+			}
+		});
+		
+		if ($validation->fails()) {
+		   // return $validation->errors()->all();
+		    return redirect()->back()->withErrors($validation->errors());
+		}
+
+    	$oppertunity 						            = Oppertunity::find($id);
+    	$oppertunity->oppertunity_name		  = $request->op_name;
+  		$oppertunity->user_id				        = $request->account_name;
+  		//$oppertunity->staff_id				      = $request->engineer_name;
+  		$oppertunity->amount				        = $request->amount;
+  		$oppertunity->deal_stage			      = $request->deal_stage;
+  		$oppertunity->es_order_date			    = date('Y:m:d',  strtotime($request->order_date));;
+  		$oppertunity->es_sales_date			    = date('Y:m:d',  strtotime($request->sales_date));
+  		$oppertunity->dt 					          = date('Y-m-d');
+  		$oppertunity->description 			    = $request->description;
+  		$oppertunity->order_forcast_category= $request->order_forcast;
+      $oppertunity->support               = $request->support;
+      $oppertunity->type                  = $request->type;
+      $oppertunity->op_reference_no       = $request->op_ref;
+     // $oppertunity->state                 = $request->state;
+     // $oppertunity->district              = $request->district;
+  		$oppertunity->save();
+
+  		$request->session()->flash('success', 'Oppertunity updated Successfully');
+
+  		return redirect('staff/list_oppertunity');
+
+    }
+
+    public function delete(Request $request)
+    {
+    	$ids								= $request->id;
+    	foreach ($ids as $key => $id) 
+    	{
+    		Oppertunity::destroy($id);
+    	}
+
+    	$request->session()->flash('success', 'Oppertunity deleted Successfully');
+
+    	return redirect('staff/list_oppertunity');
+    }
+
+    public function oppertunity_product_detail(Request $request)
+    {
+    	$data1								= json_decode($request->input('data'));
+
+    	$op_id 								= $data1[id];
+
+
+    }
+
+    public function list_products($id)
+    {
+    	$list_products						= Oppertunity_product::where('oppertunity_id',$id)->get();
+    	$op_name                  = Oppertunity::where('id',$id)->first();
+      $qh                       = Quotehistory::where('oppertunity_id',$id)->orderBy('id','desc')->get();
+
+    	return view('staff.oppertunity.list_products',array('products'=>$list_products,'id'=>$id,'op_name'=>$op_name,'qhistory'=>$qh));
+    }
+
+    public function add_product($id)
+    {
+    	$asset                = 0;
+      $product              = Product::all();
+      $op_name              = Oppertunity::where('id',$id)->first()->oppertunity_name;
+
+      if(Oppertunity::where('id',$id)->first()->type != 1){
+        $product = Asset::select('id','product_name')->get();
+        $asset = 1;
+      }
+      return view('admin.oppertunity.add_product',array('products'=>$product,'op_name'=>$op_name,'asset'=>$asset));
+    }
+
+    public function insert_product(Request $request,$id)
+    {
+    	if(sizeof($request->product_id)>0)
+    	{
+    		$quantity							= $request->quantity;
+    		$amount								= $request->amount;
+        $sale_amount          = $request->sale_amount;
+        $company_id           = $request->company;
+        $optional             = $request->optional;
+        $main_product_id      = $request->main_pdt;
+    		foreach($request->product_id as $key=>$pdt)
+    		{
+    			$oppertunity_pdt 				      = new Oppertunity_product;
+    			$oppertunity_pdt->product_id 	= $pdt;
+    			$oppertunity_pdt->quantity		= $quantity[$key];
+    			$oppertunity_pdt->amount		  = $amount[$key];
+          $oppertunity_pdt->sale_amount   = $sale_amount[$key];
+          $oppertunity_pdt->company_id    = $company_id[$key];
+    			$oppertunity_pdt->optional      = $optional[$key];
+          $oppertunity_pdt->oppertunity_id= $id;
+          if($optional[$key]!=0)
+          {
+            $oppertunity_pdt->main_product_id= $main_product_id[$key];
+          }
+    			$oppertunity_pdt->save();
+    		}
+
+        $tot_amt                                = DB::table("oppertunity_products")
+                                                ->SelectRaw('sum(amount) as tot_amt')
+                                                ->where([['oppertunity_id',$id],['optional',0]])
+                                                ->get();
+
+            $oppertunity                        = Oppertunity::where('id',$id)->first();
+            $oppertunity->quote_status          = 0;
+            $oppertunity->quote_send_status     = 'request';
+            $oppertunity->amount                = ($tot_amt[0]->tot_amt!='')?$tot_amt[0]->tot_amt:0;
+            $oppertunity->save();
+    	}
+    	
+
+    	return redirect('staff/list_oppertunity_products/'.$id);
+    }
+
+    public function delete_product(Request $request)
+    {
+    	$ids								= $request->id;
+    	foreach ($ids as $key => $id) 
+    	{
+        $pdt       = Oppertunity_product::find($id);
+
+        $opt_pdt   = Oppertunity_product::where([['main_product_id',$pdt->product_id],['oppertunity_id',$pdt->oppertunity_id],['optional',1]])->get();
+        if(sizeof($opt_pdt)>0)
+        {
+          foreach($opt_pdt as $opdt)
+          {
+            Oppertunity_product::destroy($opdt->id);
+          }
+        } 
+
+    		Oppertunity_product::destroy($id);
+    	}
+
+        $tot_amt                            = DB::table("oppertunity_products")
+                                                  ->SelectRaw('sum(amount) as tot_amt')
+                                                  ->where([['oppertunity_id',$id],['optional',0]])
+                                                  ->get();
+
+        $op_id                              = $request->op_id;
+        $oppertunity                        = Oppertunity::where('id',$op_id)->first();
+        $oppertunity->quote_status          = 0;
+        $oppertunity->quote_send_status     = 'request';
+        $oppertunity->amount                = ($tot_amt[0]->tot_amt!='')?$tot_amt[0]->tot_amt:0;
+        $oppertunity->save();
+
+    	$request->session()->flash('success', 'Product deleted Successfully');
+
+    	//return redirect('admin/list_oppertunity_products/'.$request->op_id);
+    }
+
+    public function generate_quote(Request $request)
+    {
+        $ids                                = $request->id;
+        $op_id                              = $request->op_id;
+
+        $company_ar                         = array();
+
+        $pdt           = DB::table("oppertunity_products")->where('oppertunity_id',$op_id)->get();
+
+         if(sizeof($pdt)>0)
+         {
+            foreach($pdt as $pt)
+            {
+              $company_ar[]  = $pt->company_id;
+            }
+         }
+
+      //  
+        if(count($company_ar)>0)
+        {
+
+          $cmp_unq        = array_unique($company_ar);
+          foreach($cmp_unq as $cmp)
+          {
+              $prod       = DB::table("oppertunity_products")->where([['company_id', $cmp],['oppertunity_id',$op_id]])->whereIn('product_id',$ids)->get();
+              $pid        = array();
+              if(sizeof($prod)>0)
+              {
+                  foreach ($prod as $pd) 
+                  {
+                      $pid[]         = $pd->product_id;
+                  }
+
+                  $rand                               = 'qt'.mt_rand(000000,999999);
+                  $pd_id                              = implode(',',$pid);
+                  $qh                                 = new Quotehistory;
+                  $qh->oppertunity_id                 = $op_id;
+                  $qh->product_id                     = $pd_id;
+                  $qh->quote_reference_no             = $rand;
+                  $qh->save();
+              }
+          }
+
+          $op                                 = Oppertunity::find($op_id);
+          $op->quote_status                   = 1;
+          $op->quote_products                 = implode(',',$request->id);
+          $op->quotehistory_id                = $qh->id;
+          $op->save();
+        }
+
+        $request->session()->flash('success', 'Quote Generated Successfully');
+
+        //return redirect('admin/list_oppertunity_products/'.$op_id);
+    }
+
+    public function edit_product($pd_id,$op_id)
+    {
+    	$product 							= Product::all();
+    	$op_name 							= Oppertunity::where('id',$op_id)->first()->oppertunity_name;
+    	$pdt 								= Oppertunity_product::find($pd_id);
+
+    	return view('staff.oppertunity.edit_product',array('products'=>$product,'op_name'=>$op_name,'pdt'=>$pdt));
+    }
+
+     public function update_product(Request $request,$pd_id,$op_id)
+     {
+         $oppertunity_pdt     				= Oppertunity_product::find($pd_id);
+         $oppertunity_pdt->product_id 		= $request->product_id;
+    	   $oppertunity_pdt->quantity			  = $request->quantity;
+    	   $oppertunity_pdt->sale_amount     = $request->amount;
+         $oppertunity_pdt->amount          = $request->quantity * $request->amount;
+    	   $oppertunity_pdt->save();
+
+         $tot_amt                            = DB::table("oppertunity_products")
+                                                  ->SelectRaw('sum(amount) as tot_amt')
+                                                  ->where([['oppertunity_id',$op_id],['optional',0]])
+                                                  ->get();
+
+        $oppertunity                        = Oppertunity::where('id',$op_id)->first();
+        $oppertunity->quote_status          = 0;
+        $oppertunity->quote_send_status     = 'request';
+        $oppertunity->amount                = ($tot_amt[0]->tot_amt!='')?$tot_amt[0]->tot_amt:0;
+        $oppertunity->save();
+
+    	   $request->session()->flash('success', 'Product updated Successfully');
+
+    	   return redirect('staff/list_oppertunity_products/'.$op_id);
+     }
+
+     public function prospectus($id)
+     {
+     	$opp_user 							= Oppertunity::where('id',$id)->first()->user_id;
+     	$contact_person 				= Contact_person::where('user_id',$opp_user)->get();
+     	$prospectus 						= Prospectus::where('oppertunity_id',$id)->get();
+
+     	
+     	return view('staff.oppertunity.prospectus',array('prospectus'=>$prospectus,'contact'=>$contact_person,'id'=>$id));
+
+     }
+
+     public function delete_prospectus()
+     {
+     	$ids								= $request->id;
+    	foreach ($ids as $key => $id) 
+    	{
+    		Prospectus::destroy($id);
+    	}
+
+    	$request->session()->flash('success', 'Prospectus deleted Successfully');
+
+    	return redirect('staff/prospectus/'.$request->op_id);
+     }
+
+     public function update_prospectus($id)
+     {
+     	$opp_user 							= Oppertunity::where('id',$id)->first()->user_id;
+     	$contact_person 					= Contact_person::where('user_id',$opp_user)->get();
+     	$oppertunity 						= Oppertunity::find($id);
+     	$user 								= User::find($opp_user);
+
+     	return view('staff.oppertunity.update_prospectus',array('oppertunity'=>$oppertunity,'contact'=>$contact_person,'id'=>$id,'user'=>$user));
+     }
+
+     public function store_prospectus(Request $request,$id)
+     {
+       	$request->validate([
+  			'company_name' 		=> 'required',
+  			'contact' 			=> 'required|array',
+  			'summary' 			=> 'required',
+  			'next_steps' 		=> 'required',
+  			'next_step_date'	=> 'required',
+  			'deal_stage'		=> 'required',
+  			'order_forcast' 	=> 'required',
+  		]);
+
+  		$prospectus 						              = new Prospectus;
+  		$prospectus->oppertunity_id 		      = $id;
+  		$prospectus->contact_person_id 		    = implode(',',$request->contact);
+  		$prospectus->summary				          = $request->summary;
+  		$prospectus->next_step 				        = $request->next_steps;
+  		$prospectus->next_step_date 		      = date('Y:m:d',  strtotime($request->next_step_date));
+  		$prospectus->deal_stage 			        = $request->deal_stage;
+  		$prospectus->order_forecast_category  = $request->order_forcast;
+  		$prospectus->dt 					            = date('Y-m-d');
+      if(isset($request->cancel_stat))
+          $prospectus->deal_cancel_status   = $request->cancel_stat;
+  		$prospectus->save();
+
+		  $request->session()->flash('success', 'Prospectus updated Successfully');
+
+    	return redirect('staff/prospectus/'.$id);
+     }
+
+     public function chatterdetail(Request $request)
+     {
+        //$data1              =   json_decode($request->input('datas'));
+        
+        $data              =   array();
+        $data['id']        =   $request->input('data');
+        $data['uid']       =   $request->input('user_id');
+       // $data['data']       =   $data2;
+        //dd($data2);
+        $id                = $data['id'] ;
+        $data['chatter']    =   Chatter::where('oppertunity_id',$data['id'])->get();
+        $data['contact']    =   Contact_person::where('user_id',$data['uid'])->get();
+        $data['opp']        =   Oppertunity::find($id);
+        return view('staff.oppertunity.chatter_detail',$data);
+     }
+
+     public function chattersave(Request $request)
+     {
+        $oppertunity                  = Oppertunity::find($request->op_id);
+        $current1                     = $oppertunity->image;
+
+        if(isset($request->image_name1)) {
+            $imageName1 = time().$request->image_name1->getClientOriginalName();
+            $imageName1 =  preg_replace("/[^a-z0-9\_\-\.]/i", '', $imageName1);
+            $path =  storage_path();
+            $img_path = $request->image_name1->storeAs('public/chatter', $imageName1);
+            $path = $path.'/app/'.$img_path;
+            chmod($path, 0777);
+          
+
+            $path =  storage_path().'/app/public/chatter/';
+           
+            \File::delete($path.$current1);
+         
+         } else {
+            $imageName1 = $current1;
+         }
+
+        $chatter                         = new Chatter;
+        $chatter->oppertunity_id         = $request->op_id;
+        if(isset($request->contact))
+         $chatter->contact_person_id      = implode(',',$request->contact);
+        $chatter->comment                = $request->comment;
+        $chatter->deal_stage            = $request->deal_stage;
+        $chatter->es_order_date         = date('Y:m:d',  strtotime($request->order_date));;
+        $chatter->es_sales_date         = date('Y:m:d',  strtotime($request->sales_date));
+        $chatter->order_forcast_category= $request->order_forcast;
+        $chatter->support               = $request->support;
+        $chatter->image                 = isset($imageName1) ? $imageName1: '';
+        if(isset($request->email_status))
+          $chatter->email_status        = 'Yes';
+        if(isset($request->call_status))
+          $chatter->call_status        = 'Yes';
+        if(isset($request->visit_status))
+          $chatter->visit_status        = 'Yes';
+        $chatter->save();
+
+        $oppertunity->deal_stage      = $request->deal_stage;
+        $oppertunity->es_order_date     = date('Y:m:d',  strtotime($request->order_date));
+        $oppertunity->es_sales_date     = date('Y:m:d',  strtotime($request->sales_date));
+        $oppertunity->order_forcast_category= $request->order_forcast;
+        $oppertunity->support               = $request->support;
+        $oppertunity->image                 = isset($imageName1) ? $imageName1: '';
+        $oppertunity->save();
+
+        $request->session()->flash('success', 'Chatter detail added Successfully');
+
+        return redirect('staff/list_oppertunity');
+     }
+
+     public function quotepdf(Request $request,$id) {
+      //  echo $request->id;exit;
+        $quote        = Quotehistory::where('id', $id)->first();
+        //$product_id   = $quote->product_cart_id;
+        $pid          = explode(",",$quote->product_id);
+        $op_id        = $quote->oppertunity_id;
+
+        //print_r($pid);die;
+        $products_det = Product::whereIn('id', $pid)->orderBy('id', 'asc')->get();
+       // $company_id   = $products_det[0]->company_id;
+        // print_r($products_det);exit;
+         $filename    ='quote'.time().'.pdf';
+         $path       =$_SERVER['DOCUMENT_ROOT'].'/beczone/pdf/'.$filename;
+          
+          $data=10;
+ 
+          $html ='<table width="520" cellpadding="0" cellspacing="0" border="0"  align="center">
+          <tr>
+              <td>
+                  <table width="520" cellpadding="0" cellspacing="0" border="0" align="center">
+                      <tr>
+                          <td>
+                              <table width="520" cellpadding="0" cellspacing="0" border="0" bgcolor="#91d8f7">
+                                  <tr>
+                                      <td>
+                                          <img src="'.asset("images/head.jpg").'" width="100%" height="231" alt="">
+                                      </td>
+                                      
+                                  </tr>
+                              </table>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#72c7f0">
+                                  <tr>
+                                      <td align="center" height="30px" width="58.5%">
+                                          <h3 style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:18px; font-weight:normal;margin:0; line-height:30px;">Quote #</h3> 
+                                      </td>
+                                      <td align="left" height="30px" width="41.5%" >
+                                          <h3 style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:18px;font-weight:normal; margin:0;line-height:30px;">Dated</h3>    
+                                      </td>
+                                      
+                                  </tr>
+                              </table>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
+                                  <tr>
+                                      <td align="left" width="58.5%"  style="padding:30px 15px;">
+                                              
+                                      </td>
+                                      <td align="left"  width="41.5%"  style="padding:30px 0;">
+                                          <p3 style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:16px;font-weight:normal; margin:0;line-height:22px;">To,<br/>
+      Dr.Rajendran, HOD<br/>
+      Department of Anaesthesiology<br/>
+      Medical College, Kottayam</hp>    
+                                      </td>
+                                      
+                                  </tr>
+                              </table>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#d2d3d5">
+                                  <tr>
+                                      <td width="5%" height="40"></td>
+                                      <td align="left" width="95%" height="40" >
+                                          <h3 style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:19px;font-weight:bold; margin:0;line-height:40px;">Price Quotation of Medical Equipment, Accessories, and Parts</h3>   
+                                      </td>
+                                  </tr>
+                              </table>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td height="50">
+                          </td>
+                      </tr>';
+                     $i=1;
+                      foreach($products_det as $values)
+                      {
+                   //  $products_det =  DB::select("select * from products where `id`='".$values."' order by id desc");
+                        $op_pdt      = Oppertunity_product::where([['oppertunity_id',$op_id],['product_id',$values->id]])->first();
+                    
+                     $html.='  <tr>
+                          <td>
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#fff" style="border-bottom:1px solid #0098da;">
+                                  <tr>
+                                      <td width="5%" valign="top" bgcolor="#e6e7e8" style="padding:30px 2% 10px 2%; text-align:center;">
+                                           <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">'. $i.'</p>
+                                      </td>
+                                <td width="25%" valign="top" bgcolor="#e8f6fd" style="padding:30px 2% 10px 2%;">
+                                     <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">Product Name:</p>
+                                          <h3 style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:17px;font-weight:bold; margin:0;line-height:normal;">'.$values->name.'</h3><br/>
+                                          <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">Workstation<br/>
+                                          Manufature:</p>   
+                                          <h3 style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:17px;font-weight:bold; margin:0;line-height:normal;">'.$values->brand_name.'</h3><br/>
+                                          <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">Product Category:</p>
+                                          <h3 style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:17px;font-weight:bold; margin:0;line-height:normal;">'.$values->category_name.'</h3>
+                                      </td>
+                                    <td width="24%" valign="bottom" bgcolor="#ffffff" style="padding:10px 2% 10px 2%;">
+                                      <P style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:22px;">'.$values->description.'</P>
+                                      </td>
+                                <td width="19%" valign="middle" bgcolor="#ffffff" style="padding:10px 2%; text-align:center">';
+                                if($values->image_name!='')
+                                {
+                                 $html.='  <img  src="'.asset("storage/app/public/products/thumbnail/".$values->image_name).'" width="128" height="199" alt="">  '; 
+                                }
+                                else{
+                                 $html.='  <img src="'.asset("images/no-image.jpg").'" width="128" height="199" alt="">  '; 
+                                }
+                               
+                                          $html.=' </td>
+                                <td width="27%" valign="top" bgcolor="#ffffff" style="padding:0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" >
+                                            <tr bgcolor="#e6e7e8">
+                                                 <td bgcolor="#e6e7e8" width="11%"></td>
+                                        <td width="50%" valign="middle" bgcolor="#e6e7e8" style="padding:10px 2% 10px 2%; text-align:left;">
+                                             <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">Unit</p>
+                                                  </td>
+                                              <td width="39%" valign="middle" bgcolor="#e6e7e8" style="padding:10px 2% 10px 2%; text-align:left;">
+                                              <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">:'.$values->unit.' No</p></td>
+                          </tr>
+                                            <tr bgcolor="#fff">
+                                                 <td bgcolor="#fff" width="11%"></td>
+      <td valign="middle" bgcolor="#fff" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                      <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">Box Quality</p>
+                                              </td>
+                                                  <td valign="middle" bgcolor="#fff" style="padding:10px 2% 10px 2%; text-align:left;">
+                                              <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">:'.$values->quantity.' No</p></td>
+                                              </tr>
+                                              <tr>
+                                                  <td bgcolor="#e6e7e8" width="11%"></td>
+                    <td valign="middle" bgcolor="#e6e7e8" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                      <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">Unit Price</p>
+                                                  </td>
+                                                  <td valign="middle" bgcolor="#e6e7e8" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                  <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">:'.$op_pdt->sale_amount.'</p></td>
+                                              </tr>
+                                              <tr>
+                                                  <td bgcolor="#ffffff" width="11%"></td>
+                    <td valign="middle" bgcolor="#ffffff" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                      <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">Tax Percenage </p>
+                                                  </td>
+                                                  <td valign="middle" bgcolor="#ffffff" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                  <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">:'.$values->tax_percentage.'</p></td>
+                                              </tr>
+                                              <tr>
+                                                  <td bgcolor="#e6e7e8" width="11%"></td>
+                    <td valign="middle" bgcolor="#e6e7e8" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                      <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">HSN Code </p>
+                                                  </td>
+                                                  <td valign="middle" bgcolor="#e6e7e8" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                  <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">:'.$values->hsn_code.'</p></td>
+                                              </tr>
+                                              <tr>
+                                                  <td bgcolor="#ffffff" width="11%"></td>
+                    <td valign="middle" bgcolor="#ffffff" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                      <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">Warranty</p>
+                                                  </td>
+                                                  <td valign="middle" bgcolor="#ffffff" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                  <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">:'.$values->warrenty.'</p></td>
+                                              </tr>
+                                              <tr>
+                                                   <td bgcolor="#e6e7e8" width="11%"></td>
+                    <td colspan="2" valign="middle" bgcolor="#e6e7e8" style="padding:10px 2% 10px 2%; text-align:left;">
+                                                      <p style="color:#000; font-family:Arial, Helvetica, sans-serif; font-size:15px;font-weight:normal; margin:0;line-height:normal;">'.$values->payment.'</p>
+                                                  </td>
+                                               </tr>
+                                        </table>    
+                                      </td>
+                                      
+                                </tr>
+                              </table>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td height="80">
+                          </td>
+                      </tr>';
+                        $opt_pdt      = Oppertunity_product::where([['oppertunity_id',$op_id],['main_product_id',$values->id],['optional',1]])->get();
+                        if(sizeof($opt_pdt))
+                        {
+                          $j = 1;
+                          $html.='<tr>
+                                <td><h4>Optional Products</h4></td>
+                              </tr>
+                              <tr><td>
+                              <table style="width:80%" border="1">
+                          <thead>
+                                <tr>
+                                 <th>No</th>
+                                 <th>Product Name</th>
+                                 <th>Sale Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>';
+                          foreach($opt_pdt as $opd)
+                          {
+                            $pname = Product::where('id',$opd->product_id)->first()->name;
+                            $html.='<tr>
+                                       <td>'. $j++.'</td>
+                                       <td>'. $pname.'</td>
+                                       <td>'. $opd->sale_amount.'</td>
+                                </tr>
+                              ';
+                          }
+                          $html.= '</tbody>
+                              </table>
+                              </td></tr>
+                              ';
+                        }
+                         $i++;
+                     }
+ 
+                      $html.='<tr>
+                          <td height="50">
+                          </td>
+                      </tr> 
+                  </table>
+              </td>
+          </tr>
+      </table>';
+ 
+         $pdf = PDF::loadHTML($html);
+         return $pdf->stream();
+    }
+
+    public function sendquote(Request $request,$id) {
+        $quote                      = Quotehistory::find($id);
+        $quote->quote_send_status   = 'receive';
+     
+        $quote->save();
+
+        $request->session()->flash('success', 'Quote Sent Successfully');
+
+        return redirect('staff/list_oppertunity_products/'.$quote->oppertunity_id);
+    }
+
+    public function quote_send(Request $request) 
+    {
+        $id                         = $request->id;
+
+        $quote                      = Quotehistory::find($id);
+
+        $op_id                      = $quote->oppertunity_id;
+        $opp_user                   = Oppertunity::where('id',$op_id)->first()->user_id;
+
+        $data['id']                 = $id;
+        $data['contact']            = Contact_person::where('user_id',$opp_user)->get();
+        $data['user_id']            = $opp_user ;
+        
+        return view('staff.oppertunity.send_mail',$data);
+
+    }
+
+    public function send_mail(Request $request) 
+    {
+        $id                              = $request->qh_id;
+
+        $quote                           = Quotehistory::find($id);
+        $quote->quote_status             = 'receive';
+        $quote->contact                  = implode(',',$request->contact);
+        $quote->description              = $request->comment;
+        $quote->subject                  = $request->subject;
+        $quote->save();
+
+        $request->session()->flash('success', 'Quote Sent Successfully');
+
+        return redirect('staff/list_oppertunity_products/'.$quote->oppertunity_id);
+    }
+
+    public function loadproductnames($id)
+    {
+      $product            = Product::where('id',$id)->first()->optional_products;
+
+      $op_pdt_id          = explode(',',$product);
+
+      $op_pdt['data']     = Product::select('id','name')->whereIn('id',$op_pdt_id)->get();
+       
+      /*foreach($op_pdt as $row)
+      {
+          echo "<option value='$row->id'>$row->name</option>";
+      }*/
+
+      echo json_encode($op_pdt);
+        exit;
+    }
+
+    public function view_customer($id)
+    {
+      $user       = User::find($id);
+      $country    = $user->country_id!='' ? Country::where('id',$user->country_id)->first()->name : '';
+      $state      = $user->state_id!='' ? State::where('id',$user->state_id)->first()->name : '';
+      $district   = $user->district_id!='' ? District::where('id',$user->district_id)->first()->name : '';
+      $taluk      = $user->taluk_id!='' ? Taluk::where('id',$user->taluk_id)->first()->name : '';
+      $staff      = $user->staff_id!='' ? Staff::where('id',$user->staff_id)->first()->name : '';
+      $customer_category   = $user->customer_category_id!='' ? Customercategory::where('id',$user->customer_category_id)->first()->name : '';
+      $oppertunity = Oppertunity::where('user_id',$id)->get();
+      return view('staff.oppertunity.view_customer',array('user'=>$user,'country'=>$country,'state'=>$state,'taluk'=>$taluk,'staff'=>$staff,'customer_category'=>$customer_category,'district'=>$district,'oppertunity'=>$oppertunity));
+    }
+    public function view_contact($id)
+    { 
+        $user = User::find($id);
+        
+        $country = Country::all();
+
+        $oppertunity = Oppertunity::where('user_id',$id)->get();
+
+        $hosdeparment = Hosdeparment::all();
+        $hosdesignation = Hosdesignation::all();
+
+        $contact_person= DB::select('select * from contact_person where  `user_id`="'.$id.'" ORDER BY `created_at` DESC'); 
+        return view('staff.oppertunity.view_contact', compact('user','country','contact_person','hosdeparment','hosdesignation','oppertunity'));
+    }
+}
+
