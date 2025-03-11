@@ -24,8 +24,8 @@
     @php
 
         $staff_id = session('STAFF_ID');
-        $permission = \App\User_permission::where('staff_id', $staff_id)->first();
-        $cor_permission = \App\CoordinatorPermission::where('staff_id', $staff_id)->where('type','customer')->first();
+        $permission = \App\Models\User_permission::where('staff_id', $staff_id)->first();
+        $cor_permission = \App\Models\CoordinatorPermission::where('staff_id', $staff_id)->where('type','customer')->first();
 
     @endphp
 
@@ -106,8 +106,8 @@
                             onselectstart="return false">
                             <thead>
                                 <tr class="headrole">
-                                    <th></th>
-                                    <th>No.</th>
+                                    <th class="col-wide-1"></th>
+                                    <th class="col-wide-1">No.</th>
                                     <th class="col-wide-2">Hospital Name</th>
                                     <th class="col-wide-1">Head of the Institution</th>
                                     <th class="col-wide-1">Customer Category</th>

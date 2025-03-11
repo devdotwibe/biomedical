@@ -5,7 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Auth\AuthenticatesUsers;
 use App\Models\Admin;
+use App\Models\Oppertunity;
+use App\Models\Oppertunity_product;
+use App\Models\Product;
 use App\Models\Staff;
+use App\Models\StaffTarget;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -123,7 +128,7 @@ class LoginController extends Controller
 
             $request->session()->put('STAFF_ID', $user->id);
 
-            return redirect()->intended('/staff/dashboard');
+            return redirect()->intended('/dashboard');
         }
 
         $admin = Admin::where('email', $credentials['email'])->first();

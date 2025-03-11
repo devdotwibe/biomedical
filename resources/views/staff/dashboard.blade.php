@@ -61,7 +61,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12  ">
           <div class="info-box">
           <div class="info-box-content">
-            <a href="{{ route('staff.quote.index') }}">
+            <a href="{{ route('quote') }}">
               <span class="info-box-text">Quote
               <img src="{{ asset('images/Qoute.svg') }}" class="info-icon"> 
               </span>
@@ -78,7 +78,7 @@
           <div class="col-md-3 col-sm-6 col-xs-12  ">
             <div class="info-box">
             <div class="info-box-content">
-                <a href="{{ route('staff.customer.index') }}">
+                <a href="{{ route('customer.index') }}">
                 <span class="info-box-text">Customer
                 <img src="{{ asset('images/customer.svg') }}" class="info-icon"> 
                 </span>
@@ -95,12 +95,12 @@
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
             <div class="info-box-content">
-              <a href="{{ route('staff.manage-task.index') }}">
+              <a href="{{ route('manage-task.index') }}">
                 <span class="info-box-text">All Task<img src="{{ asset('images/alltask.svg') }}" class="info-icon"> </span>
                 <div class="viewcounts">
                   <span class="info-box-number"><?php //echo App\Product::all()->count();?></span>
-                  <span><a href="{{ route('staff.manage-task.index') }}">Task Calendar</a></span>
-                  <span><a href="{{route('staff.manage-staff-task-location_staff')}}">Task Location</a></span>
+                  <span><a href="{{ route('manage-task.index') }}">Task Calendar</a></span>
+                  <span><a href="{{route('manage-staff-task-location_staff')}}">Task Location</a></span>
 
                 </div>
               </a>
@@ -115,7 +115,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12  ">
           <div class="info-box">
           <div class="info-box-content">
-              <a href="{{ route('staff.WorkReport') }}">
+              <a href="{{ route('WorkReport') }}">
               <span class="info-box-text">Work Report
               <img src="{{ asset('images/work-report.svg') }}" class="info-icon"> 
               </span>
@@ -160,7 +160,7 @@
          <div class="col-md-3 col-sm-6 col-xs-12  ">
           <div class="info-box">
             <div class="info-box-content">
-              <a href="{{ route('staff.task.create') }}">
+              <a href="{{ route('task.create') }}">
               <span class="info-box-text">Create Task
               <img src="{{ asset('images/creat-task.svg') }}" class="info-icon"> 
               </span>
@@ -178,7 +178,7 @@
          <div class="col-md-3 col-sm-6 col-xs-12  ">
           <div class="info-box">
             <div class="info-box-content">
-            <a href="{{ route('staff.task.index') }}">
+            <a href="{{ route('task.index') }}">
               <span class="info-box-text">All Task
               <img src="{{ asset('images/all-task.svg') }}" class="info-icon"> 
               </span>
@@ -196,7 +196,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12  ">
           <div class="info-box">
             <div class="info-box-content">
-              <a href="{{ route('staff.Staffstatus') }}">
+              <a href="{{ route('Staffstatus') }}">
               <span class="info-box-text">Staff Status
               <img src="{{ asset('images/staff-status.svg') }}" class="info-icon"> 
               </span>
@@ -215,7 +215,7 @@
       <div class="col-md-3 col-sm-6 col-xs-12  ">
         <div class="info-box">
           <div class="info-box-content">
-          <a href="{{ route('staff.quicktask') }}">
+          <a href="{{ route('quicktask') }}">
             <span class="info-box-text">Quick Task
             <img src="{{ asset('images/quick-task.svg') }}" class="info-icon"> 
             </span>
@@ -235,7 +235,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12  ">
           <div class="info-box">
               <div class="info-box-content">
-              <a href="{{ route('staff.Pendingtransaction') }}">
+              <a href="{{ route('Pendingtransaction') }}">
               <span class="info-box-text">Transaction
               <img src="{{ asset('images/transaction.svg') }}" class="info-icon"> 
               </span>
@@ -275,9 +275,9 @@
                   $in = \App\Models\Service::where('service_type',3)->where('engineer_id',$staff_id)->get();
                   }
             ?>
-            <span><a href="{{ route('staff.service-create',1) }}">Cr-Repair  [<?php echo count($cr);?>]</a></span>
-            <span><a href="{{ route('staff.service-create',2) }}">Pr-Maintenance  [<?php echo count($pm);?>]</a></span>
-            <span><a href="{{ route('staff.service-create',3) }}">Installation  [<?php echo count($in);?>]</a></span>    
+            <span><a href="{{ route('service-create',1) }}">Cr-Repair  [<?php echo count($cr);?>]</a></span>
+            <span><a href="{{ route('service-create',2) }}">Pr-Maintenance  [<?php echo count($pm);?>]</a></span>
+            <span><a href="{{ route('service-create',3) }}">Installation  [<?php echo count($in);?>]</a></span>    
             </div>
           </div>
           <!-- /.info-box-content -->
@@ -349,7 +349,7 @@ $adminB=["39","30","32"];
 
   <div class="info-box">
   <div class="info-box-content">
-      <a href="{{route('staff.target.commission.index',["billing_status"=>"New Orders"]) }}">
+      <a href="{{route('target.commission.index',["billing_status"=>"New Orders"]) }}">
 
       <span class="info-box-text">Billing</span>
 
@@ -370,7 +370,7 @@ $adminB=["39","30","32"];
 <div class="col-md-3 col-sm-6 col-xs-12  ">
   <div class="info-box">
     <div class="info-box-content">
-    <a href="{{ route('staff.staff.target.index') }}">
+    <a href="{{ route('staff.target.index') }}">
       <span class="info-box-text">Staff Sales Target
       <img src="{{ asset('images/sales-target.svg') }}" class="info-icon"> 
       </span>
@@ -387,12 +387,12 @@ $adminB=["39","30","32"];
 <div class="col-md-3 col-sm-6 col-xs-12  ">
   <div class="info-box">
     <div class="info-box-content">
-    <a href="{{ route('staff.staff.target.commission.index') }}">
+    <a href="{{ route('staff.target.commission.index') }}">
       <span class="info-box-text">Staff Sales Commission
       <img src="{{ asset('images/sales.svg') }}" class="info-icon"> 
       </span>
       <span class="info-box-number"><?php //echo \App\Product::all()->count();?></span>
-      <span><a href="{{ route('staff.staff.target.report') }}">Report</a></span>
+      <span><a href="{{ route('staff.target.report') }}">Report</a></span>
       </a>
     </div>
     <!-- /.info-box-content -->
@@ -406,7 +406,7 @@ $adminB=["39","30","32"];
 <div class="col-md-3 col-sm-6 col-xs-12  ">
   <div class="info-box">
   <div class="info-box-content">
-      <a href="{{ route('staff.staff-report') }}">
+      <a href="{{ route('staff-report') }}">
       <span class="info-box-text">REPORT
       <img src="{{ asset('images/oppertunity.svg') }}" class="info-icon"> 
       </span>
@@ -425,7 +425,7 @@ $adminB=["39","30","32"];
 <div class="col-md-3 col-sm-6 col-xs-12  ">
   <div class="info-box">
     <div class="info-box-content">
-    <a href="{{ route('staff.customer_location') }}">
+    <a href="{{ route('customer_location') }}">
       <span class="info-box-text"> Customer Location
       <img src="{{ asset('images/sales-target.svg') }}" class="info-icon"> 
       </span>
@@ -447,7 +447,7 @@ $adminB=["39","30","32"];
       $applatest=\App\Models\AppVersionControll::where("vid","android")->orderBy("id","DESC")->first();
       $vcode = $applatest->code."";
       @endphp
-      <a href="{{ route('staff.android.download') }}" target="_blank" download="Beczone-v{{$vcode!=""?$vcode[0]:1}}.apk">
+      <a href="{{ route('android.download') }}" target="_blank" download="Beczone-v{{$vcode!=""?$vcode[0]:1}}.apk">
 
           <span class="info-box-text">Download APK
             <img src="{{ asset('images/download-apk.svg') }}" class="info-icon"> 

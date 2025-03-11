@@ -4,7 +4,7 @@ use App\Http\Controllers\staff\AdminStaffTargetController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::name('staff.')->prefix('staff')->group(function () {
+// Route::name('staff.')->prefix('staff')->group(function () {
 
 Route::get('staff/target/list', [AdminStaffTargetController::class, 'index'])->name("staff.target.index");
 
@@ -98,4 +98,4 @@ Route::prefix('work')->group(function () {
     Route::post('/work-report/travel/{id}/store', 'staff\WorkReportController@store')->name('work-report.store');
 });
 
-});
+// });

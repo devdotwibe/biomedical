@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\staff;
 
 
-use App\User;
-use App\Country;
-use App\Staff;
-use App\Users_shipping_address;
-use App\Customercategory;
-use App\Assign_supervisor;
-use App\State;
-use App\Taluk;
+use App\Models\CoordinatorPermission;
+use App\Models\Taluk;
+use App\Models\User_permission;
+use App\Models\Country;
+use App\Models\Staff;
+use App\Models\Users_shipping_address;
+use App\Models\Customercategory;
+use App\Models\Assign_supervisor;
 
-use App\District;
+use App\Models\District;
+use Yajra\DataTables\Facades\DataTables;
 
 
 use App\Hosdeparment;
 use App\Hosdesignation;
 
 use App\Contact_person;
-use App\CoordinatorPermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -31,10 +31,10 @@ use Storage;
 use App\Exportscustomer\UsersExport;
 
 use App\Importscustomer\UsersImport;
+use App\Models\State;
+use App\Models\User;
 use App\Oppertunity;
-use App\User_permission;
 use Maatwebsite\Excel\Facades\Excel;
-use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {

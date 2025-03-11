@@ -448,7 +448,7 @@
         function stafflocationupdate() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    $.post("{{ route('staff.update_current_location') }}", {
+                    $.post("{{ route('update_current_location') }}", {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude
                     }, function(res) {

@@ -11,8 +11,13 @@
  */
 
 //test git
+use App\Http\Controllers\Auth\QuoteController;
+use App\Http\Controllers\IndustriesController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\staff\StaffquoteController;
+use App\Http\Controllers\staff\UserController;
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\DealerAuthenticate;
 use App\Http\Middleware\StaffAuthenticate;
@@ -21,6 +26,7 @@ use App\Http\Controllers\ContactusController;
 
 use App\AppVersionControll;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\staff\AdminajaxController;
 use App\Http\Controllers\staff\StaffController;
 
 Route::get('testtaskv', 'staff\TaskController@test_v_task');
@@ -259,12 +265,13 @@ Route::get('staff', [StaffController::class, 'index']);
 
 Route::post('stafflogin', 'staff\StaffController@stafflogin');
 
-Route::get('staff/logout', 'staff\StaffController@logout');
+Route::get('staff/logout', [StaffController::class, 'logout']);
+
 /***********************************Staff Login End****************************************************/
 Route::get('elfinder/ckeditor', '\Barryvdh\Elfinder\ElfinderController@showCKeditor4');
 Route::get('elfinder/connector', '\Barryvdh\Elfinder\ElfinderController@showConnector');
 Route::post('elfinder/connector', '\Barryvdh\Elfinder\ElfinderController@showConnector');
-Route::middleware(StaffAuthenticate::class)->prefix('staff')->name('staff.')->group(
+Route::middleware(StaffAuthenticate::class)->group(
   function () {
 
 
@@ -554,8 +561,11 @@ Route::middleware(StaffAuthenticate::class)->prefix('staff')->name('staff.')->gr
     Route::post('approve_quote_history', 'staff\OppertunityController@approve_quote_history');
     Route::post('delete_quote_history', 'staff\OppertunityController@delete_quote_history');
     Route::post('save_quote_terms', 'staff\OppertunityController@save_quote_terms');
-    Route::post('get_oppurtunitydetails', 'staff\AdminajaxController@get_oppurtunitydetails');
-    Route::post('get_opportunity_all_details_transation', 'admin\AdminajaxController@get_opportunity_all_details_transation')->name('get_opportunity_all_details_transation');
+    Route::post('/get_oppurtunitydetails', [AdminajaxController::class, 'get_oppurtunitydetails']);
+    Route::post('/get_opportunity_all_details_transation', [AdminajaxController::class, 'get_opportunity_all_details_transation'])->name('get_opportunity_all_details_transation');
+
+    // Route::post('get_oppurtunitydetails', 'staff\AdminajaxController@get_oppurtunitydetails');
+    // Route::post('get_opportunity_all_details_transation', 'admin\AdminajaxController@get_opportunity_all_details_transation')->name('');
     Route::post('oppertunity_contract_product', 'staff\OppertunityController@oppertunityContractProduct')->name('oppertunity_contract_product');
     Route::post('oppertunity_contract_list_product', 'staff\OppertunityController@oppertunityContractListProduct')->name('oppertunity_contract_list_product');
     Route::post('oppertunity_contract_product_store', 'staff\OppertunityController@oppertunityContractProductStore')->name('oppertunity_contract_product_store');
@@ -572,10 +582,13 @@ Route::middleware(StaffAuthenticate::class)->prefix('staff')->name('staff.')->gr
 
     /***********************************Staff Oppertunity end****************************************************/
     /***********************************Quote  Start****************************************************/
-    Route::resource('quote', 'staff\StaffquoteController');
-    Route::post('quote/deleteAll', 'staff\StaffquoteController@deleteAll');
-    Route::get('quotepdf/{id}', 'staff\StaffquoteController@quotepdf')->name('quotepdf');
-    Route::get('sendquote/{id}', 'staff\StaffquoteController@sendquote')->name('sendquote');
+
+    // Route::resource('customer', UserController::class);
+
+    Route::resource('quote', StaffquoteController::class);
+    Route::post('/quote/deleteAll', [StaffquoteController::class, 'deleteAll']);
+    Route::get('quotepdf/{id}', [StaffquoteController::class, 'quotepdf'])->name('quotepdf');
+    Route::get('sendquote/{id}', [StaffquoteController::class, 'sendquote'])->name('sendquote');
     /***********************************Quote  End****************************************************/
     /***********************************Product Staff Star   t****************************************************/
 
@@ -733,15 +746,16 @@ Route::middleware(StaffAuthenticate::class)->prefix('staff')->name('staff.')->gr
     Route::post('asset/save', 'staff\AssetController@save')->name('asset.save');
     Route::delete('asset/destroy/{id}', 'staff\AssetController@destroy');
     Route::post('asset/deleteAll', 'staff\AssetController@deleteAll');
-    Route::post('get_contact_details', 'staff\AdminajaxController@get_contact_details');
-    Route::post('get_user_contact_list', 'staff\AdminajaxController@get_user_contact_list');
 
-    Route::post('save_first_responce', 'staff\AdminajaxController@save_first_responce');
-    Route::post('save_visit', 'staff\AdminajaxController@save_visit');
-    Route::post('save_part', 'staff\AdminajaxController@save_part');
-    Route::post('edit_part', 'staff\AdminajaxController@edit_part');
-    Route::post('edit_first_responce', 'staff\AdminajaxController@edit_first_responce');
-    Route::post('edit_visit', 'staff\AdminajaxController@edit_visit');
+    Route::post('/get_contact_details', [AdminajaxController::class, 'get_contact_details']);
+    Route::post('/get_user_contact_list', [AdminajaxController::class, 'get_user_contact_list']);
+    Route::post('/save_first_responce', [AdminajaxController::class, 'save_first_responce']);
+    Route::post('/save_visit', [AdminajaxController::class, 'save_visit']);
+    Route::post('/save_part', [AdminajaxController::class, 'save_part']);
+    Route::post('/edit_part', [AdminajaxController::class, 'edit_part']);
+    Route::post('/edit_first_responce', [AdminajaxController::class, 'edit_first_responce']);
+    Route::post('/edit_visit', [AdminajaxController::class, 'edit_visit']);
+
     Route::get('AllTaskservice', 'staff\Service_taskController@AllTaskservice')->name('AllTaskservice');
     Route::resource('task', 'staff\TaskController');
 
@@ -750,10 +764,12 @@ Route::middleware(StaffAuthenticate::class)->prefix('staff')->name('staff.')->gr
     Route::post('get_productimagegallery', 'staff\AdminajaxController@get_productimagegallery');
     Route::post('delete_productimagegallery', 'staff\AdminajaxController@delete_productimagegallery');
     /***********************************Customer Mange ****************************************************/
-    Route::get('changestatus', 'staff\UserController@changestatus')->name('changestatus');
-    Route::resource('customer', 'staff\UserController');
-    Route::get('/{id}', 'staff\UserController@contact')->name('contact');
-    Route::post('customer/deleteAll', 'staff\UserController@deleteAll');
+
+    Route::get('changestatus', [UserController::class, 'changestatus'])->name('changestatus');
+    Route::resource('customer', UserController::class);
+    Route::get('/{id}', [UserController::class, 'contact'])->name('contact');
+    Route::post('customer/deleteAll', [UserController::class,'deleteAll' ]);
+        
     /***********************************Customer Mange End****************************************************/
 
     Route::post('change_assigned_team', 'staff\AdminajaxController@change_assigned_team');
@@ -1746,13 +1762,24 @@ Route::prefix('admin')->name('admin.')->group(
   }
 );
 /***********************************User Side  Start****************************************************/
-Route::get('/search', 'SearchController@index')->name('search.index');
-Route::post('/search', 'SearchController@search')->name('search');
-Route::get('/industries', 'IndustriesController@index');
-Route::get('/quote', 'Auth\QuoteController@quote')->name('quote');
-Route::get('/mycart', 'Auth\QuoteController@mycart')->name('mycart');
-Route::get('/removecart/{id}', 'Auth\QuoteController@removecart');
-Route::get('quotepdf/{id}', 'Auth\QuoteController@quotepdf')->name('quotepdf');
+// Route::get('/search', 'SearchController@index')->name('search.index');
+// Route::post('/search', 'SearchController@search')->name('search');
+// Route::get('/industries', 'IndustriesController@index');
+// Route::get('/quote', 'Auth\QuoteController@quote')->name('quote');
+// Route::get('/mycart', 'Auth\QuoteController@mycart')->name('mycart');
+// Route::get('/removecart/{id}', 'Auth\QuoteController@removecart');
+// Route::get('quotepdf/{id}', 'Auth\QuoteController@quotepdf')->name('quotepdf');
+
+
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+Route::post('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/industries', [IndustriesController::class, 'index']);
+Route::get('/quote', [QuoteController::class, 'quote'])->name('quote');
+Route::get('/mycart', [QuoteController::class, 'mycart'])->name('mycart');
+Route::get('/removecart/{id}', [QuoteController::class, 'removecart']);
+Route::get('quotepdf/{id}', [QuoteController::class, 'quotepdf'])->name('quotepdf');
+
+
 
 /**************************************User Side Route End*************************************************/
 //Route::get('404', function () {

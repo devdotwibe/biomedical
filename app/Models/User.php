@@ -45,4 +45,41 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    function userIb()
+    {	
+   	    return $this->hasMany('App\Ib', 'user_id', 'id' );
+    }
+
+    public function userInvoice() {
+        return $this->hasMany( 'App\Models\Invoice', 'user_id', 'id' );
+       }
+       public function userContact()
+       {
+          return $this->hasMany('App\Models\Contact_person','user_id','id');
+       }
+
+       public function userstate()
+    {
+    	return $this->belongsTo('App\Models\State','state_id');
+    }
+
+	public function userdistrict()
+    {
+    	return $this->belongsTo('App\Models\District','district_id');
+    }
+
+    public function usertaluk()
+    {
+    	return $this->belongsTo('App\Models\Taluk','taluk_id');
+    }
+
+    public function customer_category()
+    {
+    	return $this->belongsTo('App\Models\Customercategory','customer_category_id');
+    }
+
+
+
 }

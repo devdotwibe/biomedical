@@ -63,7 +63,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
       @if($staff_id =="32")
 
         <li class="<?php echo (strstr($currentPath,'staff/msp')) ? 'active' : '' ?>">
-              <a href="{{route('staff.msp.create')}}">
+              <a href="{{route('msp.create')}}">
                 <span> MSP</span>
               </a>
         </li>
@@ -80,22 +80,22 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                 <ul class="treeview-menu">
 
                     <li class="<?php echo strstr($currentPath, 'staff/transation') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.transation.index') }}">
+                        <a href="{{ route('transation.index') }}">
                             <span>All Transaction</span>
                         </a>
                     </li>
                     <li class="<?php echo strstr($currentPath, 'staff/Pendingtransaction') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.Pendingtransaction') }}">
+                        <a href="{{ route('Pendingtransaction') }}">
                             <span>Pending Transaction</span>
                         </a>
                     </li>
                     <li class="<?php echo strstr($currentPath, 'staff/sales_order') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.sales_order') }}?type=Sale Order">
+                        <a href="{{ route('sales_order') }}?type=Sale Order">
                             <span>Sales Order</span>
                         </a>
                     </li>
                     <li class="<?php echo strstr($currentPath, 'staff/sales_order') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.sales_order') }}?type=Test Return">
+                        <a href="{{ route('sales_order') }}?type=Test Return">
                             <span>Test Return</span>
                         </a>
                     </li>
@@ -103,7 +103,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
 
                     <!-- <li class="<?php //echo (strstr($currentPath,'staff/transactionindex')) ? 'active' : ''
                     ?>">
-              <a href="{{ route('staff.transactionindex') }}">
+              <a href="{{ route('transactionindex') }}">
              <span>Pending Transaction</span>
             </a>
             </li> -->
@@ -114,7 +114,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
     	if(count($mange_invoice)>0){
          ?>
                     <li class="<?php echo strstr($currentPath, 'staff/invoice') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.invoice.index') }}">
+                        <a href="{{ route('invoice.index') }}">
                             <span>Manage Invoice</span>
                         </a>
                     </li>
@@ -126,7 +126,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
     	if(count($mange_dispatch)>0){
          ?>
                     <li class="<?php echo strstr($currentPath, 'staff/dispatch') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.dispatch.index') }}">
+                        <a href="{{ route('dispatch.index') }}">
                             <span>Manage Dispatch</span>
                         </a>
                     </li>
@@ -159,42 +159,42 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                 <ul class="treeview-menu">
 
                     <li class="<?php echo strstr($currentPath, 'staff/products') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.products.index') }}"> <span>Manage Products</span></a>
+                        <a href="{{ route('products.index') }}"> <span>Manage Products</span></a>
                     </li>
 
                     @if( optional($permission)->product_view == 'admin')
 
                         <li class="<?php echo strstr($currentPath, 'staff/brand') ? 'active' : ''; ?>">
-                            <a href="{{ route('staff.brand.index') }}">
+                            <a href="{{ route('brand.index') }}">
                                 <span>Manage Brand</span>
                             </a>
                         </li>
 
                         <li class="<?php echo strstr($currentPath, 'staff/category_type') ? 'active' : ''; ?>">
-                            <a href="{{ route('staff.category_type.index') }}">
+                            <a href="{{ route('category_type.index') }}">
                                 <span>Manage Category</span>
                             </a>
                         </li>
 
                         <li class="<?php echo strstr($currentPath, 'staff/product_type') ? 'active' : ''; ?>">
-                            <a href="{{ route('staff.product_type.index') }}">
+                            <a href="{{ route('product_type.index') }}">
                                 <span>Product Type</span>
                             </a>
                         </li>
                         <li class="<?php echo strstr($currentPath, 'staff/category') ? 'active' : ''; ?>">
-                            <a href="{{ route('staff.category.index') }}">
+                            <a href="{{ route('category.index') }}">
                                 <span>Manage Care Area</span>
                             </a>
                         </li>
 
                         <li class="<?php echo strstr($currentPath, 'staff/modality') ? 'active' : ''; ?>">
-                            <a href="{{ route('staff.modality.index') }}">
+                            <a href="{{ route('modality.index') }}">
                                 <span>Manage Modality</span>
                             </a>
                         </li>
 
                         <li class="<?php echo strstr($currentPath, 'staff/competition_product') ? 'active' : ''; ?>">
-                            <a href="{{ route('staff.competition_product.index') }}">
+                            <a href="{{ route('competition_product.index') }}">
                                 <span>Competition Product</span>
                             </a>
                         </li>
@@ -228,17 +228,17 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                 </a>
                 <ul class="treeview-menu">
                     <li class="">
-                        <a href="{{ route('staff.service-create', 1) }}">
+                        <a href="{{ route('service-create', 1) }}">
                             <span>Corrective Repair</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="{{ route('staff.service-create', 2) }}">
+                        <a href="{{ route('service-create', 2) }}">
                             <span>Preventive Repair</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="{{ route('staff.service-create', 3) }}">
+                        <a href="{{ route('service-create', 3) }}">
                             <span>Installation</span>
                         </a>
                     </li>
@@ -259,7 +259,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                     @if ( optional($contract_permission)->common_view == 'view')
 
                         <li class="<?php echo (strstr($currentPath,'staff/pm_order')) ? 'active' : '' ?>">
-                            <a href="{{route('staff.pm_order.index')}}">
+                            <a href="{{route('pm_order.index')}}">
                         <span>MSA Contract</span>
                         </a>
                         </li> 
@@ -269,7 +269,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                     @if ( optional($pm_permission)->common_view == 'view')
 
                         <li class="<?php echo (strstr($currentPath,'staff/pm_create')) ? 'active' : '' ?>">
-                            <a href="{{route('staff.pm_create',2)}}">
+                            <a href="{{route('pm_create',2)}}">
                         <span>PM</span>
                         </a>
                         </li>
@@ -279,7 +279,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                     @if ( optional($sales_bio_permission)->common_view == 'view')
 
                         <li class="<?php echo (strstr($currentPath,'staff/pm_order')) ? 'active' : '' ?>">
-                            <a href="{{route('staff.sales.index' ,['company_type'=>"bio"])}}">
+                            <a href="{{route('sales.index' ,['company_type'=>"bio"])}}">
                         <span>Customer Order (BIO)</span>
                         </a>
                         </li>
@@ -289,7 +289,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                     @if ( optional($sales_bec_permission)->common_view == 'view')
 
                         <li class="<?php echo (strstr($currentPath,'staff/pm_order')) ? 'active' : '' ?>">
-                            <a href="{{route('staff.sales.index',['company_type'=>"bec"])}}">
+                            <a href="{{route('sales.index',['company_type'=>"bec"])}}">
                         <span>Customer Order (BEC)</span>
                         </a>
                         </li>
@@ -336,7 +336,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
 
         @if(optional($permission)->customer_view == 'view' || optional($cor_permission)->customer_view == 'view')
 
-            <li class="<?php echo strstr($currentPath, 'staff/customer') ? 'active' : ''; ?>"><a href="<?php echo URL::to('staff'); ?>/customer"><span>Customer</span></a></li>
+            <li class="<?php echo strstr($currentPath, 'customer') ? 'active' : ''; ?>"><a href="/customer"><span>Customer</span></a></li>
 
         @endif
 
@@ -453,14 +453,14 @@ if(count($user_permission)>0 || $staff_id ==56)
                 <ul class="treeview-menu">
 
                     <li class="<?php echo strstr($currentPath, 'staff/service_task') || strstr($currentPath, 'staff/AllTaskservice') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.service_task.index') }}">
+                        <a href="{{ route('service_task.index') }}">
                             <span>Service Task</span>
                         </a>
                     </li>
 
 
                     <li class="<?php echo strstr($currentPath, 'staff/AllTaskservice') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.AllTaskservice') }}">
+                        <a href="{{ route('AllTaskservice') }}">
                             <span> All task</span>
                         </a>
                     </li>
@@ -485,7 +485,7 @@ if(count($user_permission)>0 || $staff_id ==56)
                         </a>
                     </li>
                     <li class="<?php echo strstr($currentPath, 'staff/asset') ? 'active' : ''; ?>">
-                        <a href="{{ route('staff.asset') }}">
+                        <a href="{{ route('asset') }}">
                             <span> Assets</span>
                         </a>
                     </li>
