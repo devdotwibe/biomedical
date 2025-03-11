@@ -78,6 +78,7 @@ class OppertunityController extends Controller
         return $result;
     }
 
+    public function index(Request $request)
     {
         if ($request->type == '') {
             return redirect()->route('staff.dashboard');
