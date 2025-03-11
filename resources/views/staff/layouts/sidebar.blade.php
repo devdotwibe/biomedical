@@ -158,7 +158,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                 </a>
                 <ul class="treeview-menu">
 
-                    <li class="<?php echo strstr($currentPath, 'staff/products') ? 'active' : ''; ?>">
+                    <li class="<?php echo strstr($currentPath, '/products') ? 'active' : ''; ?>">
                         <a href="{{ route('products.index') }}"> <span>Manage Products</span></a>
                     </li>
 
@@ -214,7 +214,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
 
             @if(optional($permission)->ib_access_view =='view' || optional($ib_permission)->ib_view =='view')
 
-            <li class="<?php echo strstr($currentPath, 'staff/ib') ? 'active' : ''; ?>"><a href="<?php echo URL::to('staff'); ?>/ib"> <span>Ib</span></a></li>
+            <li class="<?php echo strstr($currentPath, 'ib') ? 'active' : ''; ?>"><a href="/ib"> <span>Ib</span></a></li>
 
             @endif
 

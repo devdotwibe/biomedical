@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     function userIb()
     {	
-   	    return $this->hasMany('App\Ib', 'user_id', 'id' );
+   	    return $this->hasMany('App\Models\Ib', 'user_id', 'id' );
     }
 
     public function userInvoice() {

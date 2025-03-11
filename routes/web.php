@@ -16,6 +16,8 @@ use App\Http\Controllers\IndustriesController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\staff\IbController;
+use App\Http\Controllers\staff\ProductController;
 use App\Http\Controllers\staff\StaffquoteController;
 use App\Http\Controllers\staff\UserController;
 use App\Http\Middleware\AdminAuthenticate;
@@ -412,17 +414,19 @@ Route::middleware(StaffAuthenticate::class)->group(
 
     /***********************************IB staff start****************************************************/
 
-    Route::get('ib', 'staff\IbController@index')->name('ib-index');
-    Route::get('ib-create', 'staff\IbController@create')->name('ib-create');
-    Route::post('ib-store', 'staff\IbController@store')->name('ib-store');
-    Route::get('ib-destroy/{id}', 'staff\IbController@destroy')->name('ib-destroy');
-    Route::delete('ib-destroy/{id}', 'staff\IbController@destroy')->name('ib-destroy');
-    Route::get('ib-edit/{id}', 'staff\IbController@edit')->name('ib-edit');
-    Route::post('ib-update/{id}', 'staff\IbController@update')->name('ib-update');
+    Route::get('ib',     [IbController::class, 'index'])->name('ib-index');
+    Route::get('ib-create', [IbController::class, 'create'])->name('ib-create');
+    Route::post('ib-store', [IbController::class, 'store'])->name('ib-store');
+    Route::get('ib-destroy/{id}', [IbController::class, 'destroy'])->name('ib-destroy');
+    Route::delete('ib-destroy/{id}', [IbController::class, 'destroy'])->name('ib-destroy');
+    Route::get('ib-edit/{id}', [IbController::class, 'edit'])->name('ib-edit');
+    Route::post('ib-update/{id}', [IbController::class, 'update'])->name('ib-update');
     //Route::post('ib-import', 'admin\IbController@import')->name('ib-import');
-    Route::post('/addproduct', 'ProductController@addproduct')->name('addproduct');
+    Route::post('/addproduct', [IbController::class, 'addproduct'])->name('addproduct');
 
-    Route::post('/check_equp_no', 'staff\IbController@check_equp_no')->name('check_equp_no');
+    Route::post('/check_equp_no', [IbController::class, 'check_equp_no'])->name('check_equp_no');
+
+
 
 
 
@@ -592,7 +596,7 @@ Route::middleware(StaffAuthenticate::class)->group(
     /***********************************Quote  End****************************************************/
     /***********************************Product Staff Star   t****************************************************/
 
-    Route::resource('products', 'staff\ProductController');
+    Route::resource('products', ProductController::class);
 
     Route::post('modality_change', 'staff\ProductController@modality_change')->name('modality_change');
 

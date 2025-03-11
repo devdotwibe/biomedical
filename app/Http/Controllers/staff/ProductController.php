@@ -67,7 +67,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $staff_id = session('STAFF_ID');
-
+dd("fsdfdf");
         $permission = User_permission::where('staff_id', $staff_id)->first();
 
         if(optional($permission)->product_view != 'view')

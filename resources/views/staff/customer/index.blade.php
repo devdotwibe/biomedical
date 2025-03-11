@@ -115,7 +115,7 @@
                                     <th class="col-wide-1">Email</th>
                                     <th class="col-wide-1">Phone</th>
                                 
-                                    <th class="col-wide-1">Address</th>  
+                                    <th class="col-wide-2">Address</th>  
                                     <th class="col-wide-1">Taluk</th>
                                     <th class="col-wide-1">Pincode</th>
                                 </tr>

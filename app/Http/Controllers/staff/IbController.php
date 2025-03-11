@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\staff;
 
-use App\Category;
-use App\CoordinatorPermission;
-use App\District;
-use App\EquipmentStatus;
 use App\Http\Controllers\Controller;
-use App\Ib;
-use App\Product;
-use App\Staff;
+use App\Models\Category;
+use App\Models\CoordinatorPermission;
+use App\Models\District;
+use App\Models\EquipmentStatus;
+use App\Models\Ib;
+use App\Models\Product;
+use App\Models\Staff;
+use App\Models\User;
+use App\Models\User_permission;
 use App\Task;
-use App\User;
-use App\User_permission;
 use Carbon\Carbon;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -127,9 +127,9 @@ class IbController extends Controller
                     if (optional($ib_permission)->ib_edit == 'edit' || optional($permission)->ib_access_edit == 'edit') {
 
                         if ($data->staff_id == $staff_id && optional($permission)->ib_access_edit == 'edit') {
-                            $button .= '<a class="btn btn-primary btn-xs" target="_blank" href="' . route('staff.ib-edit', "$data->id") . '" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>';
+                            $button .= '<a class="btn btn-primary btn-xs" target="_blank" href="' . route('ib-edit', "$data->id") . '" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>';
                         } elseif ($data->staff_id != $staff_id && optional($ib_permission)->ib_edit == 'edit') {
-                            $button .= '<a class="btn btn-primary btn-xs" target="_blank" href="' . route('staff.ib-edit', "$data->id") . '" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>';
+                            $button .= '<a class="btn btn-primary btn-xs" target="_blank" href="' . route('ib-edit', "$data->id") . '" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>';
                         }
 
                     }
@@ -137,9 +137,9 @@ class IbController extends Controller
                     if (optional($ib_permission)->ib_delete == 'delete' || optional($permission)->ib_access_delete == 'delete') {
 
                         if ($data->staff_id == $staff_id && optional($permission)->ib_access_delete == 'delete') {
-                            $button .= '<a class="delete-btn   deleteItem" href="' . route('staff.ib-destroy', $data->id) . '" id="deleteItem' . $data->id . '" data-tr="tr_' . $data->id . '" title="Delete"><img src="' . asset('images/delete.svg') . '"></a>';
+                            $button .= '<a class="delete-btn   deleteItem" href="' . route('ib-destroy', $data->id) . '" id="deleteItem' . $data->id . '" data-tr="tr_' . $data->id . '" title="Delete"><img src="' . asset('images/delete.svg') . '"></a>';
                         } elseif ($data->staff_id != $staff_id && optional($ib_permission)->ib_delete == 'delete') {
-                            $button .= '<a class="delete-btn   deleteItem" href="' . route('staff.ib-destroy', $data->id) . '" id="deleteItem' . $data->id . '" data-tr="tr_' . $data->id . '" title="Delete"><img src="' . asset('images/delete.svg') . '"></a>';
+                            $button .= '<a class="delete-btn   deleteItem" href="' . route('ib-destroy', $data->id) . '" id="deleteItem' . $data->id . '" data-tr="tr_' . $data->id . '" title="Delete"><img src="' . asset('images/delete.svg') . '"></a>';
                         }
 
                     }

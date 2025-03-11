@@ -31,7 +31,7 @@
 
               $staff_id = session('STAFF_ID');
 
-              $permission = App\User_permission::where('staff_id', $staff_id)->first();
+              $permission = App\Models\User_permission::where('staff_id', $staff_id)->first();
 
           @endphp
         
@@ -40,7 +40,7 @@
               <div class="row">
                 <div class="col-lg-12 margin-tb">
                     <div class="pull-left">
-                        <a class="add-button " href="{{ route('staff.ib-create') }}"> Add IB</a>
+                        <a class="add-button " href="{{ route('ib-create') }}"> Add IB</a>
                     </div>
                 </div>      
               </div>
@@ -133,7 +133,7 @@ jQuery(document).ready(function() {
            serverSide:true,
           
            ajax:{
-             url:"{{ route('staff.ib-index') }}",
+             url:"{{ route('ib-index') }}",
            },
            initComplete: function(settings) {
 
@@ -295,4 +295,5 @@ jQuery(document).ready(function() {
   </script>
 
 @endsection
+
 
