@@ -97,7 +97,7 @@ $keywords    = ($cms->meta_keywords != '') ? $cms->meta_keywords: setting('METAK
           </div>
           <div class="col-md-6 ">
             <div class="about-co2 ">
-              <h4> About Us test</h4>
+              <h4> About Us </h4>
               <h2>Biomedical Engineering Company</h2>
               <p> Our company is based on the belief that our customers needs are of the utmost importance. Our entire team is dedicated to meeting those needs. As a result, 
                 a high percentage of our business is from repeat customers and referrals.</p>
