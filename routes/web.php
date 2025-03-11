@@ -31,7 +31,7 @@ Route::get('testtaskv', 'staff\TaskController@test_v_task');
 // });
 // Auth::routes();
 
-Route::get('login', [LoginController::class, 'index'])->name('login');
+Route::get('login', [LoginController::class, 'login'])->name('login');
 
 Route::post('login_submit', [LoginController::class, 'loginSubmit'])->name('login_submit');
 
@@ -314,7 +314,9 @@ Route::middleware(StaffAuthenticate::class)->prefix('staff')->name('staff.')->gr
     Route::get('Staffstatus', 'staff\TaskController@Staffstatus')->name('Staffstatus');
 
     /***********************************Staff Admin control****************************************************/
-    Route::get('dashboard', 'staff\StaffController@dashboard')->name('dashboard');
+   
+    Route::get('dashboard', [StaffController::class, 'dashboard'])->name('dashboard');
+
     Route::get('change-password', 'staff\StaffController@changePassword');
     Route::post('change-password', 'staff\StaffController@updatePassword');
     /***********************************Staff Admin control****************************************************/

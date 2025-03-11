@@ -57,14 +57,14 @@
     @endif
             
     <p class="error-content alert-danger">
-    {{ $errors->first('username') }}
+    {{ $errors->first('email') }}
     {{ $errors->first('password') }}
     </p>
     <form id="login" name="login" id="login" name="login" method="post"  action="{{ route('login_submit') }}">
 
         @csrf
       <div class="form-group has-feedback">
-        <input type="text" name="username" id="username" value="<?php echo old('username'); ?>" class="form-control" placeholder="Username">
+        <input type="text" name="email" id="email" value="<?php echo old('email'); ?>" class="form-control" placeholder="email">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
@@ -130,7 +130,7 @@ $(document).ready(function () {
     $('#login').validate({ // initialize the plugin
         errorElement: 'span',
         rules: {
-            username: {
+            email: {
                 required: true
             },
 
@@ -142,8 +142,8 @@ $(document).ready(function () {
         },
         
         messages: {
-            username: {
-                required: 'Username is required'
+            email: {
+                required: 'email is required'
             },
             password: {
                 required: 'Password is required',

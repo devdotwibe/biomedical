@@ -72,7 +72,8 @@ class StaffController extends Controller
 
             return view('staff.dashboard',compact('monthpaid','monthtarget','monthtargetachive','monthcommision','hot_pro','last_created','last_created_closed','other_opper','stale'));
         }
-        return view('staff.login');
+
+        return view('auth.login');
     }
     
     public function stafflogin(Request $request)

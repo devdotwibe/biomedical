@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Controllers\Auth\AuthenticatesUsers;
+use App\Models\Staff;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -26,8 +27,6 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
-
     /**
      * Where to redirect users after login.
      *
@@ -42,7 +41,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
     }
 
     public function login(Request $requet)
@@ -102,7 +101,7 @@ class LoginController extends Controller
             "password"=>["required",'string'],
         ]);
         $this->ensureIsNotRateLimited($request);
-        
+
         // if (Auth::attempt($credentials))
         // {
         //     RateLimiter::clear($this->throttleKey($request));
@@ -111,12 +110,18 @@ class LoginController extends Controller
         //     return redirect()->intended('/staff/dashboard');
         // }
 
-        if (Auth::guard('staff')->attempt($credentials))
+        $user = Staff::where('email', $credentials['email'])->first();
+        
+        if ($user && md5($credentials['password']) === $user->password)
         {
+            Auth::guard('staff')->login($user);
+            
             RateLimiter::clear($this->throttleKey($request));
 
             $request->session()->regenerate();
-    
+
+            $request->session()->put('STAFF_ID', $user->id);
+
             return redirect()->intended('/staff/dashboard');
         }
 
