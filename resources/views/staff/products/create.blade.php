@@ -13,7 +13,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.products.index')}}">Manage Products</a></li>
+        <li><a href="{{route('product.index')}}">Manage Products</a></li>
         <li class="active">Add Product</li>
       </ol>
 </section>
@@ -61,7 +61,7 @@
 
 
             <div class="prdt-cret-box">
-            <form role="form" name="frm_products" id="frm_products" method="post" action="{{route('staff.products.store')}}" enctype="multipart/form-data" >
+            <form role="form" name="frm_products" id="frm_products" method="post" action="{{route('product.store')}}" enctype="multipart/form-data" >
                @csrf
                 <div class="box-body">
 
@@ -368,7 +368,7 @@
               <div class="box-footer">
               <input type="hidden" name="comp_count" id="comp_count" value="0"> 
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('staff.products.index')}}'">Cancel</button>
+                <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('product.index')}}'">Cancel</button>
               </div>
             </form>
             </div>
@@ -569,7 +569,7 @@ $(document).ready(function() {
   {
     var value = $(e).val();
 
-      $.post('{{route("staff.modality_change")}}',{
+      $.post('{{route("modality_change")}}',{
 
         value:value,
           

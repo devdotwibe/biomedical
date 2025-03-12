@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\staff;
 
+use App\Models\Modality;
+use App\Models\User_permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Modality;
-use App\User_permission;
 
 class ModalityController extends Controller
 {

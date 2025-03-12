@@ -23,7 +23,7 @@
           <div class="row">
             <div class="col-lg-12 margin-tb">
               <div class="pull-left">
-                <a class="add-button" href="{{ route('staff.competition_product.create') }}"> Add Competition
+                <a class="add-button" href="{{ route('competition_product.create') }}"> Add Competition
                   Product</a>
               </div>
             </div>
@@ -62,10 +62,10 @@
                 <?php $i = 1; ?>
                 @foreach ($competition_product as $product)
                   <?php 
-                     $brands = App\Brand::find($product->brand_id);
-            $cats = App\Category::find($product->category_id);
-            $catstype = App\Category_type::find($product->category_type_id);
-            $protype = App\Product_type::find($product->product_type_id);
+                     $brands = App\Models\Brand::find($product->brand_id);
+            $cats = App\Models\Category::find($product->category_id);
+            $catstype = App\Models\Category_type::find($product->category_type_id);
+            $protype = App\Models\Product_type::find($product->product_type_id);
                     ?>
                   <tr id="tr_{{$product->id}}" data-id="{{$product->id}}" data-from="competition_product">
                     <td><input type="checkbox" class="dataCheck" name="ids[]" value="{{$product->id}}"
@@ -85,10 +85,10 @@
 
 
                     <td class="alignCenter">
-                    <a class="btn btn-primary btn-xs" href="{{ route('staff.competition_product.edit', $product->id) }}"
+                    <a class="btn btn-primary btn-xs" href="{{ route('competition_product.edit', $product->id) }}"
                       title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
                     <a class="btn btn-danger btn-xs deleteItem table-icon"
-                      href="{{ route('staff.competition_product.destroy', $product->id) }}"
+                      href="{{ route('competition_product.destroy', $product->id) }}"
                       id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><span
                       class="glyphicon glyphicon-trash"></span></a>
                     </td>

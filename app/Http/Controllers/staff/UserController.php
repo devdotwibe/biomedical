@@ -4,6 +4,7 @@ namespace App\Http\Controllers\staff;
 
 
 use App\Models\CoordinatorPermission;
+use App\Models\Ib;
 use App\Models\Taluk;
 use App\Models\User_permission;
 use App\Models\Country;
@@ -98,98 +99,55 @@ class UserController extends Controller
                 }
                 
 
-                return DataTables::of($data)
-
-                ->addColumn('business_name_edit', function ($data) use ($staff_id,$cor_permission,$permission) {
-
+                return Datatables::of($data)
+                ->addColumn('business_name_ref',function($data){
+                   return $buttons='<a href="'.route('admin.customer.edit',"$data->id").'">'.$data->business_name.'</a>';
+                })
+                ->addColumn("accountmanage",function($data){
+                    $assigns=explode(',',$data->staff_id);
+                    $staffname="";
+                    foreach(Staff::whereIn("id",$assigns)->where("id",">","0")->get() as $stf){
+                        $staffname.=$stf->email."<br>";
+                    }
+                    return $staffname;
+                })
+                ->addColumn('customer_category',function($data){
+                    if($data->customer_category_id){
+                        $customercategory = Customercategory::find($data->customer_category_id);
+                        if($customercategory){
+                            return $customercategory->name;
+                        }
+                    }
+                    return '';
                     
-                    if (optional($cor_permission)->customer_edit == 'edit' || optional($permission)->customer_edit == 'edit') {
-
-                         if ($data->staff_id == $staff_id && optional($permission)->customer_edit == 'edit')
-                         {
-                            return '<a href="' . route('staff.customer.edit', $data->id) . '">' . $data->business_name . '</a>';
-                         }
-                         elseif($data->staff_id != $staff_id && optional($cor_permission)->customer_edit == 'edit')
-                         {
-                            return '<a href="' . route('staff.customer.edit', $data->id) . '">' . $data->business_name . '</a>';
-                         }
-                         else
-                         {
-                            return $data->business_name;
-                         }
-
-                    } else {
-
-                        return $data->business_name;
-                    }
                 })
-                
-
-                ->addColumn('customer_category', function ($data) {
-                  
-                    if(!empty($data->customer_category_id))
-                    {
-
-                        return optional($data->customer_category)->name;
+                ->addColumn('taluk',function($data){
+                    $taluk = Taluk::find($data->taluk_id);
+                    if($taluk){
+                        return $taluk->name;
                     }
-                    else
-                    {
-                        return "";
-                    }
+                    return "";
                 })
-
-                ->addColumn('taluk', function ($data) {
-                  
-                    if(!empty($data->taluk_id))
+                ->addColumn('action',function($data){
+                    $button='
+                    <a class="btn btn-primary btn-xs" href="'.route('admin.customer.edit',"$data->id").'" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>';
+                    
+                    
+                    
+                    if(Ib::where('user_id',$data->id)->count()==0 &&  Oppertunity::where('user_id',$data->id)->count()==0)
                     {
-                        return optional($data->usertaluk)->name;
+                        $button .='<a class="btn btn-danger btn-xs deleteItem"  onclick="deleteItem('."'".route('admin.customer.destroy',"$data->id")."','#cmsTable'".')" id="deleteItem'.$data->id.'" data-tr="tr_'.$data->id.'" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>';
                     }
-                    else
-                    {
-                        return "";
-                    }
+                    
+                    return $button;
                 })
-                
-                ->addColumn('delete_action', function ($data) use ($staff_id,$cor_permission,$permission) {
-                  
-                    if (optional($cor_permission)->customer_delete == 'delete' || optional($permission)->customer_delete == 'delete') {
-
-                        if ($data->staff_id == $staff_id && optional($permission)->customer_delete == 'delete')
-                        {
-                           return '<input type="checkbox" class="dataCheck" name="ids[]" value="'.$data->id.'" id="check'.$data->id.'">';
-                        }
-                        elseif($data->staff_id != $staff_id && optional($cor_permission)->customer_delete == 'delete')
-                        {
-                           return '<input type="checkbox"  class="dataCheck" name="ids[]" value="'.$data->id.'" id="check'.$data->id.'">';
-                        }
-                        else
-                        {
-                           return '';
-                        }
-
-                   } else {
-
-                       return '';
-                   }
+                ->filterColumn('account_manage', function($query, $keyword) {
+                    $query->whereRaw("(select count(1) from staff where find_in_set(staff.id,users.staff_id) and staff.email like ?) >= 1", ["%{$keyword}%"]);
                 })
-
-                ->rawColumns(['business_name_edit','delete_action'])
-
-                ->addIndexColumn()->make(true);
-
-                // ->setRowId('id')
-
-                // ->setRowAttr([
-                //     'data-user_id' => '{{ $user_id }}',
-                // ])
-
-                // ->setRowClass(function ($data) {
-
-                //     return "";
-                // })
-
+                ->orderColumn('taluk','(select taluk.name from taluk where users.taluk_id=taluk.id) $1')
+                ->rawColumns(['action','business_name_ref','accountmanage'])->addIndexColumn()->make(true);
             }
-
+    
         $stateIds = User::pluck('state_id')->unique()->toArray();
 
         $talukIDs = User::pluck('taluk_id')->unique()->toArray();

@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\staff;
 
-use App\Brand;
-use App\Product;
-use App\Banner;
-use App\Category;
-
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\User_permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use App\Http\Controllers\Controller;
-use App\User_permission;
 use Image;
 use Storage;
 
@@ -31,7 +29,7 @@ class BrandController extends Controller
 
         if(optional($permission)->product_view != 'view')
         {
-            return redirect()->route('staff.dashboard');
+            return redirect()->route('dashboard');
         }
 
         // if($staff_id=="29" || $staff_id=="32" || $staff_id=="4" || $staff_id=="94")
@@ -62,11 +60,12 @@ class BrandController extends Controller
     public function store(Request $request)
     {
 
-            $this->validate($request, array(
-                'name' => 'required|max:100',
-                'image_name' => 'required|mimes:jpeg,png,jpg,JPG|max:2048|dimensions:min_width=50 ,min_height=50',
-                'status' => 'required'
-            ));
+        $request->validate([
+            'name' => 'required|max:100',
+            'image_name' => 'required|mimes:jpeg,png,jpg,JPG|max:2048|dimensions:min_width=50,min_height=50',
+            'status' => 'required'
+        ]);
+        
 
 
 
@@ -79,7 +78,7 @@ class BrandController extends Controller
            //echo $imageName;
 
 
-        $slug = str_slug($request->name);
+        $slug = Str::slug($request->name);
 
         $slug_e = Brand::where('slug', $slug)->count();
         $slug_e1 = Category::where([['slug', $slug]])->count();
@@ -106,7 +105,7 @@ class BrandController extends Controller
                 $constraint->aspectRatio();
             })->save($destinationPath.'/'.$imageName);
 
-        return redirect()->route('staff.brand.index')->with('success','Data successfully saved.');
+        return redirect()->route('brand.index')->with('success','Data successfully saved.');
     }
 
     /**
@@ -146,18 +145,18 @@ class BrandController extends Controller
 
 
              if(isset($request->image_name)) {
-                $this->validate($request, array(
+                $request->validate([
                     'name' => 'required|max:100',
-
-                    'image_name' => 'required|mimes:jpeg,png,jpg,JPG|max:2048|dimensions:min_width=50 ,min_height=50',
+                    'image_name' => 'required|mimes:jpeg,png,jpg,JPG|max:2048|dimensions:min_width=50,min_height=50',
                     'status' => 'required'
-                ));
+                ]);
+                
              } else {
-                $this->validate($request, array(
+                $request->validate([
                     'name' => 'required|max:100',
-
-                    'status' => 'required'
-                ));
+                    'status' => 'required',
+                ]);
+                
              }
 
              if(isset($request->image_name)) {
@@ -186,8 +185,8 @@ class BrandController extends Controller
              }
 
 
-        $slug = str_slug($request->name);
-        $slug_e = Brand::where([['slug', $slug]])
+             $slug = Str::slug($request->name);
+                     $slug_e = Brand::where([['slug', $slug]])
                    ->whereNotIn('id', [$brand->id])
                 ->count();
         $slug_e1 = Category::where([['slug', $slug]])->count();
@@ -201,7 +200,7 @@ class BrandController extends Controller
         $brand->status = $request->status;
         $brand->save();
 
-        return redirect()->route('staff.brand.index')->with('success', 'Data successfully saved.');
+        return redirect()->route('brand.index')->with('success', 'Data successfully saved.');
 
     }
 
@@ -243,7 +242,7 @@ class BrandController extends Controller
         }
 
 
-        return redirect()->route('staff.brand.index')->with('success', 'Data has been deleted successfully');
+        return redirect()->route('brand.index')->with('success', 'Data has been deleted successfully');
 
     }
 

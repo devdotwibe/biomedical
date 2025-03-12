@@ -11,7 +11,7 @@
         Manage Care Area
       </h1>
       <ol class="breadcrumb">
-        <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href=""><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Manage Care Area</li>
       </ol>
     </section>
@@ -30,7 +30,7 @@
 
             <div class="pull-left">
 
-                <a class="btn btn-sm btn-success" href="{{ route('staff.category.create') }}"> <span class="glyphicon glyphicon-plus"></span>Add Care Area</a>
+                <a class="btn btn-sm btn-success" href="{{ route('category.create') }}"> <span class="glyphicon glyphicon-plus"></span>Add Care Area</a>
 
             </div>
 
@@ -98,13 +98,13 @@
 
                         <td class="alignCenter">
 
-                            <a class="btn btn-primary btn-xs" href="{{ route('staff.category.edit',$product->id) }}" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a class="btn btn-primary btn-xs" href="{{ route('category.edit',$product->id) }}" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
                             <?php
                              $cat_exit = DB::select('select count(*) as count from products where `category_id`="'.$product->id.'" ');   
                              if($cat_exit[0]->count==0)
                               {
                             ?>
-                            <a class="btn btn-danger btn-xs deleteItem" href="{{ route('staff.category.destroy',$product->id) }}" id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
+                            <a class="btn btn-danger btn-xs deleteItem" href="{{ route('category.destroy',$product->id) }}" id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
                             <?php
                               }
                             ?>

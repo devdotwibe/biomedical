@@ -10,7 +10,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.products.index')}}">Manage Products</a></li>
+        <li><a href="{{route('product.index')}}">Manage Products</a></li>
         <li class="active">Edit Product</li>
       </ol>
 </section>
@@ -45,7 +45,7 @@
             {{ $errors->first('image_name') }}
             </p>
 
-            <form role="form" name="frm_products" id="frm_products" method="post" action="{{ route('staff.products.update', $product->id) }}" enctype="multipart/form-data">
+            <form role="form" name="frm_products" id="frm_products" method="post" action="{{ route('product.update', $product->id) }}" enctype="multipart/form-data">
                @csrf
                {{method_field('PUT')}}
                 <div class="box-body border-row">
@@ -496,7 +496,7 @@ $cmplist =  DB::select("select * from competition_product where `product_type_id
 
               <div class="box-footer">
                 <button type="submit" class="mdm-btn-line submit-btn">Submit</button>
-                 <button type="button" class="mdm-btn-line cancel-btn" onClick="window.location.href='{{route('staff.products.index')}}'">Cancel</button>
+                 <button type="button" class="mdm-btn-line cancel-btn" onClick="window.location.href='{{route('product.index')}}'">Cancel</button>
               </div>
             </form>
           </div>
@@ -742,7 +742,7 @@ $(".load-sec").show();
     {
       var value = $(e).val();
 
-        $.post('{{route("staff.modality_change")}}',{
+        $.post('{{route("modality_change")}}',{
 
           value:value,
             

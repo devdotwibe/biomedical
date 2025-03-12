@@ -13,7 +13,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.competition_product.index')}}">Manage Competition Product</a></li>
+        <li><a href="{{route('competition_product.index')}}">Manage Competition Product</a></li>
         <li class="active">Edit Competition Product</li>
       </ol>
     </section>
@@ -45,7 +45,7 @@
             {{ $errors->first('name') }}
             </p>
 
-            <form role="form" name="frm_subcategory" id="frm_subcategory" method="post" action="{{ route('staff.competition_product.update', $competition_product->id) }}" enctype="multipart/form-data" >
+            <form role="form" name="frm_subcategory" id="frm_subcategory" method="post" action="{{ route('competition_product.update', $competition_product->id) }}" enctype="multipart/form-data" >
                @csrf
                {{method_field('PUT')}}
                 <div class="box-body">
@@ -125,7 +125,7 @@
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                 <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('staff.competition_product.index')}}'">Cancel</button>
+                 <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('competition_product.index')}}'">Cancel</button>
               </div>
             </form>
           </div>

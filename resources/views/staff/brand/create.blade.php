@@ -12,7 +12,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.brand.index')}}">Manage Brand</a></li>
+        <li><a href="{{route('brand.index')}}">Manage Brand</a></li>
         <li class="active">Add Brand</li>
       </ol>
     </section>
@@ -46,7 +46,7 @@
             {{ $errors->first('image_name') }}
             </p>
 
-            <form role="form" name="frm_brand" id="frm_brand" method="post" action="{{route('staff.brand.store')}}" enctype="multipart/form-data" >
+            <form role="form" name="frm_brand" id="frm_brand" method="post" action="{{route('brand.store')}}" enctype="multipart/form-data" >
                @csrf
                 <div class="box-body">
 
@@ -91,7 +91,7 @@
 
               <div class="box-footer">
                 <button type="button" class="btn btn-primary"  onclick="validate_from()">Submit</button>
-                <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('staff.brand.index')}}'">Cancel</button>
+                <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('brand.index')}}'">Cancel</button>
               </div>
             </form>
           </div>

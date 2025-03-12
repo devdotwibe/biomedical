@@ -7,7 +7,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.transation.index')}}">Manage Transaction</a></li>
+        <li><a href="{{route('transation.index')}}">Manage Transaction</a></li>
         <li class="active">Add Transaction</li>
       </ol>
     </section>
@@ -33,7 +33,7 @@
             {{ $errors->first('name') }}
             {{ $errors->first('image_name') }}
             </p>
-            <form role="form" name="frm_transation" id="frm_transation" method="post" action="{{route('staff.transation.store')}}" enctype="multipart/form-data" autocomplete="off">
+            <form role="form" name="frm_transation" id="frm_transation" method="post" action="{{route('transation.store')}}" enctype="multipart/form-data" autocomplete="off">
                @csrf
 
                 <div class="box-body">
@@ -323,7 +323,7 @@ foreach ($all_transaction as $item)
                   <span class="error_message" id="product_error" style="display: none">Product not added</span>
                 <button type="button" class="mdm-btn-line submit-btn"  onclick="validate_from()">Submit</button>
                 <!--  -->
-                <button type="button" class="mdm-btn-line cancel-btn" onClick="window.location.href='{{route('staff.transation.index')}}'">Cancel</button>
+                <button type="button" class="mdm-btn-line cancel-btn" onClick="window.location.href='{{route('transation.index')}}'">Cancel</button>
               </div>
 
 

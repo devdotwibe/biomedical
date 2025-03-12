@@ -23,7 +23,7 @@
           <div class="row">
             <div class="col-lg-12 margin-tb">
               <div class="pull-left">
-                <a class="add-button" href="{{ route('staff.product_type.create') }}"> <span
+                <a class="add-button" href="{{ route('product_type.create') }}"> <span
                     class="glyphicon glyphicon-plus"></span>Add Product Type</a>
               </div>
             </div>
@@ -62,14 +62,14 @@
                     <td><?php  echo $product->name ?></td>
                     <td>{{ date('d-m-Y h:i A', strtotime($product->created_at)) }}</td>
                     <td class="alignCenter">
-                    <a class="btn btn-primary btn-xs" href="{{ route('staff.product_type.edit', $product->id) }}"
+                    <a class="btn btn-primary btn-xs" href="{{ route('product_type.edit', $product->id) }}"
                       title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
                     <?php
             $cat_exit = DB::select('select count(*) as count from products where `product_type_id`="' . $product->id . '" ');
             if ($cat_exit[0]->count == 0) {
                       ?>
                     <a class="btn btn-danger btn-xs deleteItem btn-bkp"
-                      href="{{ route('staff.product_type.destroy', $product->id) }}" id="deleteItem{{$product->id}}"
+                      href="{{ route('product_type.destroy', $product->id) }}" id="deleteItem{{$product->id}}"
                       data-tr="tr_{{$product->id}}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
                     <?php
             }

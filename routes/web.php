@@ -16,9 +16,17 @@ use App\Http\Controllers\IndustriesController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\staff\Category_typeController;
+use App\Http\Controllers\staff\Competition_productController;
+use App\Http\Controllers\staff\DealerController;
 use App\Http\Controllers\staff\IbController;
+use App\Http\Controllers\staff\ModalityController;
+use App\Http\Controllers\staff\Product_typeController;
 use App\Http\Controllers\staff\ProductController;
 use App\Http\Controllers\staff\StaffquoteController;
+use App\Http\Controllers\staff\SubcategoryController;
+use App\Http\Controllers\staff\TransationController;
+use App\Http\Controllers\staff\UnitsController;
 use App\Http\Controllers\staff\UserController;
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\DealerAuthenticate;
@@ -29,6 +37,8 @@ use App\Http\Controllers\ContactusController;
 use App\AppVersionControll;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\staff\AdminajaxController;
+use App\Http\Controllers\staff\BrandController;
+use App\Http\Controllers\staff\CategoryController;
 use App\Http\Controllers\staff\StaffController;
 
 Route::get('testtaskv', 'staff\TaskController@test_v_task');
@@ -326,8 +336,11 @@ Route::middleware(StaffAuthenticate::class)->group(
    
     Route::get('dashboard', [StaffController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('change-password', 'staff\StaffController@changePassword');
-    Route::post('change-password', 'staff\StaffController@updatePassword');
+    Route::get('change-password', [StaffController::class, 'changePassword']);
+    Route::post('change-password', [StaffController::class, 'updatePassword']);
+
+
+
     /***********************************Staff Admin control****************************************************/
     Route::resource('dailyclosing_details', 'staff\Dailyclosing_detailsController');
     /***********************************Leadoption Staff start****************************************************/
@@ -596,7 +609,7 @@ Route::middleware(StaffAuthenticate::class)->group(
     /***********************************Quote  End****************************************************/
     /***********************************Product Staff Star   t****************************************************/
 
-    Route::resource('products', ProductController::class);
+    Route::resource('product', ProductController::class);
 
     Route::post('modality_change', 'staff\ProductController@modality_change')->name('modality_change');
 
@@ -604,12 +617,17 @@ Route::middleware(StaffAuthenticate::class)->group(
 
     /***********************************Product Staff  End****************************************************/
     /***********************************Brand Staff Start****************************************************/
-    Route::resource('brand', 'staff\BrandController');
-    Route::post('brand/deleteAll', 'staff\BrandController@deleteAll');
+
+    Route::resource('brand', BrandController::class);
+    Route::post('/brand/deleteAll', [BrandController::class, 'deleteAll']);
+
     /***********************************Brand Staff End****************************************************/
     /***********************************Category type Product staff Start***********************************************/
-    Route::resource('category_type', 'staff\Category_typeController');
-    Route::post('category_type/deleteAll', 'staff\Category_typeController@deleteAll');
+
+    Route::resource('category_type', Category_typeController::class);
+    Route::post('category_type/deleteAll', [Category_typeController::class, 'deleteAll']);
+
+    
     /***********************************Category type Product  Staff End****************************************************/
     /***********************************Product Category  Start****************************************************/
     Route::resource('category', 'staff\CategoryController');
@@ -620,12 +638,14 @@ Route::middleware(StaffAuthenticate::class)->group(
     Route::post('modality/deleteAll', 'staff\ModalityController@deleteAll');
     /***********************************Modality Product  End****************************************************/
     /***********************************Competition Product  End****************************************************/
-    Route::resource('competition_product', 'staff\Competition_productController');
-    Route::post('competition_product/deleteAll', 'staff\Competition_productController@deleteAll');
+    Route::resource('competition_product', Competition_productController::class);
+    Route::post('competition_product/deleteAll', [Competition_productController::class, 'deleteAll']);
+  
     /***********************************Competition Product  End****************************************************/
     /***********************************Product Type End****************************************************/
-    Route::resource('product_type', 'staff\Product_typeController');
-    Route::post('product_type/deleteAll', 'staff\Product_typeController@deleteAll');
+
+    Route::resource('product_type', Product_typeController::class);
+    Route::post('product_type/deleteAll', [Product_typeController::class, 'deleteAll']);
     /***********************************Product Type End****************************************************/
     Route::resource('service_task', 'staff\Service_taskController');
     Route::post('service_task/deleteAll', 'staff\Service_taskController@deleteAll');
@@ -674,42 +694,47 @@ Route::middleware(StaffAuthenticate::class)->group(
 
 
     /***********************************Transation  Start****************************************************/
-    Route::resource('transation', 'staff\TransationController');
-    Route::post('transation/deleteAll', 'staff\TransationController@deleteAll');
-    Route::post('save_shipping_address_user', 'staff\TransationController@save_shipping_address_user')->name('save_shipping_address_user');
-    Route::post('select_shipping_address_user', 'staff\TransationController@select_shipping_address_user')->name('select_shipping_address_user');
-    Route::post('approval_transation', 'staff\TransationController@approval_transation');
-    Route::post('delete_product_transation', 'staff\TransationController@delete_product_transation');
-    Route::post('save_transation_insentive', 'staff\TransationController@save_transation_insentive');
-    Route::post('approval_transation_mspowner', 'staff\TransationController@approval_transation_mspowner');
-    Route::post('update_qty_transation', 'staff\TransationController@update_qty_transation');
-    Route::post('change_transation_type_oppurtunity', 'staff\TransationController@change_transation_type_oppurtunity');
-    Route::post('save_config_transation', 'staff\TransationController@save_config_transation');
-    Route::post('save_po_transation', 'staff\TransationController@save_po_transation');
-    Route::post('save_certifi_transation', 'staff\TransationController@save_certifi_transation');
-    Route::post('save_payment_transation', 'staff\TransationController@save_payment_transation');
-    Route::post('save_delivery_transation', 'staff\TransationController@save_delivery_transation');
-    Route::post('save_other_transation', 'staff\TransationController@save_other_transation');
-    Route::post('view_transation_all_product', 'staff\TransationController@view_transation_all_product');
-    Route::post('get_sort_product_transaction', 'staff\TransationController@get_sort_product_transaction');
-    Route::post('approval_transaction_staff', 'staff\TransationController@approval_transaction_staff');
 
-    Route::get('create_dispatch/{id}', 'staff\TransationController@create_dispatch')->name('create_dispatch');
-    Route::get('dispatch_verify/{id}', 'staff\TransationController@dispatch_verify')->name('dispatch_verify');
-    Route::get('dispatch_verify_view/{id}', 'staff\TransationController@dispatch_verify_view')->name('dispatch_verify_view');
 
-    Route::post('delivery_approve', 'staff\TransationController@delivery_approve')->name('delivery_approve');
-    Route::post('after_user_approve', 'staff\TransationController@after_user_approve')->name('after_user_approve');
-    Route::post('get_user_contact_details', 'staff\TransationController@get_user_contact_details')->name('get_user_contact_details');
+    Route::resource('transation', TransationController::class);
+    Route::post('transation/deleteAll', [TransationController::class, 'deleteAll']);
+    Route::post('save_shipping_address_user', [TransationController::class, 'save_shipping_address_user'])->name('save_shipping_address_user');
+    Route::post('select_shipping_address_user', [TransationController::class, 'select_shipping_address_user'])->name('select_shipping_address_user');
+    Route::post('approval_transation', [TransationController::class, 'approval_transation']);
+    Route::post('delete_product_transation', [TransationController::class, 'delete_product_transation']);
+    Route::post('save_transation_insentive', [TransationController::class, 'save_transation_insentive']);
+    Route::post('approval_transation_mspowner', [TransationController::class, 'approval_transation_mspowner']);
+    Route::post('update_qty_transation', [TransationController::class, 'update_qty_transation']);
+    Route::post('change_transation_type_oppurtunity', [TransationController::class, 'change_transation_type_oppurtunity']);
+    Route::post('save_config_transation', [TransationController::class, 'save_config_transation']);
+    Route::post('save_po_transation', [TransationController::class, 'save_po_transation']);
+    Route::post('save_certifi_transation', [TransationController::class, 'save_certifi_transation']);
+    Route::post('save_payment_transation', [TransationController::class, 'save_payment_transation']);
+    Route::post('save_delivery_transation', [TransationController::class, 'save_delivery_transation']);
+    Route::post('save_other_transation', [TransationController::class, 'save_other_transation']);
+    Route::post('view_transation_all_product', [TransationController::class, 'view_transation_all_product']);
+    Route::post('get_sort_product_transaction', [TransationController::class, 'get_sort_product_transaction']);
+    Route::post('approval_transaction_staff', [TransationController::class, 'approval_transaction_staff']);
 
-    Route::get('sales_order', 'staff\TransationController@sales_order')->name('sales_order');
-    Route::get('transactionindex', 'staff\TransationController@transactionindex')->name('transactionindex');
-    Route::get('Pendingtransaction', 'staff\TransationController@Pendingtransaction')->name('Pendingtransaction');
 
-    Route::get('transation_details/{id}', 'staff\TransationController@transation_details')->name("transation_details");
 
-    Route::post('get_test_retun_product', 'staff\TransationController@get_test_retun_product');
-    Route::post('get_all_product', 'staff\TransationController@get_all_product');
+    Route::get('create_dispatch/{id}', [TransationController::class, 'create_dispatch'])->name('create_dispatch');
+    Route::get('dispatch_verify/{id}', [TransationController::class, 'dispatch_verify'])->name('dispatch_verify');
+    Route::get('dispatch_verify_view/{id}', [TransationController::class, 'dispatch_verify_view'])->name('dispatch_verify_view');
+
+    Route::post('delivery_approve', [TransationController::class, 'delivery_approve'])->name('delivery_approve');
+    Route::post('after_user_approve', [TransationController::class, 'after_user_approve'])->name('after_user_approve');
+    Route::post('get_user_contact_details', [TransationController::class, 'get_user_contact_details'])->name('get_user_contact_details');
+
+    Route::get('sales_order', [TransationController::class, 'sales_order'])->name('sales_order');
+    Route::get('transactionindex', [TransationController::class, 'transactionindex'])->name('transactionindex');
+    Route::get('Pendingtransaction', [TransationController::class, 'Pendingtransaction'])->name('Pendingtransaction');
+
+    Route::get('transation_details/{id}', [TransationController::class, 'transation_details'])->name("transation_details");
+
+    Route::post('get_test_retun_product', [TransationController::class, 'get_test_retun_product']);
+    Route::post('get_all_product', [TransationController::class, 'get_all_product']);
+
     /***********************************Transation End****************************************************/
 
 
@@ -763,10 +788,13 @@ Route::middleware(StaffAuthenticate::class)->group(
     Route::get('AllTaskservice', 'staff\Service_taskController@AllTaskservice')->name('AllTaskservice');
     Route::resource('task', 'staff\TaskController');
 
+    Route::get('exportproduct', [ProductController::class, 'exportproduct'])->name('exportproduct');
 
-    Route::post('productimagegallery', 'staff\AdminajaxController@productimagegallery');
-    Route::post('get_productimagegallery', 'staff\AdminajaxController@get_productimagegallery');
-    Route::post('delete_productimagegallery', 'staff\AdminajaxController@delete_productimagegallery');
+
+    Route::post('productimagegallery', [AdminajaxController::class, 'productimagegallery']);
+    Route::post('get_productimagegallery', [AdminajaxController::class, 'get_productimagegallery']);
+    Route::post('delete_productimagegallery', [AdminajaxController::class, 'delete_productimagegallery']);
+
     /***********************************Customer Mange ****************************************************/
 
     Route::get('changestatus', [UserController::class, 'changestatus'])->name('changestatus');
@@ -782,7 +810,7 @@ Route::middleware(StaffAuthenticate::class)->group(
     Route::post('change_task_status_total_task', 'staff\AdminajaxController@change_task_status_total_task');
     Route::post('change_task_priority', 'staff\AdminajaxController@change_task_priority');
     Route::post('viewchecklist_details', 'staff\AdminajaxController@viewchecklist_details');
-    Route::post('add_task_replay_comment', 'staff\AdminajaxController@add_task_replay_comment');
+    Route::post('add_task_replay_comment', action: 'staff\AdminajaxController@add_task_replay_comment');
     Route::post('add_daily_closing', 'staff\AdminajaxController@add_daily_closing');
     Route::any('get_product_company', 'staff\AdminajaxController@get_product_company');
     Route::any('get_product_all_details', 'staff\AdminajaxController@get_product_all_details');
@@ -835,12 +863,15 @@ Route::middleware(StaffAuthenticate::class)->group(
     Route::post('check_attendence_lock', 'staff\TaskController@check_attendence_lock')->name('check_attendence_lock');
     /***********************************Task staff end ****************************************************/
 
-    Route::post('add_contact_person', 'staff\AdminajaxController@add_contact_person');
-    Route::post('contactformedit', 'staff\AdminajaxController@contactformedit');
+    Route::post('add_contact_person',  [AdminajaxController::class, 'add_contact_person']);
+    Route::post('contactformedit',  [AdminajaxController::class, 'contactformedit']);
     Route::resource('contact_person', 'staff\Contact_personController');
     Route::post('contact_person/deleteAll', 'staff\Contact_personController@deleteAll');
-    Route::post('ajaxChangeStatus', 'staff\AdminajaxController@ajaxChangeStatus');
-    Route::post('ajaxChangeStatus_product', 'staff\AdminajaxController@ajaxChangeStatus_product');
+
+
+
+    Route::post('ajaxChangeStatus',     [AdminajaxController::class, 'ajaxChangeStatus']);
+    Route::post('ajaxChangeStatus_product', [AdminajaxController::class, 'ajaxChangeStatus_product']);
     Route::post('view_task_details', 'staff\AdminajaxController@view_task_details');
     Route::post('view_staff_task', 'staff\AdminajaxController@view_staff_task');
     Route::post('approve_staff', 'staff\AdminajaxController@approve_staff');
@@ -929,6 +960,60 @@ Route::middleware(StaffAuthenticate::class)->group(
 
   }
 );
+
+
+
+
+
+
+
+
+Route::post('product/{product}/unverify', [ProductController::class, 'unverify'])->name('product.unverify');
+Route::post('product/{product}/verify', [ProductController::class, 'unverify'])->name('product.verify');
+
+
+Route::resource('dealer', DealerController::class);
+
+
+        /***********************************Product Category  Start*************************************/
+        Route::resource('category', CategoryController::class);
+        Route::post('category/deleteAll', [CategoryController::class, 'CategoryController']);
+        Route::get('category/{category}/product-type/{productType}/remove-type', [CategoryController::class, 'removeType'])->name("category.removeType");
+        Route::post('category/{category}/product-type/add', [CategoryController::class, 'addType'])->name("category.addType");
+        /***********************************Product Category  End***************************************/
+
+
+
+    /***********************************Modality Product Start****************************************************/
+    Route::resource('modality', ModalityController::class);
+    Route::post('modality/deleteAll', [ModalityController::class, 'deleteAll']);
+    /***********************************Modality Product End****************************************************/
+
+
+
+
+
+
+    /***********************************Product SubCategory  Start*************************************/
+    Route::resource('staff/subcategory', SubcategoryController::class);
+    Route::post('subcategory/deleteAll', [SubcategoryController::class, 'deleteAll']);
+
+
+    /***********************************Product SubCategory  End**************************************/
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
 Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->group(
   function () {
 
@@ -1016,8 +1101,8 @@ Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->gr
     /***********************************Warehouse  Start***********************************************/
 
     /***********************************Units start****************************************************/
-    Route::resource('units', 'admin\UnitsController');
-    Route::post('units/deleteAll', 'admin\UnitsController@deleteAll');
+    Route::resource('units', UnitsController::class);
+    Route::post('units/deleteAll', [UnitsController::class, 'deleteAll']);
     /***********************************Units End****************************************************/
 
     /***********************************Units start****************************************************/
@@ -1164,10 +1249,6 @@ Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->gr
     ;
     /***********************************Product Type Start***********************************************/
 
-    /***********************************Modality Product Start****************************************************/
-    Route::resource('modality', 'admin\ModalityController');
-    Route::post('modality/deleteAll', 'admin\ModalityController@deleteAll');
-    /***********************************Modality Product End****************************************************/
     /***********************************Competition Product  Start*************************************************/
     Route::resource('competition_product', 'admin\Competition_productController');
     Route::post('competition_product/deleteAll', 'admin\Competition_productController@deleteAll');
@@ -1220,17 +1301,20 @@ Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->gr
     /************************************ Dealers Manage Start *********************************************/
     Route::post('dealer/{dealer}/verify', 'admin\DealerController@verify')->name("dealer.verify");
     Route::put('dealer/{dealer}/upload', 'admin\DealerController@upload')->name('dealer.upload');
-    Route::resource('dealer', 'admin\DealerController');
     /************************************ Dealers Manage Start *********************************************/
     /***********************************Customer Mange ****************************************************/
-    Route::resource('customer', 'admin\UserController');
-    Route::get('customer/state/district', 'admin\UserController@getDistrict')->name("customer.district");
-    Route::get('customer/state/district/taluk', 'admin\UserController@getTaluk')->name("customer.taluk");
-    Route::post('customer/deleteAll', 'admin\UserController@deleteAll');
-    Route::get('exportproductcustomer', 'admin\UserController@exportproductcustomer')->name('exportproductcustomer');
-    Route::post('importproductcustomer', 'admin\UserController@importproductcustomer')->name('importproductcustomer');
-    Route::get('importExportViewCustomer', 'admin\UserController@importExportViewCustomer')->name('importExportViewCustomer');
+    Route::resource('customer', UserController::class);
+    Route::get('customer/state/district', [UserController::class, 'getDistrict'])->name("customer.district");
+    Route::get('customer/state/district/taluk', [UserController::class, 'getTaluk'])->name("customer.taluk");
+    Route::post('customer/deleteAll', [UserController::class, 'deleteAll']);
+    Route::get('exportproductcustomer', [UserController::class, 'exportproductcustomer'])->name('exportproductcustomer');
+    Route::post('importproductcustomer', [UserController::class, 'importproductcustomer'])->name('importproductcustomer');
+    Route::get('importExportViewCustomer', [UserController::class, 'importExportViewCustomer'])->name('importExportViewCustomer');
     /***********************************Customer Mange End ****************************************************/
+
+
+        
+
 
     /***********************************Admin Option Start ****************************************************/
 
@@ -1368,20 +1452,11 @@ Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->gr
 
     /***********************************Quote  End****************************************************/
 
-    /***********************************Product Category  Start*************************************/
-    Route::resource('category', 'admin\CategoryController');
-    Route::post('category/deleteAll', 'admin\CategoryController@deleteAll');
-    Route::get('category/{category}/product-type/{productType}/remove-type', 'admin\CategoryController@removeType')->name("category.removeType");
-    Route::post('category/{category}/product-type/add', 'admin\CategoryController@addType')->name("category.addType");
-    /***********************************Product Category  End***************************************/
 
-    /***********************************Product SubCategory  Start*************************************/
-    Route::resource('subcategory', 'admin\SubcategoryController');
-    Route::post('subcategory/deleteAll', 'admin\SubcategoryController@deleteAll');
-    /***********************************Product SubCategory  End**************************************/
+        
     /***********************************Brand  Start****************************************************/
-    Route::resource('brand', 'admin\BrandController');
-    Route::post('brand/deleteAll', 'admin\BrandController@deleteAll');
+    // Route::resource('brand', 'admin\BrandController');
+    // Route::post('brand/deleteAll', 'admin\BrandController@deleteAll');
     /***********************************Brand  Start****************************************************/
 
     /***********************************Testimonial  Start****************************************************/
@@ -1390,19 +1465,17 @@ Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->gr
     /***********************************Testimonial  End****************************************************/
 
     /***********************************Product  Start****************************************************/
-    Route::post('products/{product}/verify', 'admin\ProductController@verify')->name('products.verify');
-    Route::post('products/{product}/unverify', 'admin\ProductController@unverify')->name('products.unverify');
-    Route::resource('products', 'admin\ProductController');
-
+    Route::resource('products', ProductController::class);
     
-    Route::post('modality_change', 'admin\ProductController@modality_change')->name('modality_change');
+    Route::post('modality_change', [ProductController::class, 'modality_change'])->name('modality_change');
 
-    Route::post('products/deleteAll', 'admin\ProductController@deleteAll');
-    Route::get('exportproduct', 'admin\ProductController@exportproduct')->name('exportproduct');
-    Route::post('importproduct', 'admin\ProductController@importproduct')->name('importproduct');
-    Route::post('exportproductpdf', 'admin\ProductController@exportproductpdf')->name('exportproductpdf');
-    Route::get('importExportView', 'admin\ProductController@importExportView')->name('importExportView');
+    Route::post('products/deleteAll', [ProductController::class, 'deleteAll']);
+    Route::post('importproduct', [ProductController::class, 'importproduct'])->name('importproduct');
+    Route::post('exportproductpdf', [ProductController::class, 'exportproductpdf'])->name('exportproductpdf');
+    Route::get('importExportView', [ProductController::class, 'importExportView'])->name('importExportView');
     /***********************************Product  End****************************************************/
+
+
     /***********************************Transation  Start****************************************************/
     Route::resource('transation', 'admin\TransationController');
     Route::post('transation/deleteAll', 'admin\TransationController@deleteAll');

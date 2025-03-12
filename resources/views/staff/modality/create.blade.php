@@ -12,7 +12,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.modality.index')}}">Manage Modality</a></li>
+        <li><a href="{{route('modality.index')}}">Manage Modality</a></li>
         <li class="active">Add Modality</li>
       </ol>
     </section>
@@ -46,7 +46,7 @@
             {{ $errors->first('image_name') }}
             </p>
 
-            <form role="form" name="frm_modal" id="frm_modal" method="post" action="{{route('staff.modality.store')}}" enctype="multipart/form-data" >
+            <form role="form" name="frm_modal" id="frm_modal" method="post" action="{{route('modality.store')}}" enctype="multipart/form-data" >
                @csrf
                 <div class="box-body">
 
@@ -79,7 +79,7 @@
 
               <div class="box-footer">
                 <button type="button" class="btn btn-primary"  onclick="validate_from()">Submit</button>
-                <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('staff.modality.index')}}'">Cancel</button>
+                <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('modality.index')}}'">Cancel</button>
               </div>
             </form>
           </div>

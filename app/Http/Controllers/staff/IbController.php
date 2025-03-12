@@ -51,7 +51,7 @@ class IbController extends Controller
             }
 
             return Datatables::of($data)
-
+ 
                 ->addColumn('customer', function ($data) {
                     if (!empty($data->ibUser)) {
                         return $data->ibUser->business_name;

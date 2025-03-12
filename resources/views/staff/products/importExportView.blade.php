@@ -1,6 +1,6 @@
 
 
-@extends('admin/layouts.app')
+@extends('staff/layouts.app')
 
 @section('title', 'Manage Import and Export Products')
 
@@ -72,7 +72,7 @@
 
                 <button class="btn btn-success">Import Product</button>
 
-                <a class="btn btn-warning" href="{{ route('admin.exportproduct') }}">Export Product</a>
+                <a class="btn btn-warning" href="{{ route('exportproduct') }}">Export Product</a>
 
             </form>
 

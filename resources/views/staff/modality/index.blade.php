@@ -22,7 +22,7 @@
         <div class="row">
           <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-              <a class="add-button" href="{{ route('staff.modality.create') }}">Add Modality</a>
+              <a class="add-button" href="{{ route('modality.create') }}">Add Modality</a>
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@
                 </td>
 
                 <td class="alignCenter">
-                  <a class="btn btn-primary btn-xs" href="{{ route('staff.modality.edit', $modality->id) }}"
+                  <a class="btn btn-primary btn-xs" href="{{ route('modality.edit', $modality->id) }}"
                   title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
 
 
@@ -84,7 +84,7 @@
 
           if ($modality_exit_asset[0]->count == 0 || $modality_exit_products[0]->count == 0) {
                       ?>
-                  <a class="btn btn-danger btn-xs deleteItem" href="{{ route('staff.modality.destroy', $modality->id) }}"
+                  <a class="btn btn-danger btn-xs deleteItem" href="{{ route('modality.destroy', $modality->id) }}"
                   id="deleteItem{{$modality->id}}" data-tr="tr_{{$modality->id}}" title="Delete"><span
                     class="glyphicon glyphicon-trash"></span></a>
                   <?php

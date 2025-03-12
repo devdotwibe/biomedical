@@ -11,14 +11,14 @@
   $staff_id =session('STAFF_ID');
 
 @endphp
-<section class="content-header">
-      <h1>
-        Manage Customer
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Manage Customer</li>
-      </ol>
+    <section class="content-header">
+        <h1>
+            Manage Customer
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Manage Customer</li>
+        </ol>
     </section>
 
     @php

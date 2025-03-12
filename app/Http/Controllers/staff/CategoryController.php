@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\staff;
 
-use App\Category;
+use App\Models\User_permission;
 use App\Product;
 use App\Banner;
 use App\Brand;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
-use App\User_permission;
+use App\Models\Category;
 use Image;
 use Storage;
 

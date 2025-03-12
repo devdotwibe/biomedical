@@ -70,13 +70,15 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
         
       @endif
 
+      <li><a href="{{ route('dashboard') }}"><span>Dashboard</span></a></li>
+
             <li class="treeview <?php echo strstr($currentPath, 'staff/transation') || strstr($currentPath, 'staff/transation') ? 'active menu-open' : ''; ?>">
-                <a href="#">
+                {{-- <a href="#">
                     <span>Transaction</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-right pull-right"></i>
                     </span>
-                </a>
+                </a> --}}
                 <ul class="treeview-menu">
 
                     <li class="<?php echo strstr($currentPath, 'staff/transation') ? 'active' : ''; ?>">
@@ -101,18 +103,18 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                     </li>
 
 
-                    <!-- <li class="<?php //echo (strstr($currentPath,'staff/transactionindex')) ? 'active' : ''
-                    ?>">
-              <a href="{{ route('transactionindex') }}">
-             <span>Pending Transaction</span>
-            </a>
-            </li> -->
+                        <!-- <li class="<?php //echo (strstr($currentPath,'staff/transactionindex')) ? 'active' : ''
+                        ?>">
+                <a href="{{ route('transactionindex') }}">
+                <span>Pending Transaction</span>
+                </a>
+                </li> -->
 
                     <?php 
-         $staff_id = session('STAFF_ID');
-         $mange_invoice =  DB::select("SELECT * FROM `transaction_manage_staffs` WHERE manage_section='Invoice' AND staff_id='".$staff_id."'" );
-    	if(count($mange_invoice)>0){
-         ?>
+                        $staff_id = session('STAFF_ID');
+                        $mange_invoice =  DB::select("SELECT * FROM `transaction_manage_staffs` WHERE manage_section='Invoice' AND staff_id='".$staff_id."'" );
+                        if(count($mange_invoice)>0){
+                        ?>
                     <li class="<?php echo strstr($currentPath, 'staff/invoice') ? 'active' : ''; ?>">
                         <a href="{{ route('invoice.index') }}">
                             <span>Manage Invoice</span>
@@ -153,16 +155,15 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                 <a href="#">
                     <span>Products</span>
                     <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
+                        <i class="fa fa-angle-right pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
 
-                    <li class="<?php echo strstr($currentPath, '/products') ? 'active' : ''; ?>">
-                        <a href="{{ route('products.index') }}"> <span>Manage Products</span></a>
+                    <li class="<?php echo strstr($currentPath, '/product') ? 'active' : ''; ?>">
+                        <a href="{{ route('product.index') }}"> <span>Manage Products</span></a>
                     </li>
 
-                    @if( optional($permission)->product_view == 'admin')
 
                         <li class="<?php echo strstr($currentPath, 'staff/brand') ? 'active' : ''; ?>">
                             <a href="{{ route('brand.index') }}">
@@ -199,18 +200,91 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                             </a>
                         </li>
 
-                    @endif
+                        <li class="<?php echo (strstr($currentPath,'staff/subcategory')) ? 'active' : '' ?>">
+                            <a href="{{route('subcategory.index')}}">
+                             <span>Manage Sub Category</span>
+                          </a>
+                          </li>
+
+                          <li class="<?php echo (strstr($currentPath,'admin/importExportView')) ? 'active' : '' ?>">
+                            <a href="{{route('admin.importExportView')}}">
+                           <span>Product Export and Import</span>
+                          </a>
+                          </li>
+              
+                          <li class="<?php echo (strstr($currentPath,'admin/units')) ? 'active' : '' ?>">
+                            <a href="{{route('admin.units.index')}}">
+                            <span>Units</span>
+                          </a>
+                          </li>
+
+
 
                 </ul>
             </li> <?php } ?>
 
 
 
-            <li><a href="<?php echo URL::to('staff'); ?>/"><span>Dashboard</span></a></li>
+            @if(optional($permission)->customer_view == 'view' || optional($cor_permission)->customer_view == 'view')
+
+            {{-- <li class="<?php echo strstr($currentPath, 'customer') ? 'active' : ''; ?>"><a href="/customer"><span>Customer</span></a></li> --}}
+
+
+            <li class="treeview <?php echo (strstr($currentPath,'customer') ) ? 'active menu-open' : '' ?>">
+                <a href="#">
+                  <span>Users</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-right pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="<?php echo (strstr($currentPath,'dealer') ) ? 'active' : '' ?>">
+                      <a href="{{route('dealer.index')}}"><span>Dealer</span></a>
+                    </li>
+                    <li class="<?php echo (strstr($currentPath,'customer') ) ? 'active' : '' ?>">
+                      <a href="{{route('admin.customer.index')}}"><span>Customers</span></a>
+                    </li>
+      
+                     <li class="<?php echo (strstr($currentPath,'admin/importExportViewCustomer')) ? 'active' : '' ?>">
+                    <a href="{{route('admin.importExportViewCustomer')}}">
+                    <span>Customer Export and Import</span>
+                  </a>
+                  </li>
+      
+                  <li class="<?php echo (strstr($currentPath,'admin/seller')) ? 'active' : '' ?>">
+                    <a href="">
+                   <span>Seller</span>
+                  </a>
+                  </li>
+      
+                  <li class="<?php echo (strstr($currentPath,'admin/staff')) ? 'active' : '' ?>">
+                    <a href="">
+                    <span>Staff Member</span>
+                  </a>
+                  </li>
+      
+                  <li class="<?php echo (strstr($currentPath,'admin/admin')) ? 'active' : '' ?>">
+                    <a href="">
+                    <span>Admin</span>
+                  </a>
+                  </li>
+      
+              
+      
+                  
+      
+                </ul>
+              </li>
+      
+
+              
+
+        @endif
 
 
 
-            <li><a href="<?php echo URL::to('staff'); ?>/change-password"><span>Change Password</span></a></li>
+
+            <li><a href="/change-password"><span>Change Password</span></a></li>
 
             @if(optional($permission)->ib_access_view =='view' || optional($ib_permission)->ib_view =='view')
 
@@ -333,12 +407,6 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
             <?php
          }
         ?>
-
-        @if(optional($permission)->customer_view == 'view' || optional($cor_permission)->customer_view == 'view')
-
-            <li class="<?php echo strstr($currentPath, 'customer') ? 'active' : ''; ?>"><a href="/customer"><span>Customer</span></a></li>
-
-        @endif
 
         @if(optional($permission)->report_view == 'view')
 

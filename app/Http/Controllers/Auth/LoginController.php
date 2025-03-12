@@ -97,6 +97,55 @@ class LoginController extends Controller
             return view('staff.dashboard',compact('monthpaid','monthtarget','monthtargetachive','monthcommision','hot_pro','last_created','last_created_closed','other_opper','stale'));
         }
 
+
+
+
+
+        $admin_id = session('ADMIN_ID');
+        if(isset($admin_id)) {
+
+            $hot_pro = Oppertunity::where('es_order_date', '>=', Carbon::today()->toDateString())
+        
+        ->where('es_order_date', '<=', Carbon::now()->addDays(7)->toDateString())
+        ->where('deal_stage', '!=', 6)
+        ->where('deal_stage', '!=', 7)
+        ->where('deal_stage', '!=', 8)
+        ->sum('amount');
+
+        $last_created = Oppertunity::where('created_at', '>', Carbon::now()->subDays(7)->toDateString())
+        
+        ->get();
+
+        $last_created_closed = Oppertunity::where('created_at', '>=', Carbon::now()->subDays(14)->toDateString())
+        ->where('created_at', '<=', Carbon::today()->toDateString())
+        ->where('deal_stage', '=', 8)->sum('amount');
+
+        $other_opper = Oppertunity::where('created_at', '<=', Carbon::now()->subDays(14)->toDateString())
+        ->sum('amount');
+
+        $stale = Oppertunity::where('es_order_date', '<', Carbon::today()->toDateString())
+        ->where('deal_stage', '!=', 6)
+        ->where('deal_stage', '!=', 7)
+        ->where('deal_stage', '!=', 8)->get();
+       
+        // $reminder=Reminder::where('status','!=','completed')->whereDate('remind_date','<=',Carbon::today()->toDateString())->first();
+        $current=Carbon::now();
+        $year=$current->format('Y');
+        $brandid=null;
+        $monthtarget=null;
+        $monthtargetachive=null;
+        $monthcommision=null;
+        $monthpaid=null;
+
+        return view('staff.dashboard',compact('monthpaid','monthtarget','monthtargetachive','monthcommision','hot_pro','last_created','last_created_closed','other_opper','stale'));
+
+          
+        }
+
+
+
+
+
         return view('auth.login');
     }
 
@@ -131,10 +180,12 @@ class LoginController extends Controller
             return redirect()->intended('/dashboard');
         }
 
-        $admin = Admin::where('email', $credentials['email'])->first();
-        
+        $admin = Admin::where('name', $credentials['email'])->first();
+ 
         if($admin && md5($credentials['password']) === $admin->password)
+        
         {
+            dd('dgdgdg');
             Auth::guard('admin')->login($admin);
 
             RateLimiter::clear($this->throttleKey($request));
@@ -142,7 +193,7 @@ class LoginController extends Controller
 
             $request->session()->put('ADMIN_ID', $admin->id);
          
-            return redirect()->intended('/admin/dashboard');
+            return redirect()->intended('/dashboard');
         }
 
         RateLimiter::hit($this->throttleKey($request));

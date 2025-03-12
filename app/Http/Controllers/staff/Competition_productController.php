@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\staff;
 
+use App\Models\Category_type;
+use App\Models\Competition_product;
+use App\Models\Product_type;
+use App\Models\User_permission;
 use App\Subcategory;
 use App\Product;
 use App\Category;
 use App\Brand;
-use App\Competition_product;
 use App\Banner;
 use App\Product_option;
-use App\Category_type;
-use App\Product_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
-use App\User_permission;
 use Image;
 use Storage;
 

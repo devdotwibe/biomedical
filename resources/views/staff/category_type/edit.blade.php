@@ -13,7 +13,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.category_type.index')}}">Manage Category</a></li>
+        <li><a href="{{route('category_type.index')}}">Manage Category</a></li>
         <li class="active">Edit Category</li>
       </ol>
     </section>
@@ -45,7 +45,7 @@
             {{ $errors->first('name') }}
             </p>
 
-            <form role="form" name="frm_subcategory" id="frm_subcategory" method="post" action="{{ route('staff.category_type.update', $category_type->id) }}" enctype="multipart/form-data" >
+            <form role="form" name="frm_subcategory" id="frm_subcategory" method="post" action="{{ route('category_type.update', $category_type->id) }}" enctype="multipart/form-data" >
                @csrf
                {{method_field('PUT')}}
                 <div class="box-body">
@@ -82,7 +82,7 @@
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                 <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('staff.category_type.index')}}'">Cancel</button>
+                 <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('category_type.index')}}'">Cancel</button>
               </div>
             </form>
           </div>

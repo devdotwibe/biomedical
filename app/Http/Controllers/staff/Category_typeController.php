@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\staff;
 
+use App\Models\Category_type;
+use App\Models\User_permission;
 use App\Subcategory;
 use App\Product;
-use App\Category_type;
 use App\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
-use App\User_permission;
 use Image;
 use Storage;
 

@@ -29,7 +29,7 @@
 
               <div class="pull-left">
 
-                <a class="add-button" href="{{ route('staff.category_type.create') }}"> Add Category</a>
+                <a class="add-button" href="{{ route('category_type.create') }}"> Add Category</a>
 
               </div>
 
@@ -78,14 +78,14 @@
 
 
                     <td class="alignCenter">
-                    <a class="btn btn-primary btn-xs" href="{{ route('staff.category_type.edit', $product->id) }}"
+                    <a class="btn btn-primary btn-xs" href="{{ route('category_type.edit', $product->id) }}"
                       title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
                     <?php
             $cat_exit = DB::select('select count(*) as count from products where `category_type_id`="' . $product->id . '" ');
             if ($cat_exit[0]->count == 0) {
                         ?>
                     <a class="btn btn-danger btn-xs deleteItem btn-bkp"
-                      href="{{ route('staff.category_type.destroy', $product->id) }}" id="deleteItem{{$product->id}}"
+                      href="{{ route('category_type.destroy', $product->id) }}" id="deleteItem{{$product->id}}"
                       data-tr="tr_{{$product->id}}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
                     <?php
             }

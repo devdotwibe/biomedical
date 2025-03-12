@@ -30,7 +30,7 @@
 
             <div class="pull-left">
 
-                <a class="btn btn-sm btn-success" href="{{ route('staff.brand.create') }}"> <span class="glyphicon glyphicon-plus"></span>Add Brand</a>
+                <a class="btn btn-sm btn-success" href="{{ route('brand.create') }}"> <span class="glyphicon glyphicon-plus"></span>Add Brand</a>
 
             </div>
 
@@ -87,12 +87,12 @@
                          </td>
  -->
                         <td class="alignCenter">
-                            <a class="btn <?php echo ($product->status== 'Y') ? 'btn-success': 'btn-danger' ?>  btn-xs statusItem" id="statusItem{{$product->id}}" data-id="{{$product->id}}" data-from ="brand" title="<?php echo ($product->status == 'Y') ? 'Active': 'Inactive' ?>">
+                            <a class="btn <?php echo ($product->status== 'Y') ? 'btn-success': 'btn-danger' ?>  btn-xs statusChange" id="statusChange{{$product->id}}" data-id="{{$product->id}}" data-from ="brand" title="<?php echo ($product->status == 'Y') ? 'Active': 'Inactive' ?>">
                                 <span class="glyphicon <?php echo ($product->status== 'Y') ? 'glyphicon-ok': 'glyphicon-ban-circle' ?>"></span></a>
                         </td>
 
                         <td class="alignCenter">
-                            <a class="btn btn-primary btn-xs" href="{{ route('staff.brand.edit',$product->id) }}" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a class="btn btn-primary btn-xs" href="{{ route('brand.edit',$product->id) }}" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
                             
 
                             <?php
@@ -100,7 +100,7 @@
                              if($cat_exit[0]->count==0)
                               {
                             ?>
-                            <a class="btn btn-danger btn-xs deleteItem" href="{{ route('admin.brand.destroy',$product->id) }}" id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
+                            <a class="btn btn-danger btn-xs deleteItem" href="{{ route('brand.destroy',$product->id) }}" id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
                             <?php
                               }
                             ?>

@@ -28,7 +28,7 @@
 
             <div class="pull-left">
 
-              <a class="add-button " href="{{ route('staff.sales_order') }}">Add Transaction</a>
+              <a class="add-button " href="{{ route('sales_order') }}">Add Transaction</a>
 
             </div>
 
@@ -76,7 +76,7 @@
                   <span class="slNo">{{$i}} </span>
                 </td>
                 <td data-th="Transation Id">
-                  <a href="{{ route('staff.transation_details', $product->id) }}">
+                  <a href="{{ route('transation_details', $product->id) }}">
                   Trans<?php  echo $product->id ?></a>
                 </td>
                 <td data-th="Type">
@@ -96,7 +96,7 @@
 
           if ($product->user_id > 0) {
 
-          $user = App\User::find($product->user_id);
+          $user = App\Models\User::find($product->user_id);
           if ($user) {
             echo $user->business_name;
           }
@@ -121,10 +121,10 @@
 
 
                 <td data-th="Action" class="alignCenter">
-                  <a class="edit-btn" href="{{ route('staff.transation.edit', $product->id) }}" title="Edit"><img
+                  <a class="edit-btn" href="{{ route('transation.edit', $product->id) }}" title="Edit"><img
                     src="{{ asset('images/edit.svg') }}" alt="" /></a>
 
-                  <!-- <a class="delete-btn" href="{{ route('staff.transation.destroy',$product->id) }}" id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><img src="{{ asset('images/delete.svg') }}" alt="" /></a> -->
+                  <!-- <a class="delete-btn" href="{{ route('transation.destroy',$product->id) }}" id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><img src="{{ asset('images/delete.svg') }}" alt="" /></a> -->
 
                 </td>
                 </tr>

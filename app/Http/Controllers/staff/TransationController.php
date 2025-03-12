@@ -1,38 +1,29 @@
 <?php
 namespace App\Http\Controllers\staff;
 
-use App\Transation;
-use App\ServicePart;
-
-use App\Transation_product;
-use App\Credit;
-use App\Invoice_complete_flow;
-use App\Product;
-
-use App\Transation_pocopy;
-use App\Transation_staff_updates;
-use App\Transaction_manage_staff;
-use App\Staff;
-
-use App\Hosdesignation;
-use App\Courier;
-
-use App\Invoice_product;
-use App\Chatter;
-
-use App\Company;
-use App\Contact_person;
-use App\Users_shipping_address;
-
-use App\Oppertunity;
-use App\Invoice;
-use App\Dispatch;
-use App\Dispatch_product;
+use App\Models\Chatter;
+use App\Models\Contact_person;
+use App\Models\Courier;
+use App\Models\Dispatch;
+use App\Models\Dispatch_product;
+use App\Models\Hosdesignation;
+use App\Models\Invoice;
+use App\Models\Invoice_complete_flow;
+use App\Models\Invoice_product;
+use App\Models\Oppertunity;
+use App\Models\Product;
+use App\Models\ServicePart;
+use App\Models\Staff;
+use App\Models\Transaction_manage_staff;
+use App\Models\Transation;
 
 
 
-use App\User;
 
+use App\Models\Transation_pocopy;
+use App\Models\Transation_product;
+use App\Models\Transation_staff_updates;
+use App\Models\Users_shipping_address;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
@@ -40,7 +31,9 @@ use Illuminate\Support\Facades\DB;
 
 
 use App\Http\Controllers\Controller;
-use App\Warehouse;
+use App\Models\Company;
+use App\Models\User;
+use App\Models\Warehouse;
 use Image;
 
 use Storage;
@@ -320,7 +313,7 @@ class TransationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Transation  $brand
+     * @param  \App\Models\Transation  $brand
      * @return \Illuminate\Http\Response
      */
 
