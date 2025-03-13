@@ -12,7 +12,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.customer.index')}}">Manage Customer</a></li>
+        <li><a href="{{route('customer.index')}}">Manage Customer</a></li>
         <li class="active">Edit Customer</li>
       </ol>
     </section>
@@ -44,12 +44,12 @@
             </div>
             <ul class="nav navbar-pills navbar-pills-flat nav-tabs nav-stacked customer-tabs" role="tablist">
       <!-- <li class="customer_tab_profile active">
-      <a data-group="profile" href="{{ route('staff.customer.edit',$user->id) }}">
+      <a data-group="profile" href="{{ route('customer.edit',$user->id) }}">
                     <i class="fa fa-user-circle menu-icon" aria-hidden="true"></i>
                 Edit User     </a>
     </li> -->
       <li class="customer_tab_contacts ">
-      <a data-group="contacts" href="{{ route('staff.customer.show',$user->id) }}">
+      <a data-group="contacts" href="{{ route('customer.show',$user->id) }}">
                     <i class="fa fa-users menu-icon" aria-hidden="true"></i>
                     Contact person      </a>
     </li>
@@ -80,7 +80,7 @@
             {{ $errors->first('name') }}
             </p>
 
-           <form role="form" name="frm_user" id="frm_user" method="post" action="{{ route('staff.customer.update', $user->id) }}" enctype="multipart/form-data" >
+           <form role="form" name="frm_user" id="frm_user" method="post" action="{{ route('customer.update', $user->id) }}" enctype="multipart/form-data" >
                @csrf
                {{method_field('PUT')}}
                
@@ -531,7 +531,7 @@
 
  <div class="box-footer">
                 <button type="button" class="btn btn-primary" onclick="validate_from()">Submit</button>
-                 <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('staff.customer.index')}}'">Cancel</button>
+                 <button type="button" class="btn btn-danger" onClick="window.location.href='{{route('customer.index')}}'">Cancel</button>
               </div> 
             </form>
 

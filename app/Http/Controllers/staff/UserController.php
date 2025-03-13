@@ -3,24 +3,18 @@
 namespace App\Http\Controllers\staff;
 
 
+
+
 use App\Models\CoordinatorPermission;
+use App\Models\Country;
+use App\Models\Customercategory;
+use App\Models\District;
+use App\Models\Hosdeparment;
 use App\Models\Ib;
+use App\Models\Oppertunity;
 use App\Models\Taluk;
 use App\Models\User_permission;
-use App\Models\Country;
-use App\Models\Staff;
 use App\Models\Users_shipping_address;
-use App\Models\Customercategory;
-use App\Models\Assign_supervisor;
-
-use App\Models\District;
-use Yajra\DataTables\Facades\DataTables;
-
-
-use App\Hosdeparment;
-use App\Hosdesignation;
-
-use App\Contact_person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -32,10 +26,12 @@ use Storage;
 use App\Exportscustomer\UsersExport;
 
 use App\Importscustomer\UsersImport;
+use App\Models\Hosdesignation;
+use App\Models\Staff;
 use App\Models\State;
 use App\Models\User;
-use App\Oppertunity;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -99,38 +95,61 @@ class UserController extends Controller
                 }
                 
 
-                return Datatables::of($data)
-                ->addColumn('business_name_ref',function($data){
-                   return $buttons='<a href="'.route('admin.customer.edit',"$data->id").'">'.$data->business_name.'</a>';
-                })
-                ->addColumn("accountmanage",function($data){
-                    $assigns=explode(',',$data->staff_id);
-                    $staffname="";
-                    foreach(Staff::whereIn("id",$assigns)->where("id",">","0")->get() as $stf){
-                        $staffname.=$stf->email."<br>";
-                    }
-                    return $staffname;
-                })
-                ->addColumn('customer_category',function($data){
-                    if($data->customer_category_id){
-                        $customercategory = Customercategory::find($data->customer_category_id);
-                        if($customercategory){
-                            return $customercategory->name;
-                        }
-                    }
-                    return '';
+                return DataTables::of($data)
+
+                ->addColumn('business_name_edit', function ($data) use ($staff_id,$cor_permission,$permission) {
+
                     
-                })
-                ->addColumn('taluk',function($data){
-                    $taluk = Taluk::find($data->taluk_id);
-                    if($taluk){
-                        return $taluk->name;
+                    if (optional($cor_permission)->customer_edit == 'edit' || optional($permission)->customer_edit == 'edit') {
+
+                         if ($data->staff_id == $staff_id && optional($permission)->customer_edit == 'edit')
+                         {
+                            return '<a href="' . route('staff.customer.edit', $data->id) . '">' . $data->business_name . '</a>';
+                         }
+                         elseif($data->staff_id != $staff_id && optional($cor_permission)->customer_edit == 'edit')
+                         {
+                            return '<a href="' . route('staff.customer.edit', $data->id) . '">' . $data->business_name . '</a>';
+                         }
+                         else
+                         {
+                            return $data->business_name;
+                         }
+
+                    } else {
+
+                        return $data->business_name;
                     }
-                    return "";
                 })
+                
+
+                ->addColumn('customer_category', function ($data) {
+                  
+                    if(!empty($data->customer_category_id))
+                    {
+
+                        return optional($data->customer_category)->name;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                })
+
+                ->addColumn('taluk', function ($data) {
+                  
+                    if(!empty($data->taluk_id))
+                    {
+                        return optional($data->usertaluk)->name;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                })
+                
                 ->addColumn('action',function($data){
                     $button='
-                    <a class="btn btn-primary btn-xs" href="'.route('admin.customer.edit',"$data->id").'" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>';
+                    <a class="btn btn-primary btn-xs" href="'.route('customer.edit',"$data->id").'" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>';
                     
                     
                     
@@ -141,13 +160,24 @@ class UserController extends Controller
                     
                     return $button;
                 })
-                ->filterColumn('account_manage', function($query, $keyword) {
-                    $query->whereRaw("(select count(1) from staff where find_in_set(staff.id,users.staff_id) and staff.email like ?) >= 1", ["%{$keyword}%"]);
-                })
-                ->orderColumn('taluk','(select taluk.name from taluk where users.taluk_id=taluk.id) $1')
-                ->rawColumns(['action','business_name_ref','accountmanage'])->addIndexColumn()->make(true);
+
+                ->rawColumns(['business_name_edit','action'])
+
+                ->addIndexColumn()->make(true);
+
+                // ->setRowId('id')
+
+                // ->setRowAttr([
+                //     'data-user_id' => '{{ $user_id }}',
+                // ])
+
+                // ->setRowClass(function ($data) {
+
+                //     return "";
+                // })
+
             }
-    
+
         $stateIds = User::pluck('state_id')->unique()->toArray();
 
         $talukIDs = User::pluck('taluk_id')->unique()->toArray();
@@ -307,13 +337,15 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     { 
-        $user = User::withTrashed()->find($id);
+        // $user = User::withTrashed()->find($id);
         
+        $user = User::find($id);
+
         $country = Country::all();
 
         $hosdeparment = Hosdeparment::all();
@@ -336,7 +368,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
     public function edit($id,User $user)
@@ -417,7 +449,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
     public function destroy($id, User $user)

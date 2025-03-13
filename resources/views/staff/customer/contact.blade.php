@@ -13,7 +13,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{route('staff.customer.index')}}">Manage Customer</a></li>
+        <li><a href="{{route('customer.index')}}">Manage Customer</a></li>
         <li class="active">Edit Customer</li>
       </ol>
     </section>
@@ -45,7 +45,7 @@
             </div>
             <ul class="nav navbar-pills navbar-pills-flat nav-tabs nav-stacked customer-tabs" role="tablist">
       <!-- <li class="customer_tab_profile ">
-      <a id="editlink" data-group="profile" href="{{ route('staff.customer.edit',$user->id) }}">
+      <a id="editlink" data-group="profile" href="{{ route('customer.edit',$user->id) }}">
                     <i class="fa fa-user-circle menu-icon" aria-hidden="true"></i>
                 Edit User     </a>
     </li> -->
@@ -132,12 +132,12 @@
                         <td data-th="Name"><?php echo $product->title ?> <?php echo $product->name ?>  <?php echo $product->last_name ?></td>
                        
                          <td data-th="Designation"><?php
-                        $cat = App\Hosdesignation::find($product->designation);
+                        $cat = App\Models\Hosdesignation::find($product->designation);
                         echo $cat->name ?> ({{$product->contact_type}})
                         </td>
 
                          <td data-th="Department"><?php
-                        $cat = App\Hosdeparment::find($product->department);
+                        $cat = App\Models\Hosdeparment::find($product->department);
                         echo $cat->name ?>
                         </td>
                         <td data-th="Email"><?php echo $product->email ?></td>
@@ -198,7 +198,7 @@
 
                         <td class="alignCenter"  data-th="Action">
                             <a class="btn btn-primary btn-xs deletebtn contact{{$product->id}}" attr-status="{{$product->status}}" attr-whatsapp="{{$product->whatsapp}}" attr-mobile="{{$product->mobile}}" attr-contacttype="{{$product->contact_type}}" attr-lastname="{{$product->last_name}}" attr-title="{{$product->title}}"  attr-remark="{{$product->remark}}" attr-image1="{{$product->image_name1}}"  attr-image2="{{$product->image_name2}}"  attr-id="{{$product->id}}" attr-name="{{$product->name}}"  attr-email="{{$product->email}}"   attr-phone="{{$product->phone}}"  attr-department="{{$product->department}}" attr-designation="{{$product->designation}}"   title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <!-- <a class="btn btn-danger btn-xs deleteItem" href="{{ route('staff.contact_person.destroy',$product->id) }}" id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a> -->
+                            <!-- <a class="btn btn-danger btn-xs deleteItem" href="{{ route('contact_person.destroy',$product->id) }}" id="deleteItem{{$product->id}}" data-tr="tr_{{$product->id}}" title="Delete"><span class="glyphicon glyphicon-trash"></span></a> -->
                         </td>
                       </tr>
 
@@ -837,7 +837,7 @@ function validate_contact()
               success: function (data)
               {   $('.load-add').hide();
               $("#successshow").show();
-              window.location="{{ route('staff.customer.show',$user->id) }}"
+              window.location="{{ route('customer.show',$user->id) }}"
               }
             });  
             
@@ -907,7 +907,7 @@ function validate_contact()
                                   success: function (data)
                                   {   $('.load-add').hide();
                                   $("#successshow").show();
-                                  window.location="{{ route('staff.customer.show',$user->id) }}"
+                                  window.location="{{ route('customer.show',$user->id) }}"
                                   }
                                 }); 
                             }
@@ -1048,7 +1048,7 @@ function validate_contact_edit()
           success: function (data)
           {   $('.load-edit').hide();
           $("#successshowedit").show();
-          window.location="{{ route('staff.customer.show',$user->id) }}"
+          window.location="{{ route('customer.show',$user->id) }}"
           }
         });  
 

@@ -185,7 +185,6 @@ class LoginController extends Controller
         if($admin && md5($credentials['password']) === $admin->password)
         
         {
-            dd('dgdgdg');
             Auth::guard('admin')->login($admin);
 
             RateLimiter::clear($this->throttleKey($request));

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\staff\AdminajaxController;
 use App\Http\Controllers\staff\AdminStaffTargetController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +41,7 @@ Route::get('staff/target/staff/report', 'staff\AdminStaffTargetController@filter
 
 Route::post('task/hospital/start', 'staff\TaskController@task_hospital_start')->name("task_hospital_start");
 Route::post('task/hospital/end', 'staff\TaskController@task_hospital_end')->name("task_hospital_end");
-Route::post('update/location/current', 'staff\AdminajaxController@update_current_location')->name("update_current_location");
+Route::post('update/location/current', [AdminajaxController::class, 'update_current_location'])->name("update_current_location");
 
 Route::post('/store-pm-details', 'staff\ServiceController@storePmdetails')->name('store_pm_details');
 

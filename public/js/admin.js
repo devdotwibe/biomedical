@@ -795,7 +795,7 @@ $(function() {
         var from = $(this).attr('data-from');
         var elemId = $(this).attr('id');
 
-        var url = APP_URL + '/admin/ajaxChangeStatus';
+        var url = APP_URL + '/ajaxChangeStatus';
         $.ajax({
             url: url,
             type: 'POST',

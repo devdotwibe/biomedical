@@ -11,14 +11,14 @@
   $staff_id =session('STAFF_ID');
 
 @endphp
-    <section class="content-header">
-        <h1>
-            Manage Customer
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Manage Customer</li>
-        </ol>
+<section class="content-header">
+      <h1>
+        Manage Customer
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="<?php echo URL::to('staff'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Manage Customer</li>
+      </ol>
     </section>
 
     @php
@@ -106,18 +106,20 @@
                             onselectstart="return false">
                             <thead>
                                 <tr class="headrole">
-                                    <th class="col-wide-1"></th>
-                                    <th class="col-wide-1">No.</th>
-                                    <th class="col-wide-2">Hospital Name</th>
-                                    <th class="col-wide-1">Head of the Institution</th>
-                                    <th class="col-wide-1">Customer Category</th>
+
+                                    <th>No.</th>
+                                    <th>Hospital Name</th>
+                                    <th>Head of the Institution</th>
+                                    <th>Customer Category</th>
                                     
-                                    <th class="col-wide-1">Email</th>
-                                    <th class="col-wide-1">Phone</th>
-                                
-                                    <th class="col-wide-2">Address</th>  
-                                    <th class="col-wide-1">Taluk</th>
-                                    <th class="col-wide-1">Pincode</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                 
+                                    <th>Address</th>  
+                                    <th>Taluk</th>
+                                    <th>Pincode</th>
+                                    <th class="alignCenter">Action</th>
+                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -228,12 +230,7 @@
                 },
 
                 columns: [
-                    {
-                        data: "delete_action",
-                       "name":"delete_action",
-                        orderable: false,
-                        searchable: false,
-                    },
+  
                     {
                         "data": 'DT_RowIndex',
                         "name":"id",
@@ -294,6 +291,11 @@
                         orderable: true,
                         searchable: true,
                     },
+                    {
+                        data:'action',
+                        name:'action',
+                        orderable:false
+                    }
 
                 ]
 

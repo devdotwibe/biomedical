@@ -24,12 +24,20 @@
           
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-<?php 
-$staff_id = session('STAFF_ID');
-$staff_deti =  DB::select("select * from staff where `id`='".$staff_id."' ");
+@php
+$staff_id = session('STAFF_ID') ?? session('ADMIN_ID');
+$staff_deti =  DB::select("select * from staff where `id`='".$staff_id."' ") ;
 
-?>
-              <span class="hidden-xs">Hi <?php  echo ucfirst($staff_deti[0]->name);?></span>
+@endphp
+              @if(!empty(auth()->guard('staff')->user()->name))
+
+              <span class="hidden-xs">Hi {{auth()->guard('staff')->user()->name}}</span>
+
+              @else
+
+              <span class="hidden-xs">Hi {{auth()->guard('admin')->user()->name}}</span>
+
+              @endif
             </a>
             <ul class="dropdown-menu">
 

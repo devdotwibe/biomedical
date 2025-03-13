@@ -13,18 +13,33 @@
 //test git
 use App\Http\Controllers\Auth\QuoteController;
 use App\Http\Controllers\IndustriesController;
+use App\Http\Controllers\marketspace\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\staff\AdminController;
+use App\Http\Controllers\staff\AssetController;
 use App\Http\Controllers\staff\Category_typeController;
+use App\Http\Controllers\staff\ChecklistController;
+use App\Http\Controllers\staff\CompanyController;
 use App\Http\Controllers\staff\Competition_productController;
+use App\Http\Controllers\staff\CustomercategoryController;
 use App\Http\Controllers\staff\DealerController;
+use App\Http\Controllers\staff\DesignationController;
+use App\Http\Controllers\staff\DistrictController;
+use App\Http\Controllers\staff\HosdeparmentController;
+use App\Http\Controllers\staff\HosdesignationController;
 use App\Http\Controllers\staff\IbController;
 use App\Http\Controllers\staff\ModalityController;
 use App\Http\Controllers\staff\Product_typeController;
 use App\Http\Controllers\staff\ProductController;
+use App\Http\Controllers\staff\Relatedto_categoryController;
+use App\Http\Controllers\staff\Relatedto_subcategoryController;
+use App\Http\Controllers\staff\StaffCategoryController;
 use App\Http\Controllers\staff\StaffquoteController;
+use App\Http\Controllers\staff\StateController;
 use App\Http\Controllers\staff\SubcategoryController;
+use App\Http\Controllers\staff\TalukController;
 use App\Http\Controllers\staff\TransationController;
 use App\Http\Controllers\staff\UnitsController;
 use App\Http\Controllers\staff\UserController;
@@ -218,12 +233,13 @@ Route::post('change_state', 'marketspace\DashboardController@change_state')->nam
 ;
 Route::post('change_district', 'marketspace\DashboardController@change_district')->name('change_district');
 Route::post('change_taluk', 'marketspace\DashboardController@change_taluk')->name('change_taluk');
-Route::post('ajaxChangeStatus', 'marketspace\DashboardController@ajaxChangeStatus')->name('ajaxChangeStatus');
+Route::post('ajaxChangeStatus', [DashboardController::class, 'ajaxChangeStatus'])->name('ajaxChangeStatus');
 
 
 /*******************************  Dealer Control Start************************************************/
-Route::get('dealer', 'dealer\DealerController@index');
-Route::post('dealer', 'dealer\DealerController@login');
+Route::get('dealer', [DealerController::class, 'index']);
+Route::post('dealer', [DealerController::class, 'login']);
+
 Route::get('dealer/register', function () {
   return view('dealer.register');
 })->name('dealer.register');
@@ -260,10 +276,13 @@ Route::middleware(MarketspaceAuthenticate::class)->prefix('marketspace')->name('
   }
 );
 /***********************************Admin Login Start****************************************************/
-Route::get('admin', 'admin\AdminController@index');
-Route::post('admin', 'admin\AdminController@login');
-Route::get('admin/logout', 'admin\AdminController@logout');
-Route::get('admin/sql', 'admin\AdminController@sql');
+// Route::get('admin', [AdminController::class, 'index']);
+// Route::post('admin', [AdminController::class, 'login']);
+// Route::get('admin/logout', [AdminController::class, 'logout']);
+// Route::get('admin/sql', [AdminController::class, 'sql']);
+
+
+
 /***********************************Admin Login Start****************************************************/
 Route::resource('service_responce', 'staff\Service_responceController');
 Route::post('service_responce/deleteAll', 'staff\Service_responceController@deleteAll');
@@ -644,8 +663,11 @@ Route::middleware(StaffAuthenticate::class)->group(
     /***********************************Competition Product  End****************************************************/
     /***********************************Product Type End****************************************************/
 
-    Route::resource('product_type', Product_typeController::class);
-    Route::post('product_type/deleteAll', [Product_typeController::class, 'deleteAll']);
+    Route::prefix('staff')->group(function () {
+      Route::resource('product_type', Product_typeController::class);
+  });
+  
+  Route::post('product_type/deleteAll', [Product_typeController::class, 'deleteAll']);
     /***********************************Product Type End****************************************************/
     Route::resource('service_task', 'staff\Service_taskController');
     Route::post('service_task/deleteAll', 'staff\Service_taskController@deleteAll');
@@ -804,20 +826,21 @@ Route::middleware(StaffAuthenticate::class)->group(
         
     /***********************************Customer Mange End****************************************************/
 
-    Route::post('change_assigned_team', 'staff\AdminajaxController@change_assigned_team');
-    Route::post('change_related_to', 'staff\AdminajaxController@change_related_to');
-    Route::post('change_task_status', 'staff\AdminajaxController@change_task_status');
-    Route::post('change_task_status_total_task', 'staff\AdminajaxController@change_task_status_total_task');
-    Route::post('change_task_priority', 'staff\AdminajaxController@change_task_priority');
-    Route::post('viewchecklist_details', 'staff\AdminajaxController@viewchecklist_details');
-    Route::post('add_task_replay_comment', action: 'staff\AdminajaxController@add_task_replay_comment');
-    Route::post('add_daily_closing', 'staff\AdminajaxController@add_daily_closing');
-    Route::any('get_product_company', 'staff\AdminajaxController@get_product_company');
-    Route::any('get_product_all_details', 'staff\AdminajaxController@get_product_all_details');
-    Route::any('get_multiple_product_all_details', 'staff\AdminajaxController@get_multiple_product_all_details');
-    Route::any('generate_pdf', 'staff\AdminajaxController@generate_pdf');
-    Route::any('delete_product_staff', 'staff\AdminajaxController@delete_product_staff');
+    Route::post('change_assigned_team', [AdminajaxController::class, 'change_assigned_team']);
+    Route::post('change_related_to', [AdminajaxController::class, 'change_related_to']);
+    Route::post('change_task_status', [AdminajaxController::class, 'change_task_status']);
+    Route::post('change_task_status_total_task', [AdminajaxController::class, 'change_task_status_total_task']);
+    Route::post('change_task_priority', [AdminajaxController::class, 'change_task_priority']);
+    Route::post('viewchecklist_details', [AdminajaxController::class, 'viewchecklist_details']);
+    Route::post('add_task_replay_comment', action: [AdminajaxController::class, 'add_task_replay_comment']);
+    Route::post('add_daily_closing', [AdminajaxController::class, 'add_daily_closing']);
+    Route::any('get_product_company', [AdminajaxController::class, 'get_product_company']);
+    Route::any('get_product_all_details', [AdminajaxController::class, 'get_product_all_details']);
+    Route::any('get_multiple_product_all_details', [AdminajaxController::class, 'get_multiple_product_all_details']);
+    Route::any('generate_pdf', [AdminajaxController::class, 'generate_pdf']);
+    Route::any('delete_product_staff', [AdminajaxController::class, 'delete_product_staff']);
     Route::get('loadproductnames/{id}', 'admin\OppertunityController@loadproductnames')->name('loadproductnames');
+
 
     /**************** *******************Task staff start ****************************************************/
 
@@ -872,46 +895,44 @@ Route::middleware(StaffAuthenticate::class)->group(
 
     Route::post('ajaxChangeStatus',     [AdminajaxController::class, 'ajaxChangeStatus']);
     Route::post('ajaxChangeStatus_product', [AdminajaxController::class, 'ajaxChangeStatus_product']);
-    Route::post('view_task_details', 'staff\AdminajaxController@view_task_details');
-    Route::post('view_staff_task', 'staff\AdminajaxController@view_staff_task');
-    Route::post('approve_staff', 'staff\AdminajaxController@approve_staff');
+    Route::post('view_task_details', [AdminajaxController::class, 'view_task_details']);
+    Route::post('view_staff_task', [AdminajaxController::class, 'view_staff_task']);
+    Route::post('approve_staff', [AdminajaxController::class, 'approve_staff']);
 
-    Route::post('add_task_comment', 'staff\AdminajaxController@add_task_comment'); 
-    Route::post('view_task_comment', 'staff\AdminajaxController@view_task_comment');
-    Route::post('view_task_commentall', 'staff\AdminajaxController@view_task_commentall');
-    Route::post('change_repeat_every', 'staff\AdminajaxController@change_repeat_every');
-    Route::post('get_client_use_state_district', 'staff\AdminajaxController@get_client_use_state_district');
-    Route::post('opp_get_client_use_state_district', 'staff\AdminajaxController@opp_get_client_use_state_district');
-    Route::post('taluk_state_district', 'staff\AdminajaxController@taluk_state_district');
+
+
+    Route::post('add_task_comment', [AdminajaxController::class, 'add_task_comment']); 
+    Route::post('view_task_comment', [AdminajaxController::class, 'view_task_comment']);
+    Route::post('view_task_commentall', [AdminajaxController::class, 'view_task_commentall']);
+    Route::post('change_repeat_every', [AdminajaxController::class, 'change_repeat_every']);
+    Route::post('get_client_use_state_district', [AdminajaxController::class, 'get_client_use_state_district']);
+    Route::post('opp_get_client_use_state_district', [AdminajaxController::class, 'opp_get_client_use_state_district']);
+    Route::post('taluk_state_district', [AdminajaxController::class, 'taluk_state_district']);
+    Route::post('change_assignes', [AdminajaxController::class, 'change_assignes']);
+    Route::post('view_task_comment_dailytask', [AdminajaxController::class, 'view_task_comment_dailytask']);
+    Route::post('delete_task_comment', [AdminajaxController::class, 'delete_task_comment']);
+    Route::post('emailvalidation', [AdminajaxController::class, 'emailvalidation']);
+    Route::post('change_country', [AdminajaxController::class, 'change_country']);
+    Route::post('change_state', [AdminajaxController::class, 'change_state']);
+    Route::post('opp_change_state', [AdminajaxController::class, 'opp_change_state']);
+    Route::post('user_change_state', [AdminajaxController::class, 'user_change_state']);
+    Route::post('change_district', [AdminajaxController::class, 'change_district']);
+    Route::post('get_user_all_details', [AdminajaxController::class, 'get_user_all_details']);
     Route::post('save_task_type', 'staff\TaskController@save_task_type');
-    Route::post('change_assignes', 'staff\AdminajaxController@change_assignes');
-    Route::post('view_task_comment_dailytask', 'staff\AdminajaxController@view_task_comment_dailytask');
-    Route::post('delete_task_comment', 'staff\AdminajaxController@delete_task_comment');
-    Route::post('emailvalidation', 'staff\AdminajaxController@emailvalidation');
-    Route::post('change_country', 'staff\AdminajaxController@change_country');
-    Route::post('change_state', 'staff\AdminajaxController@change_state');
-    Route::post('opp_change_state', 'staff\AdminajaxController@opp_change_state');
-    Route::post('user_change_state', 'staff\AdminajaxController@user_change_state');
-    Route::post('change_district', 'staff\AdminajaxController@change_district');
-
-    Route::post('get_user_all_details', 'staff\AdminajaxController@get_user_all_details');
-
-
-
 
 
 
     // /  *********************************filtering staff***************************************/
   
-    Route::post('msa_change_state', 'staff\AdminajaxController@msa_change_state');
-    Route::post('msa_get_client_use_state_district', 'staff\AdminajaxController@msa_get_client_use_state_district');
 
-    Route::post('pm_change_state', 'staff\AdminajaxController@pm_change_state');
-    Route::post('pm_get_client_use_state_district', 'staff\AdminajaxController@pm_get_client_use_state_district');
+    Route::post('msa_change_state', [AdminajaxController::class, 'msa_change_state']);
+    Route::post('msa_get_client_use_state_district', [AdminajaxController::class, 'msa_get_client_use_state_district']);
 
-    Route::post('service_change_state', 'staff\AdminajaxController@service_change_state');
-    Route::post('service_get_client_use_state_district', 'staff\AdminajaxController@service_get_client_use_state_district');
+    Route::post('pm_change_state', [AdminajaxController::class, 'pm_change_state']);
+    Route::post('pm_get_client_use_state_district', [AdminajaxController::class, 'pm_get_client_use_state_district']);
 
+    Route::post('service_change_state', [AdminajaxController::class, 'service_change_state']);
+    Route::post('service_get_client_use_state_district', [AdminajaxController::class, 'service_get_client_use_state_district']);
 
     // /  *********************************filtering admin***************************************/
   
@@ -942,21 +963,30 @@ Route::middleware(StaffAuthenticate::class)->group(
 
     Route::get('product-show-in-page', 'staff\MspController@product_show_status')->name('product_show_status');
 
-    Route::post('save_mspusing_ajax', 'staff\AdminajaxController@save_mspusing_ajax')->name('save_mspusing_ajax');
 
-    Route::post('emailvalidationusers', 'staff\AdminajaxController@emailvalidationusers');
 
-    Route::post('show_prv_msp', 'staff\AdminajaxController@show_prv_msp')->name('show_prv_msp');
 
-    Route::post('change_brand_for_product', 'staff\AdminajaxController@change_brand_for_product')->name('change_brand_for_product');
 
-    Route::post('sort_brand_categorytypeuse_carearea', 'staff\AdminajaxController@sort_brand_categorytypeuse_carearea')->name('sort_brand_categorytypeuse_carearea');
+    Route::post('save_mspusing_ajax', [AdminajaxController::class, 'save_mspusing_ajax'])->name('save_mspusing_ajax');
 
-    Route::post('change_particular_product_details', 'staff\AdminajaxController@change_particular_product_details')->name('change_particular_product_details');
+    Route::post('emailvalidationusers', [AdminajaxController::class, 'emailvalidationusers']);
 
-    Route::post('sort_brand_use_category_type', 'staff\AdminajaxController@sort_brand_use_category_type')->name('sort_brand_use_category_type');
+    Route::post('show_prv_msp', [AdminajaxController::class, 'show_prv_msp'])->name('show_prv_msp');
 
-    Route::post('get_last_product_price_msp', 'staff\AdminajaxController@get_last_product_price_msp')->name('get_last_product_price_msp');
+    Route::post('change_brand_for_product', [AdminajaxController::class, 'change_brand_for_product'])->name('change_brand_for_product');
+
+    Route::post('sort_brand_categorytypeuse_carearea', [AdminajaxController::class, 'sort_brand_categorytypeuse_carearea'])->name('sort_brand_categorytypeuse_carearea');
+
+    Route::post('change_particular_product_details', [AdminajaxController::class, 'change_particular_product_details'])->name('change_particular_product_details');
+
+    Route::post('sort_brand_use_category_type', [AdminajaxController::class, 'sort_brand_use_category_type'])->name('sort_brand_use_category_type');
+
+ 
+    Route::post('get_last_product_price_msp', [AdminajaxController::class, 'get_last_product_price_msp'])->name('get_last_product_price_msp');
+ 
+
+
+
 
   }
 );
@@ -1003,6 +1033,80 @@ Route::resource('dealer', DealerController::class);
 
 
 
+    Route::get('admin/importExportViewCustomer', [UserController::class, 'importExportViewCustomer'])->name('importExportViewCustomer');
+
+
+    /***********************************Admin Option Start ****************************************************/
+
+    Route::resource('admin/hosdesignation', HosdesignationController::class);
+    Route::post('admin/hosdesignation/deleteAll', [HosdesignationController::class, 'deleteAll']);
+
+    Route::resource('admin/hosdeparment', HosdeparmentController::class);
+    Route::post('hosdeparment/deleteAll', [HosdeparmentController::class, 'deleteAll']);
+       
+    Route::resource('admin/company', CompanyController::class);
+    Route::post('company/deleteAll', [CompanyController::class, 'deleteAll']);
+
+
+    Route::resource('admin/designation', DesignationController::class);
+    Route::post('designation/deleteAll', [DesignationController::class, 'deleteAll']);
+
+    Route::resource('admin/staff_category', StaffCategoryController::class);
+
+
+    Route::resource('admin/customercategory', CustomercategoryController::class);
+
+    Route::resource('admin/state', StateController::class);
+
+    Route::resource('admin/district', DistrictController::class);
+
+    Route::resource('admin/taluk', TalukController::class);
+
+
+
+
+    Route::resource('inoutactivitycategory', InOutActivityCategoryController::class);
+    Route::post('inoutactivitycategory/deleteAll', [InOutActivityCategoryController::class, 'deleteAll']);
+
+
+    Route::post('staff_category/deleteAll', [StaffCategoryController::class, 'deleteAll']);
+
+    Route::post('customercategory/deleteAll', [CustomercategoryController::class, 'deleteAll']);
+    Route::post('state/deleteAll', [StateController::class, 'deleteAll']);
+    Route::post('district/deleteAll', [DistrictController::class, 'deleteAll']);
+    Route::post('taluk/deleteAll', [TalukController::class, 'deleteAll']);
+    Route::resource('admin/relatedto_category', Relatedto_categoryController::class);
+    Route::post('relatedto_category/deleteAll', [Relatedto_categoryController::class, 'deleteAll']);
+    Route::resource('admin/relatedto_subcategory', Relatedto_subcategoryController::class);
+    Route::post('relatedto_subcategory/deleteAll', [Relatedto_subcategoryController::class, 'deleteAll']);
+    Route::resource('admin/checklist', ChecklistController::class);
+    Route::post('checklist/deleteAll', [ChecklistController::class, 'deleteAll']);
+
+
+
+    Route::get('assetDepartment', [AssetController::class, 'assetDepartmentShow'])->name('assetdepartment.index');
+    Route::get('assetDepartment/create', [AssetController::class, 'assetDepartmentCreate'])->name('assetdepartment.create');
+    Route::post('assetDepartment/store', [AssetController::class, 'assetDepartmentStore'])->name('assetdepartment.store');
+    Route::get('assetDepartment/edit/{id}', [AssetController::class, 'assetDepartmentEdit'])->name('assetdepartment.edit');
+    Route::post('assetDepartment/update/{id}', [AssetController::class, 'assetDepartmentUpdate'])->name('assetdepartment.update');
+    Route::delete('assetDepartment/destroy/{id}', [AssetController::class, 'assetDepartmentDestroy'])->name('assetdepartment.destroy');
+    Route::post('assetDepartment/deleteAll', [AssetController::class, 'assetDepartmentDeleteAll']);
+
+    
+
+
+    Route::get('contractOwner', action: [ContractController::class, 'contractOwnerShow'])->name('contractowner.index');
+    Route::get('contractOwner/create', [ContractController::class, 'contractOwnerCreate'])->name('contractowner.create');
+    Route::post('contractOwner/store', [ContractController::class, 'contractOwnerStore'])->name('contractowner.store');
+    Route::get('contractOwner/edit/{id}', [ContractController::class, 'contractOwnerEdit'])->name('contractowner.edit');
+    Route::post('contractOwner/update/{id}', [ContractController::class, 'contractOwnerUpdate'])->name('contractowner.update');
+    Route::delete('contractOwner/destroy/{id}', [ContractController::class, 'contractOwnerDestroy'])->name('contractowner.destroy');
+    Route::post('contractOwner/deleteAll', [ContractController::class, 'contractOwnerDeleteAll']);
+
+
+
+
+    /***********************************Admin Option End ****************************************************/
 
 
 
@@ -1010,7 +1114,11 @@ Route::resource('dealer', DealerController::class);
 
 
 
-        
+
+
+
+
+
 
 
 
@@ -1299,8 +1407,8 @@ Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->gr
     /***********************************Staff Mange  End****************************************************/
 
     /************************************ Dealers Manage Start *********************************************/
-    Route::post('dealer/{dealer}/verify', 'admin\DealerController@verify')->name("dealer.verify");
-    Route::put('dealer/{dealer}/upload', 'admin\DealerController@upload')->name('dealer.upload');
+    Route::post('dealer/{dealer}/verify', [DealerController::class, 'verify'])->name("dealer.verify");
+    Route::put('dealer/{dealer}/upload', [DealerController::class, 'upload'])->name('dealer.upload');
     /************************************ Dealers Manage Start *********************************************/
     /***********************************Customer Mange ****************************************************/
     Route::resource('customer', UserController::class);
@@ -1309,58 +1417,11 @@ Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->gr
     Route::post('customer/deleteAll', [UserController::class, 'deleteAll']);
     Route::get('exportproductcustomer', [UserController::class, 'exportproductcustomer'])->name('exportproductcustomer');
     Route::post('importproductcustomer', [UserController::class, 'importproductcustomer'])->name('importproductcustomer');
-    Route::get('importExportViewCustomer', [UserController::class, 'importExportViewCustomer'])->name('importExportViewCustomer');
     /***********************************Customer Mange End ****************************************************/
 
 
         
 
-
-    /***********************************Admin Option Start ****************************************************/
-
-    Route::resource('inoutactivitycategory', 'admin\InOutActivityCategoryController');
-    Route::post('inoutactivitycategory/deleteAll', 'admin\InOutActivityCategoryController@deleteAll');
-    Route::resource('company', 'admin\CompanyController');
-    Route::post('company/deleteAll', 'admin\CompanyController@deleteAll');
-    Route::resource('hosdesignation', 'admin\HosdesignationController');
-    Route::post('hosdesignation/deleteAll', 'admin\HosdesignationController@deleteAll');
-    Route::resource('designation', 'admin\DesignationController');
-    Route::resource('staff_category', 'admin\StaffCategoryController');
-    Route::post('staff_category/deleteAll', 'admin\StaffCategoryController@deleteAll');
-
-    Route::post('designation/deleteAll', 'admin\DesignationController@deleteAll');
-    Route::resource('hosdeparment', 'admin\HosdeparmentController');
-    Route::post('hosdeparment/deleteAll', 'admin\HosdeparmentController@deleteAll');
-    Route::resource('customercategory', 'admin\CustomercategoryController');
-    Route::post('customercategory/deleteAll', 'admin\CustomercategoryController@deleteAll');
-    Route::resource('state', 'admin\StateController');
-    Route::post('state/deleteAll', 'admin\StateController@deleteAll');
-    Route::resource('district', 'admin\DistrictController');
-    Route::post('district/deleteAll', 'admin\DistrictController@deleteAll');
-    Route::resource('taluk', 'admin\TalukController');
-    Route::post('taluk/deleteAll', 'admin\TalukController@deleteAll');
-    Route::resource('relatedto_category', 'admin\Relatedto_categoryController');
-    Route::post('relatedto_category/deleteAll', 'admin\Relatedto_categoryController@deleteAll');
-    Route::resource('relatedto_subcategory', 'admin\Relatedto_subcategoryController');
-    Route::post('relatedto_subcategory/deleteAll', 'admin\Relatedto_subcategoryController@deleteAll');
-    Route::resource('checklist', 'admin\ChecklistController');
-    Route::post('checklist/deleteAll', 'admin\ChecklistController@deleteAll');
-    Route::get('contractOwner', 'admin\ContractController@contractOwnerShow')->name('contractowner.index');
-    Route::get('contractOwner/create', 'admin\ContractController@contractOwnerCreate')->name('contractowner.create');
-    Route::post('contractOwner/store', 'admin\ContractController@contractOwnerStore')->name('contractowner.store');
-    Route::get('contractOwner/edit/{id}', 'admin\ContractController@contractOwnerEdit')->name('contractowner.edit');
-    Route::post('contractOwner/update/{id}', 'admin\ContractController@contractOwnerUpdate')->name('contractowner.update');
-    Route::delete('contractOwner/destroy/{id}', 'admin\ContractController@contractOwnerDestroy')->name('contractowner.destroy');
-    Route::post('contractOwner/deleteAll', 'admin\ContractController@contractOwnerDeleteAll');
-    Route::get('assetDepartment', 'admin\AssetController@assetDepartmentShow')->name('assetdepartment.index');
-    Route::get('assetDepartment/create', 'admin\AssetController@assetDepartmentCreate')->name('assetdepartment.create');
-    Route::post('assetDepartment/store', 'admin\AssetController@assetDepartmentStore')->name('assetdepartment.store');
-    Route::get('assetDepartment/edit/{id}', 'admin\AssetController@assetDepartmentEdit')->name('assetdepartment.edit');
-    Route::post('assetDepartment/update/{id}', 'admin\AssetController@assetDepartmentUpdate')->name('assetdepartment.update');
-    Route::delete('assetDepartment/destroy/{id}', 'admin\AssetController@assetDepartmentDestroy')->name('assetdepartment.destroy');
-    Route::post('assetDepartment/deleteAll', 'admin\AssetController@assetDepartmentDeleteAll');
-
-    /***********************************Admin Option End ****************************************************/
 
     Route::resource('industries', 'admin\IndustriesController');
     Route::post('industries/deleteAll', 'admin\IndustriesController@deleteAll');
@@ -1642,7 +1703,10 @@ Route::middleware(AdminAuthenticate::class)->prefix('admin')->name('admin.')->gr
     Route::get('ajaxGet', 'admin\AdminajaxController@ajaxGet');
     Route::post('ajaxPost', 'admin\AdminajaxController@ajaxPost');
     Route::post('ajaxDataTables', 'admin\AdminajaxController@ajaxDataTables');
-    Route::post('ajaxChangeStatus', 'admin\AdminajaxController@ajaxChangeStatus');
+    // Route::post('ajaxChangeStatus', [AdminajaxController::class, 'ajaxChangeStatus']);
+
+    // Route::post('ajaxChangeStatus', 'admin\AdminajaxController@ajaxChangeStatus');
+
     Route::post('ajaxChangeDefaultStatus', 'admin\AdminajaxController@ajaxChangeDefaultStatus');
     Route::post('ajaxDataDetails', 'admin\AdminajaxController@ajaxDataDetails');
     Route::post('updateOrder', 'admin\AdminajaxController@updateOrder');

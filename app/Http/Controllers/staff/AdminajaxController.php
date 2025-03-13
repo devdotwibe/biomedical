@@ -2,33 +2,21 @@
 
 namespace App\Http\Controllers\staff;
 
-use App\Brand;
-use App\Category;
-use App\Chatter;
-use App\Contact_person;
-use App\CoordinatorPermission;
-use App\District;
 use App\Http\Controllers\admin\CmsController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ThumbImage;
+use App\Models\Category;
+use App\Models\Contact_person;
+use App\Models\CoordinatorPermission;
+use App\Models\District;
+use App\Models\Oppertunity;
+use App\Models\Product;
+use App\Models\Product_image;
+use App\Models\Service;
+use App\Models\Staff;
 use App\Models\StaffFollower;
-use App\MsaContract;
-use App\Msp;
-use App\Oppertunity;
-use App\OppertunityTask;
-use App\PmDetails;
-use App\Product;
-use App\Product_image;
-use App\Quote;
-use App\Service;
-use App\ServicePart;
-use App\Staff;
-use App\Taluk;
-use App\Task;
-use App\Task_comment;
-use App\Task_comment_replay;
-use App\User;
-use App\User_permission;
+use App\Models\User;
+use App\Models\User_permission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,7 +63,7 @@ class AdminajaxController extends Controller
 
     public function get_user_all_details(Request $request)
     {
-
+ 
         $user_all = DB::select("select * from users where `id`='" . $request->user_id . "'  ");
 
         $contact_all = DB::select("select * from contact_person where `user_id`='" . $request->user_id . "'  ");

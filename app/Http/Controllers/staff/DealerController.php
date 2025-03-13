@@ -46,14 +46,14 @@ class DealerController extends Controller
                 })->addColumn('status',function($data){
                     return $data->status=='Y'?"<span class='text-success'>verified</span>":"<span class='text-warning'>un-verified</span>";
                 })->addColumn('action',function($data){
-                    $button = ' <a class="btn btn-info btn-xs" href="'.route('admin.dealer.show',"$data->dealer_id").'" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
-                                <a class="btn btn-primary btn-xs" href="'.route('admin.dealer.edit',"$data->dealer_id").'" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a class="delete-btn" href="javascript:deleteItem('."'".route('admin.dealer.destroy',$data->dealer_id) ."','#dealer-table'".')" title="Delete"><img src="'. asset('images/delete.svg') .'"></a>';
+                    $button = ' <a class="btn btn-info btn-xs" href="'.route('dealer.show',"$data->dealer_id").'" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                <a class="btn btn-primary btn-xs" href="'.route('dealer.edit',"$data->dealer_id").'" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a class="delete-btn" href="javascript:deleteItem('."'".route('dealer.destroy',$data->dealer_id) ."','#dealer-table'".')" title="Delete"><img src="'. asset('images/delete.svg') .'"></a>';
                 return $button;
                 })->rawColumns(['name','register_email','register_date','status','action'])->addIndexColumn()->make(true);
         }
 
-       return view('admin.dealer.index');
+       return view('staff.dealer.index');
 
     }
 
@@ -111,7 +111,7 @@ class DealerController extends Controller
 
     public function show(Dealer $dealer)
     {
-        return view('admin.dealer.view', compact('dealer'));
+        return view('staff.dealer.view', compact('dealer'));
     }
 
 
@@ -131,7 +131,7 @@ class DealerController extends Controller
     public function edit(Dealer $dealer)
 
     {
-        return view('admin.dealer.edit', compact('dealer'));
+        return view('staff.dealer.edit', compact('dealer'));
     }
 
 
@@ -254,7 +254,7 @@ class DealerController extends Controller
     {
         
 
-        return redirect()->route('admin.staff.index')->with('success', 'Data has been deleted successfully');
+        return redirect()->route('staff.index')->with('success', 'Data has been deleted successfully');
 
     }
 

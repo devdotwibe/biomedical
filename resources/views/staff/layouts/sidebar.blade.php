@@ -70,7 +70,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
         
       @endif
 
-      <li><a href="{{ route('dashboard') }}"><span>Dashboard</span></a></li>
+      <li><a href="/dashboard" class=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
 
             <li class="treeview <?php echo strstr($currentPath, 'staff/transation') || strstr($currentPath, 'staff/transation') ? 'active menu-open' : ''; ?>">
                 {{-- <a href="#">
@@ -86,16 +86,19 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                             <span>All Transaction</span>
                         </a>
                     </li>
+
                     <li class="<?php echo strstr($currentPath, 'staff/Pendingtransaction') ? 'active' : ''; ?>">
                         <a href="{{ route('Pendingtransaction') }}">
                             <span>Pending Transaction</span>
                         </a>
                     </li>
+
                     <li class="<?php echo strstr($currentPath, 'staff/sales_order') ? 'active' : ''; ?>">
                         <a href="{{ route('sales_order') }}?type=Sale Order">
                             <span>Sales Order</span>
                         </a>
                     </li>
+                    
                     <li class="<?php echo strstr($currentPath, 'staff/sales_order') ? 'active' : ''; ?>">
                         <a href="{{ route('sales_order') }}?type=Test Return">
                             <span>Test Return</span>
@@ -105,10 +108,10 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
 
                         <!-- <li class="<?php //echo (strstr($currentPath,'staff/transactionindex')) ? 'active' : ''
                         ?>">
-                <a href="{{ route('transactionindex') }}">
-                <span>Pending Transaction</span>
-                </a>
-                </li> -->
+                        <a href="{{ route('transactionindex') }}">
+                        <span>Pending Transaction</span>
+                        </a>
+                        </li> -->
 
                     <?php 
                         $staff_id = session('STAFF_ID');
@@ -160,9 +163,11 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                 </a>
                 <ul class="treeview-menu">
 
-                    <li class="<?php echo strstr($currentPath, '/product') ? 'active' : ''; ?>">
+         
+                    <li class="<?php echo strstr($currentPath, 'staff/products') ? 'active' : ''; ?>">
                         <a href="{{ route('product.index') }}"> <span>Manage Products</span></a>
                     </li>
+
 
 
                         <li class="<?php echo strstr($currentPath, 'staff/brand') ? 'active' : ''; ?>">
@@ -182,6 +187,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                                 <span>Product Type</span>
                             </a>
                         </li>
+                        
                         <li class="<?php echo strstr($currentPath, 'staff/category') ? 'active' : ''; ?>">
                             <a href="{{ route('category.index') }}">
                                 <span>Manage Care Area</span>
@@ -238,20 +244,22 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                   </span>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="<?php echo (strstr($currentPath,'customer') ) ? 'active' : '' ?>">
+                        <a href="{{route('customer.index')}}"><span>Customers</span></a>
+                      </li>
+
                     <li class="<?php echo (strstr($currentPath,'dealer') ) ? 'active' : '' ?>">
                       <a href="{{route('dealer.index')}}"><span>Dealer</span></a>
                     </li>
-                    <li class="<?php echo (strstr($currentPath,'customer') ) ? 'active' : '' ?>">
-                      <a href="{{route('admin.customer.index')}}"><span>Customers</span></a>
-                    </li>
+
       
                      <li class="<?php echo (strstr($currentPath,'admin/importExportViewCustomer')) ? 'active' : '' ?>">
-                    <a href="{{route('admin.importExportViewCustomer')}}">
+                    <a href="{{route('importExportViewCustomer')}}">
                     <span>Customer Export and Import</span>
                   </a>
                   </li>
       
-                  <li class="<?php echo (strstr($currentPath,'admin/seller')) ? 'active' : '' ?>">
+                  {{-- <li class="<?php echo (strstr($currentPath,'admin/seller')) ? 'active' : '' ?>">
                     <a href="">
                    <span>Seller</span>
                   </a>
@@ -267,7 +275,7 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
                     <a href="">
                     <span>Admin</span>
                   </a>
-                  </li>
+                  </li> --}}
       
               
       
@@ -280,6 +288,9 @@ $currentPath = Route::getFacadeRoot()->current()->uri();
               
 
         @endif
+
+        <li  class=" <?php echo (strstr($currentPath,'/hosdesignation') || strstr($currentPath,'admin/hosdeparment') || strstr($currentPath,'admin/company') || strstr($currentPath,'admin/designation') ) ? 'active menu-open' : '' ?>"><a href="<?php echo URL::to('admin'); ?>/company"><span>Options</span></a>
+        </li>
 
 
 

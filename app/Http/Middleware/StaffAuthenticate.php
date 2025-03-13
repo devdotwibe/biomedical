@@ -16,10 +16,20 @@ class StaffAuthenticate
     public function handle($request, Closure $next)
     {
         $staff_id = session('STAFF_ID');
+        // $admin_id = session('ADMIN_ID');
+
+
+        if (auth()->guard('staff')->check()) {
+            return $next($request);
+        } else
+        if (auth()->guard('admin')->check()) {
+            return $next($request);
+        } else
         
-        if (!isset($staff_id) || $staff_id == 0) {
-            return redirect('staff');
+        {
+            return redirect('login');
         }
-        return $next($request);
+
+
     }
 }
